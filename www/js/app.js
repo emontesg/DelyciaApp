@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var angular = require('angular');
-require('ionic');
+// require('ionic');
 
 var loginController = require('./controllers/loginController');
 var playlistsController = require('./controllers/playlistsController');

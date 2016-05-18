@@ -57203,6 +57203,7 @@ IonicModule
    * @returns {boolean} If the scroll view is being prevented from scrolling or not.
    */
   'freezeScroll',
+  
   /**
    * @ngdoc method
    * @name $ionicScrollDelegate#freezeAllScrolls
