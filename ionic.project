@@ -1,0 +1,9 @@
+{
+  "name": "Delycia",
+  "app_id": "",
+  "gulpStartupTasks": ["lint", "browserify", "watch"],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
