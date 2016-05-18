@@ -41,17 +41,17 @@
     "ios"
   ],
   "browser": {
- "ionic": "./node_modules/ionic/js/ionic.js",
- "angular": "./node_modules/angular/angular.js" 
-}, 
-"browserify": { 
- "transform": [ 
-  "browserify-shim" 
- ] 
-}, 
-"browserify-shim": { 
- "angular": "angular", 
- "ionic": "ionic" 
-}
+    "ionic": "./node_modules/ionic/js/ionic.js",
+    "angular": "./node_modules/angular/angular.js" 
+  }, 
+  "browserify": { 
+    "transform": [ 
+      "browserify-shim" 
+    ] 
+  }, 
+  "browserify-shim": { 
+    "angular": "angular", 
+    "ionic": "ionic" 
+  }
 
 }
