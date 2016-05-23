@@ -5,13 +5,15 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var angular = require('angular');
+require('angular-animate');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
 var playlistsController = require('./controllers/playlistsController');
 var playlistController = require('./controllers/playlistController');
+var platillosController = require('./controllers/platillosController');
 
-var app = angular.module('starter', ['ionic']);
+var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -32,8 +34,9 @@ app.run(function($ionicPlatform) {
 app.controller('AppCtrl', loginController);
 app.controller('PlaylistsCtrl', playlistsController);
 app.controller('PlaylistCtrl', playlistController);
+app.controller('PlatillosCtrl', platillosController);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
   $stateProvider
 
     .state('app', {
@@ -70,6 +73,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     })
 
+    .state('app.platillos', {
+      url: '/platillos',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/platillos.html',
+          controller: 'PlatillosCtrl'
+        }
+      }
+    })
+
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
@@ -80,5 +93,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/platillos');
+  $compileProvider.imgSrcSanitizationWhitelist('img/');
 });

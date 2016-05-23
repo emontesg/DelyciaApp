@@ -1,0 +1,13 @@
+<ion-view>
+  <ion-content id="platilloContent" class="no-header" scroll="false">
+	<ion-slides  options="options" slider="data.slider">
+		<ion-slide-page ng-repeat="image in menuImagesSrc">
+			<div class="menu-image-info fade" ng-show="infoEnable">
+				<div class="menu-image-title">{{image.title}}</div>
+				<div class="menu-image-restaurant">{{image.restaurant}}</div>
+			</div>
+			<img ng-src="{{image.src}}" />
+		</ion-slide-page>
+	</ion-slides>
+  </ion-content>
+</ion-view>
