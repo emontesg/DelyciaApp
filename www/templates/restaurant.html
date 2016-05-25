@@ -1,0 +1,24 @@
+<ion-view>
+  <ion-content class="no-header" scroll="false">
+  	<div class="black-background"></div>
+    <div class="restaurant-container">
+      <div class="restaurant-header">
+        <div class="restaurant-header-background"><img src="{{currentPlatillo.src}}"></div>
+        <div class="restaurant-header-title">{{currentPlatillo.restaurant}}</div>
+        <div class="restaurant-header-footer">
+          <div class="restaurant-status">{{currentPlatillo.status}} (9PM)</div>
+          <div class="restaurant-distance"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
+          <div class="restaurant-call">Llamar</div>
+        </div>
+      </div>
+      <ion-scroll class="restaurant-scroll">
+        <div class="restaurant-platillos-container">
+          <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
+          <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
+          <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
+          <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+</ion-view>

@@ -9,10 +9,10 @@ require('angular-animate');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
-var playlistsController = require('./controllers/playlistsController');
-var playlistController = require('./controllers/playlistController');
 var platillosController = require('./controllers/platillosController');
 var masinfoController = require('./controllers/masinfoController');
+var favoritesController = require('./controllers/favoritesController');
+var restaurantController = require('./controllers/restaurantController');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
@@ -33,10 +33,10 @@ app.run(function($ionicPlatform) {
 });
 
 app.controller('AppCtrl', loginController);
-app.controller('PlaylistsCtrl', playlistsController);
-app.controller('PlaylistCtrl', playlistController);
 app.controller('PlatillosCtrl', platillosController);
 app.controller('MasinfoCtrl', masinfoController);
+app.controller('FavoritesCtrl', favoritesController);
+app.controller('RestaurantCtrl', restaurantController);
 
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
   $stateProvider
@@ -56,24 +56,6 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
       }
     }
   })
-
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
 
     .state('app.platillos', {
       url: '/platillos',
@@ -95,15 +77,25 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+    .state('app.restaurant', {
+      url: '/restaurant/:restaurantId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/restaurant.html',
+          controller: 'RestaurantCtrl'
+        }
       }
-    }
-  });
+    })
+
+    .state('app.favorites', {
+      url: '/favorites/:platilloId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/favorites.html',
+          controller: 'FavoritesCtrl'
+        }
+      }
+    });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos');
   $compileProvider.imgSrcSanitizationWhitelist('img/');
