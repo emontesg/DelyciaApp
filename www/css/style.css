@@ -144,10 +144,69 @@ li {
 
 .masinfo-button
 {
-    width: 100px;
-    height: 100px;
-    background-color: red;
+    width: 10vw;
+    height: 10vw;
+    background-color: transparent;
     position: absolute;
+    top: 38vw;
+    left: 86vw;
+    cursor:pointer;
+}
+
+.search-button
+{
+    width: 10vw;
+    height: 10vw;
+    background-color: transparent;
+    position: absolute;
+    top: 48vw;
+    left: 86vw;
+    cursor:pointer;
+}
+
+.masinfo-background
+{
+    background: rgba(0,0,0 ,0.9);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.masinfo-menu
+{
+    position: absolute;
+    top: 30vw;
+    left: 12vw;
+    color: white;
+    width: 75%;
+}
+
+.masinfo-menu-item
+{
+    font-size: 6vw;
+    text-align: center;
+    height: 6vw
+}
+
+.masinfo-menu-subitem
+{
+    font-size: 3vw;
+    text-transform: uppercase;
+    text-align: center;
+    height: 3vw
+}
+
+.masinfo-menu > div
+{
+    padding: 8vw 0;
+    cursor:pointer;
+}
+
+.masinfo-menu .line
+{
+    border-bottom: solid 1px #222
 }
 
 .fade.ng-hide {
