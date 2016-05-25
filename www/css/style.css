@@ -20,7 +20,7 @@ li {
 
 .no-header
 {
-    top: 0;
+    top: 0 !important;
 }
 
 .slider-slides{
@@ -31,7 +31,7 @@ li {
 {
     float: left;
     position: absolute;
-    padding: 10px;
+    padding: 0 1.8vw 1.8vw 2.5vw;
     background: rgba(0,0,0 ,0.2);
     width: 100%
 }
@@ -39,42 +39,115 @@ li {
 .menu-image-title
 {
     color: white;
-    font-size: 30px;
-    margin: 40px 0 10px 0;
-    line-height: 30px;
+    font-size: 9vw;
+    margin: 15vw 0 1.8vw 0;
+    line-height: 9vw;
 }
 
 .menu-image-restaurant
 {
+    font-size: 2vw;
     color: white;
     text-transform: uppercase;
     font-weight: bold;
-    margin: 0 0 20px 0;
+    margin: 0 0 3.6vw 0;
 }
 
 .menu-image-info2
 {
-
-}
-
-.menu-image-kms
-{
-
-}
-
-.menu-image-status
-{
-
-}
-
-.menu-image-price
-{
-
+    width: 80vw;
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    float: left;
+    bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    padding: 1.4vw;
+    margin-left: 10vw;
 }
 
 .menu-image-rating
 {
+    font-size: 3vw;
+    position: relative;
+    width: 31%;
+    border-right: solid 1px #ddd;
+}
 
+.menu-image-rating .rating-hearts
+{
+    display: flex;
+    position: absolute;
+    margin-left: 1.5vw;
+}
+
+.menu-image-rating .ion-ios-heart
+{
+    padding: 0 0.5vw;
+    color: lightpink;
+}
+
+.menu-image-rating .rating-hearts .active
+{
+    color:red;
+}
+
+.menu-image-kms
+{
+    font-size: 2.5vw;
+    position: relative;
+    width: 23%;
+    text-transform: uppercase;
+    border-right: solid 1px #ddd;
+    text-align: center;
+}
+
+.menu-image-kms .ion-navigate
+{
+    position: absolute;
+    margin-left: 1.2vw;
+}
+
+.menu-image-kms-text
+{
+    text-align: center;
+}
+
+.menu-image-status
+{
+    font-size: 2.3vw;
+    text-transform: uppercase;
+    color: limegreen;
+    width: 23%;
+    text-align: center;
+    border-right: solid 1px #ddd;
+}
+
+.menu-image-price
+{
+    font-size: 4.5vw;
+    width: 23%;
+    text-align: center;
+}
+
+.menu-image
+{
+    position: relative;
+}
+
+.swiper-pagination 
+{
+    display: none !important;
+}
+
+.masinfo-button
+{
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    position: absolute;
 }
 
 .fade.ng-hide {
@@ -83,7 +156,7 @@ li {
 
 .fade.ng-hide-remove,
 .fade.ng-hide-add {
-  display: block !important;
+  /*display: block !important;*/
 }
 
 .fade.ng-hide-remove {

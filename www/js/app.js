@@ -83,6 +83,16 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
       }
     })
 
+    .state('app.masinfo', {
+      url: '/platillos/:platilloId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/masinfo.html',
+          controller: 'PlatillosCtrl'
+        }
+      }
+    })
+
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
