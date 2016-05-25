@@ -1,13 +1,13 @@
 <ion-view>
   <ion-content id="platilloContent" class="no-header" scroll="false">
 	<ion-slides  options="options" slider="data.slider">
-		<ion-slide-page ng-repeat="image in menuImagesSrc">
+		<ion-slide-page ng-repeat="platillo in platillos">
 			<div class="menu-image">
 				<div class="menu-image-info fade" ng-show="infoEnable">
-					<div class="menu-image-title">{{image.title}}</div>
-					<div class="menu-image-restaurant">{{image.restaurant}}</div>
+					<div class="menu-image-title">{{platillo.title}}</div>
+					<div class="menu-image-restaurant">{{platillo.restaurant}}</div>
 				</div>
-				<img class="img-responsive" ng-src="{{image.src}}" />
+				<img class="img-responsive" ng-src="{{platillo.src}}" />
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
 					<div class="menu-image-rating">
 						<div class="rating-hearts">
@@ -20,12 +20,12 @@
 					</div>
 					<div class="menu-image-kms">
 						<div class="ion-navigate"></div>
-						{{image.distance}}
+						{{platillo.distance}}
 					</div>
-					<div class="menu-image-status">{{image.status}}</div>
-					<div class="menu-image-price">&#162;{{image.price}}</div>
+					<div class="menu-image-status">{{platillo.status}}</div>
+					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
-				<!-- <div class="masinfo-button" ui-sref="app.masinfo({platilloId: {{image.id}}})"></div> -->
+				<div class="masinfo-button" ui-sref="app.masinfo({platilloId: {{platillo.id}}, platilloIndex: {{$index}}})"></div>
 			</div>
 		</ion-slide-page>
 	</ion-slides>

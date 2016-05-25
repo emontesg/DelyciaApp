@@ -12,6 +12,7 @@ var loginController = require('./controllers/loginController');
 var playlistsController = require('./controllers/playlistsController');
 var playlistController = require('./controllers/playlistController');
 var platillosController = require('./controllers/platillosController');
+var masinfoController = require('./controllers/masinfoController');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
@@ -35,6 +36,7 @@ app.controller('AppCtrl', loginController);
 app.controller('PlaylistsCtrl', playlistsController);
 app.controller('PlaylistCtrl', playlistController);
 app.controller('PlatillosCtrl', platillosController);
+app.controller('MasinfoCtrl', masinfoController);
 
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
   $stateProvider
@@ -84,11 +86,11 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     })
 
     .state('app.masinfo', {
-      url: '/platillos/:platilloId',
+      url: '/platillos/:platilloId/:platilloIndex',
       views: {
         'menuContent': {
           templateUrl: 'templates/masinfo.html',
-          controller: 'PlatillosCtrl'
+          controller: 'MasinfoCtrl'
         }
       }
     })
