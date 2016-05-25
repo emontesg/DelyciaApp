@@ -20,6 +20,63 @@
 
     <!-- your app's js -->
     <script src="dist/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/1.2.0/angularfire.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script type="text/javascript">
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '1186835011381116',
+            xfbml      : true,
+            version    : 'v2.6'
+          });
+          FB.getLoginStatus(function(response){
+            if (response.status=='connected') {
+              document.getElementById('status').innerHTML = 'We are connneted.';
+            }else if(response.status=='not_authorized'){
+              document.getElementById('status').innerHTML = 'We are not logged in';
+            }else{
+              document.getElementById('status').innerHTML = 'You are not legged into facebook';
+            }
+            console.log(document.getElementById('status'));
+          });
+        };
+
+
+        (function(d, s, id){
+           var js, fjs = d.getElementsByTagName(s)[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement(s); js.id = id;
+           js.src = "//connect.facebook.net/en_US/sdk.js";
+           fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));
+
+         function login(){
+           FB.login(function(response){
+             if (response.status=='connected') {
+               document.getElementById('status').innerHTML = 'We are connneted.';
+             }else if(response.status=='not_authorized'){
+               document.getElementById('status').innerHTML = 'We are not logged in';
+             }else{
+               document.getElementById('status').innerHTML = 'You are not legged into facebook';
+             }
+           });
+         }
+         function getInfo(){
+           FB.api('/me', 'GET', {fields: 'first_name, last_name, name, id'}, function(response){
+             document.getElementById('status').innerHTML = response.id;
+             console.log(response);
+           });
+         }
+         function getPic(){
+           FB.api("/me/picture?width=180&height=180",  function(response) {
+          console.log(response.data.url);
+          document.getElementById('login').innerHTML = '<img src="'+response.data.url+'" />';
+          });
+         }
+
+    </script>
+
   </head>
 
   <body ng-app="starter">

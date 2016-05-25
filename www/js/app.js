@@ -11,6 +11,7 @@ var loginController = require('./controllers/loginController');
 var playlistsController = require('./controllers/playlistsController');
 var playlistController = require('./controllers/playlistController');
 
+
 var app = angular.module('starter', ['ionic']);
 
 app.run(function($ionicPlatform) {
@@ -32,6 +33,8 @@ app.run(function($ionicPlatform) {
 app.controller('AppCtrl', loginController);
 app.controller('PlaylistsCtrl', playlistsController);
 app.controller('PlaylistCtrl', playlistController);
+});
+
 
 app.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
