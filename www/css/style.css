@@ -1,4 +1,8 @@
 /* Empty. Add your own CSS if you like */
+*
+{
+    font-family: 'Work Sans', sans-serif !important;
+}
 
 img {
 	display: block;
@@ -18,6 +22,20 @@ li {
     cursor:pointer;
 }
 
+.delycia-logo
+{
+    width: 12vw;
+    height: 5vw;
+    margin-top: 2vw;
+    margin-right: 2vw;
+}
+
+.bar .header-item
+{
+    font-weight: 300;
+    font-size: 6vw;
+}
+
 .no-header
 {
     top: 0 !important;
@@ -26,6 +44,11 @@ li {
 .slider-slides{
     
 }
+
+.image-background 
+{
+    position: absolute;
+} 
 
 .menu-image-info
 {
@@ -42,14 +65,17 @@ li {
     font-size: 9vw;
     margin: 15vw 0 1.8vw 0;
     line-height: 9vw;
+    font-weight: 300;
+    letter-spacing: -2px;
 }
 
 .menu-image-restaurant
 {
-    font-size: 2vw;
+    font-size: 3vw;
+    height: 3vw;
     color: white;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 600;
     margin: 0 0 3.6vw 0;
 }
 
@@ -117,7 +143,7 @@ li {
 
 .menu-image-status
 {
-    font-size: 2.3vw;
+    font-size: 2.8vw;
     text-transform: uppercase;
     color: limegreen;
     width: 23%;
@@ -130,6 +156,7 @@ li {
     font-size: 4.5vw;
     width: 23%;
     text-align: center;
+    font-weight: 300;
 }
 
 .menu-image
@@ -146,10 +173,17 @@ li {
 {
     width: 10vw;
     height: 10vw;
-    background-color: transparent;
+    background-image: url("../img/more-icon.png");
+    background-size: contain;
     position: absolute;
     top: 38vw;
     left: 86vw;
+}
+
+.masinfo-button.active
+{
+    background-image: url("../img/more-icon2.png");
+    background-size: contain;
     cursor:pointer;
 }
 
@@ -157,14 +191,21 @@ li {
 {
     width: 10vw;
     height: 10vw;
-    background-color: transparent;
+    background-image: url("../img/search-icon.png");
+    background-size: contain;
     position: absolute;
     top: 48vw;
     left: 86vw;
+}
+
+.search-button.active
+{
+    background-image: url("../img/search-icon2.png");
+    background-size: contain;
     cursor:pointer;
 }
 
-.masinfo-background
+.semitransparent-black-background
 {
     background: rgba(0,0,0 ,0.9);
     width: 100%;
@@ -187,7 +228,9 @@ li {
 {
     font-size: 6vw;
     text-align: center;
-    height: 6vw
+    height: 6vw;
+    font-weight: 300;
+    letter-spacing: -1px;
 }
 
 .masinfo-menu-subitem
@@ -209,6 +252,349 @@ li {
     border-bottom: solid 1px #222
 }
 
+.black-background
+{
+    background: black;
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
+}
+
+.favorites-content
+{
+    position: relative;
+    margin: 18vw 5vw 0 5vw;
+}
+
+.favorites-scroll
+{
+    height: 150vw;
+}
+
+.favorites-title
+{
+    color: white;
+    font-size: 6vw;
+    margin-bottom: 5vw;
+    height: 6vw;
+    font-weight: 300;
+}
+
+.favorite
+{
+    display: flex;
+    margin: 2vw 0;
+}
+
+.favorite-thumbnail
+{
+    width: 31vw;
+    height: 31vw;
+    overflow:hidden;
+    position: relative;
+}
+
+.favorite-thumbnail img
+{
+    position: absolute;
+    width: 23vw;
+    height: 38vw;
+    top: -4vw;
+}
+
+.favorite-info
+{
+    background-color: white;
+    padding: 3vw;
+    width: 100%;
+    position: relative;
+}
+
+.favorite-name
+{
+    font-size: 5.2vw;
+    line-height: 5.2vw;
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+.favorite-restaurant
+{
+    text-transform: uppercase;
+    font-size: 2.8vw;
+    color: #666;
+    height: 2.8vw;
+    margin-top: 1vw;
+    font-weight: 300;
+}
+
+.favorite-footer
+{
+    position: absolute;
+    bottom: 3vw;
+    display: flex;
+}
+
+.favorite-distance
+{
+    font-size: 3vw;
+    color: #666;
+    border: solid 1px #aaa;
+    border-radius: 3px;
+    padding: 0.2vw 2vw;
+    display: flex;
+    margin: 0 1vw 0 0;
+}
+
+.favorite-distance .ion-navigate
+{
+    margin-right: 1vw;
+}
+
+.favorite-icon
+{
+    color: white;
+    background-color: #999;
+    padding: 0.4vw 1.2vw 0 1.2vw;
+    border-radius: 3px;
+    margin: 0 1vw 0 0;
+    cursor:pointer;
+}
+
+.favorite-remove
+{
+    position: absolute;
+    top: 1vw;
+    right: 2vw;
+    color: #aaa;
+    cursor:pointer;
+}
+
+.restaurant-container
+{
+    position: relative;
+    margin: 50px 0 0 0;
+}
+
+.restaurant-header
+{
+    position: relative;
+    /*border: solid 1px #222;*/
+    height: 50vw;
+}
+
+.restaurant-header-background
+{
+    position: absolute;
+    overflow:hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.restaurant-header-background img
+{
+    position: absolute;
+    top: -20vw;
+}
+
+.restaurant-header-title
+{
+    text-align: center;
+    padding: 18vw 0 0 0;
+    color: white;
+    font-size: 8vw;
+    background: rgba(0,0,0 ,0.6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    font-weight: 300;
+}
+
+.restaurant-header-footer 
+{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    padding: 2.5vw 5vw;
+    background: rgba(0,0,0 ,0.5);
+    width: 100%
+}
+
+.restaurant-status
+{
+    background-color: #4CF900;
+    padding: 0.6vw 1.5vw;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin-right: 2vw;
+    font-size: 2.8vw;
+    font-weight: 300;
+}
+
+.restaurant-distance
+{
+    border: solid 1px #666;
+    color: white;
+    padding: 0.5vw 2vw;
+    display: flex;
+    border-radius: 3px;
+    margin-right: 2vw;
+    font-size: 2.8vw;
+}
+
+.restaurant-distance .ion-navigate
+{
+    margin-right: 1vw;
+}
+
+.restaurant-call
+{
+    border: solid 1px #666;
+    color: white;
+    padding: 0.5vw 3vw;
+    display: flex;
+    border-radius: 3px;
+    font-size: 2.8vw;
+}
+
+.restaurant-scroll
+{
+    height: 150vw;
+}
+
+.restaurant-platillos-container
+{
+    flex-wrap: wrap;
+    display: inline-flex;
+    background-color: white;
+    padding: 0.4vw;
+}
+
+.restaurant-thumbnail
+{
+    width: 32vw;
+    height: 32vw;
+    overflow:hidden;
+    position: relative;
+    margin: 0.5vw;
+}
+
+.restaurant-thumbnail img
+{
+    position: absolute;
+    width: 32vw;
+    top: -6vw;
+}
+
+.white-background
+{
+    width: 100%;
+    min-height: 150vw;
+    background-color: white;
+}
+
+.search-container
+{
+    position: relative;
+    margin-top: 50px;
+    padding-top: 15vw;
+}
+
+.search-type
+{
+    color: white;
+    font-size: 8vw;
+    font-weight: 300;
+    margin: 6vw;
+    text-align: center;
+    cursor: pointer;
+}
+
+.search-options
+{
+    background-color: #E7025D;
+    color: white;
+    padding: 5vw;
+    flex-wrap: wrap;
+    display: inline-flex;
+}
+
+.search-options .item
+{
+    background-color: #E7025D;
+    border: none;
+    width: 45vw;
+    font-weight: 300;
+    padding: 2vw;
+    margin: -0.5vw;
+}
+
+.search-options .item-content
+{
+    color: white;
+    font-size: 4vw;
+}
+
+.search-options .checkbox-icon
+{
+    width: 4vw;
+    height: 4vw;
+}
+
+.search-options .item-checkbox
+{
+    padding-left: 12vw;
+}
+
+.search-options .item-checkbox .checkbox
+{
+    top: 5vw;
+    margin-top: -4vw;
+    left: 4vw;
+}
+
+.search-options .checkbox-icon:after
+{
+    width: 2vw;
+    height: 1vw;
+}
+
+.search-options .checkbox input:checked:before,
+.search-options .checkbox input:checked + .checkbox-icon:before
+{
+    background-color: transparent;
+    border-color: white;
+    border-width: 1px;
+}
+
+.search-options .checkbox input:before,
+.search-options .checkbox .checkbox-icon:before
+{
+    border-color: white;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.search-options label
+{
+    line-height: normal;
+}
+
+.search-button2
+{
+    color: #666;
+    font-size: 5vw;
+    font-weight: 300;
+    margin: 9vw 0 6vw 37vw;
+    text-align: center;
+    border: solid 1px #666;
+    width: 26vw;
+    padding: 1vw 2vw;
+    cursor: pointer;
+}
+
 .fade.ng-hide {
   opacity: 0;
 }
@@ -224,4 +610,75 @@ li {
 
 .fade.ng-hide-add {
   transition: all linear 300ms;
+}
+
+.collapse { }
+
+.collapse.ng-hide-add {
+/*  -webkit-animation:0.2s hide;
+  animation:0.2s hide;
+  overflow-x: hidden;*/
+}
+
+@keyframes collapse-hide {
+  0% {
+    /*max-height: 1000;*/
+    transform: scale(1,1);
+  }
+  30% {
+    transform: scale(1,1.02);
+  }
+  100% { 
+    /*max-height: 0;*/
+    transform: scale(1,0.5);
+  }
+}
+
+@-webkit-keyframes collapse-hide {
+  0% {
+    /*max-height: 1000;*/
+    transform: scale(1,1);
+  }
+  30% {
+    transform: scale(1,1.02);
+  }
+  100% { 
+    /*max-height: 0;*/
+    transform: scale(1,0.5);
+  }
+}
+
+
+.collapse.ng-hide-remove {
+  -webkit-animation:0.3s collapse-show;
+  animation:0.3s collapse-show;
+  overflow-x: hidden;
+}
+
+@keyframes collapse-show {
+  0% {
+    /*max-height: 0;*/
+    transform: scale(1,0.5);
+  }
+  70% {
+    transform: scale(1,1.02);
+  }
+  100% { 
+    /*max-height: 1000;*/
+    transform: scale(1,1);
+  }
+}
+
+@-webkit-keyframes collapse-show {
+  0% {
+    /*height: 0;*/
+    transform: scale(1,0.5);
+  }
+  70% {
+    transform: scale(1,1.02);
+  }
+  100% { 
+    /*height: 1000;*/
+    transform: scale(1,1);
+  }
 }

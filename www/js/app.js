@@ -4,15 +4,17 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+
 // var angular = require('angular');
  require('angular-animate');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
-var playlistsController = require('./controllers/playlistsController');
-var playlistController = require('./controllers/playlistController');
 var platillosController = require('./controllers/platillosController');
 var masinfoController = require('./controllers/masinfoController');
+var favoritesController = require('./controllers/favoritesController');
+var restaurantController = require('./controllers/restaurantController');
+var searchController = require('./controllers/searchController');
 
 var contentfulService = require('./services/contentfulService');
 
@@ -35,10 +37,12 @@ app.run(function($ionicPlatform) {
 });
 
 app.controller('AppCtrl', loginController);
-app.controller('PlaylistsCtrl', playlistsController);
-app.controller('PlaylistCtrl', playlistController);
 app.controller('PlatillosCtrl', platillosController);
 app.controller('MasinfoCtrl', masinfoController);
+app.controller('FavoritesCtrl', favoritesController);
+app.controller('RestaurantCtrl', restaurantController);
+app.controller('SearchCtrl', searchController);
+
 
 app.factory('ContentfulService',contentfulService);
 ////////////////////WARNING
@@ -52,7 +56,7 @@ app.factory('ContentfulService',contentfulService);
 
 
 
-app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
     $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
 
@@ -68,31 +72,14 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
   })
 
   .state('app.search', {
-    url: '/search',
+    url: '/search/:platilloIndex',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
       }
     }
   })
-
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
 
     .state('app.platillos', {
       url: '/platillos',
@@ -114,17 +101,64 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+    .state('app.restaurant', {
+      url: '/restaurant/:restaurantId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/restaurant.html',
+          controller: 'RestaurantCtrl'
+        }
       }
-    }
-  });
+    })
+
+    .state('app.favorites', {
+      url: '/favorites/:platilloId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/favorites.html',
+          controller: 'FavoritesCtrl'
+        }
+      }
+    })
+
+    .state('app.share', {
+      url: '/share/:platilloId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/share.html'
+        }
+      }
+    })
+
+    .state('app.reviews', {
+      url: '/reviews/:platilloId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/reviews.html'
+        }
+      }
+    })
+
+    .state('app.friends', {
+      url: '/friends',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/friends.html'
+        }
+      }
+    })
+
+    .state('app.configurations', {
+      url: '/configurations',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/configurations.html'
+        }
+      }
+    });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos');
+  $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
   //$compileProvider.imgSrcSanitizationWhitelist('img/');
 });
 
@@ -135,5 +169,4 @@ app.config(function($sceDelegateProvider) {
     // Allow loading from our assets domain.  Notice the difference between * and **.
     'http://images.contentful.com/**'
   ]);
-
 });
