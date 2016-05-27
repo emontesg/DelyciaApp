@@ -1,0 +1,34 @@
+<ion-view>
+  <ion-content id="platilloContent" class="no-header" scroll="false">
+	<ion-slides  options="options" slider="data.slider">
+		<ion-slide-page ng-repeat="platillo in platillos">
+			<div class="menu-image">
+				<div class="menu-image-info fade" ng-show="infoEnable">
+					<div class="menu-image-title">{{platillo.title}}</div>
+					<div class="menu-image-restaurant">{{platillo.restaurant}}</div>
+				</div>
+				<img class="img-responsive" ng-src="{{platillo.src}}" />
+				<div class="menu-image-info2 fade" ng-show="infoEnable">
+					<div class="menu-image-rating">
+						<div class="rating-hearts">
+							<div class="ion-ios-heart active"></div>
+							<div class="ion-ios-heart active"></div>
+							<div class="ion-ios-heart active"></div>
+							<div class="ion-ios-heart active"></div>
+							<div class="ion-ios-heart"></div>
+						</div>
+					</div>
+					<div class="menu-image-kms">
+						<div class="ion-navigate"></div>
+						{{platillo.distance}}
+					</div>
+					<div class="menu-image-status">{{platillo.status}}</div>
+					<div class="menu-image-price">&#162;{{platillo.price}}</div>
+				</div>
+				<div class="masinfo-button" ui-sref="app.masinfo({platilloId: {{platillo.id}}, platilloIndex: {{$index}}})"></div>
+				<div class="search-button"></div>
+			</div>
+		</ion-slide-page>
+	</ion-slides>
+  </ion-content>
+</ion-view>
