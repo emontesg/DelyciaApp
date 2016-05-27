@@ -7,7 +7,7 @@
 					<div class="menu-image-title">{{platillo.title}}</div>
 					<div class="menu-image-restaurant">{{platillo.restaurant}}</div>
 				</div>
-				<img class="img-responsive" ng-src="{{platillo.src}}" />
+				<img class="img-responsive" ng-src="{{getTrustedResourceUrl(platillo.src)}}" />
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
 					<div class="menu-image-rating">
 						<div class="rating-hearts">

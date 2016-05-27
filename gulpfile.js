@@ -20,8 +20,7 @@ gulp.task('default', ['lint', 'browserify']);
 gulp.task('lint', function() { 
  gulp.src(['./www/js/**/*.js']) 
   .pipe(jshint()) 
-  .pipe(jshint.reporter('default')) 
-  .pipe(jshint.reporter('fail')); 
+  .pipe(jshint.reporter('default')); 
 });
 
 gulp.task('browserify', function() { 
