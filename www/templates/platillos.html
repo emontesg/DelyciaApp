@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view view-title="">
   <ion-content id="platilloContent" class="no-header" scroll="false">
 	<ion-slides  options="options" slider="data.slider">
 		<ion-slide-page ng-repeat="platillo in platillos">
@@ -25,8 +25,10 @@
 					<div class="menu-image-status">{{platillo.status}}</div>
 					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
-				<div class="masinfo-button" ui-sref="app.masinfo({platilloId: {{platillo.id}}, platilloIndex: {{$index}}})"></div>
-				<div class="search-button"></div>
+				<div class="masinfo-button active" ui-sref="app.masinfo({platilloId: {{platillo.id}}, platilloIndex: {{$index}}})" ng-show="infoEnable"></div>
+				<div class="search-button active" ui-sref="app.search({platilloIndex: {{$index}}})" ng-show="infoEnable"></div>
+				<div class="masinfo-button" ng-show="!infoEnable"></div>
+				<div class="search-button" ng-show="!infoEnable"></div>
 			</div>
 		</ion-slide-page>
 	</ion-slides>

@@ -4,7 +4,6 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var angular = require('angular');
 require('angular-animate');
 // require('ionic');
 
@@ -13,6 +12,7 @@ var platillosController = require('./controllers/platillosController');
 var masinfoController = require('./controllers/masinfoController');
 var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
+var searchController = require('./controllers/searchController');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
@@ -37,8 +37,9 @@ app.controller('PlatillosCtrl', platillosController);
 app.controller('MasinfoCtrl', masinfoController);
 app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
+app.controller('SearchCtrl', searchController);
 
-app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
   $stateProvider
 
     .state('app', {
@@ -49,10 +50,11 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
   })
 
   .state('app.search', {
-    url: '/search',
+    url: '/search/:platilloIndex',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
       }
     }
   })
@@ -95,8 +97,45 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
           controller: 'FavoritesCtrl'
         }
       }
+    })
+
+    .state('app.share', {
+      url: '/share/:platilloId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/share.html'
+        }
+      }
+    })
+
+    .state('app.reviews', {
+      url: '/reviews/:platilloId/:platilloIndex',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/reviews.html'
+        }
+      }
+    })
+
+    .state('app.friends', {
+      url: '/friends',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/friends.html'
+        }
+      }
+    })
+
+    .state('app.configurations', {
+      url: '/configurations',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/configurations.html'
+        }
+      }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos');
   $compileProvider.imgSrcSanitizationWhitelist('img/');
+  $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
 });

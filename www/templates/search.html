@@ -1,5 +1,15 @@
-<ion-view view-title="Search">
-  <ion-content>
-    <h1>Search</h1>
+<ion-view view-title="Buscar">
+  <ion-content class="no-header" scroll="false">
+  	<img class="image-background" src="{{currentPlatillo.src}}" />
+  	<div class="semitransparent-black-background"></div>
+  	<div class="search-container">
+  		<div ng-repeat="search in searchType">
+  			<div class="search-type" ng-click="onTypeClick($index)">{{search.type}}</div>
+  			<div class="search-options collapse" ng-show="search.enable" ng-hide="!search.enable">
+  				<ion-checkbox ng-repeat="option in search.options">{{option}}</ion-checkbox>
+  			</div>
+  		</div>
+  		<div class="search-button2">BUSCAR</div>
+  	</div>
   </ion-content>
 </ion-view>
