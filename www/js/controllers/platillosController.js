@@ -1,8 +1,14 @@
-var DelyciaConstants = require('./../delyciaConstants');
-
 function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	$scope.delyciaBanner = 'img/158453881.png';
-	$scope.platillos = DelyciaConstants.PLATILLOS;
+	if(contentfulService.dishes.length === 0)
+	{
+		$scope.platillos = [{id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''}];
+	}
+	else
+	{
+		$scope.platillos = contentfulService.dishes;
+	}
+	
 	$scope.dishes = [];
 	$scope.currentImageIndex = 0;
 
@@ -16,29 +22,12 @@ function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	//console.log(contentfulService.getPlatos());
 	$scope.$on('ready',function(data,items){
 		//console.log(items);
-		createJSONItems(items);
+		$scope.platillos = items;
 	});
 
 	$scope.getTrustedResourceUrl = function(url){
    		return $sce.getTrustedResourceUrl(url);
 	};
-
-	function createJSONItems(items){
-		//{id:'1', src:'img/158358533.png', title:'Sorbeto', restaurant:'cafe miel', price:50000, rating:1, distance: '5 kms', status: 'op'}, 
-		var dishes = [];
-		var index = 1;
-		items.forEach(function(plato){
-			var imgLink= 'http:' +plato.fields.foto.fields.file.url;
-			console.log($sce.getTrustedResourceUrl(imgLink));
-
-			dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: 'op'});
-		});
-		console.log(dishes);
-		console.log($scope.platillos);
-
-		$scope.platillos = dishes;
-	}
-
 
 	$scope.infoEnable = true;
 

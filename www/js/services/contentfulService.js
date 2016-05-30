@@ -1,9 +1,11 @@
 var contentful = require('contentful'); 
 
 
-function ContentfulService($rootScope){
+function ContentfulService($rootScope, $sce){
 	var self = this;
 	var platos = [];
+
+	self.dishes = [];
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -19,7 +21,18 @@ function ContentfulService($rootScope){
 		.then(function(entries){
 			//console.log(entries);
 			platos = entries;
-			$rootScope.$broadcast('ready',entries.items);
+			var dishes = [];
+			var index = 1;
+			var items = entries.items;
+			items.forEach(function(plato){
+				var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+
+				dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: 'ABIERTO'});
+			});
+
+			self.dishes = dishes;
+
+			$rootScope.$broadcast('ready',dishes);
 		});
 
 	self.getPlatos = function(){
@@ -30,4 +43,4 @@ function ContentfulService($rootScope){
 	return self;
 }
 
-module.exports = ['$rootScope',ContentfulService];
+module.exports = ['$rootScope', '$sce',ContentfulService];
