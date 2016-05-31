@@ -4,8 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var angular = require('angular');
-require('angular-animate');
+// var angular = require('angular');
+ require('angular-animate');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
@@ -14,6 +14,8 @@ var masinfoController = require('./controllers/masinfoController');
 var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 
+
+var contentfulService = require('./services/contentfulService');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
@@ -39,7 +41,24 @@ app.controller('MasinfoCtrl', masinfoController);
 app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 
+app.factory('ContentfulService',contentfulService);
+////////////////////WARNING
+// app.config(function($sceProvider) {
+//    // Completely disable SCE.  For demonstration purposes only!
+//    // Do not use in new projects.
+//    $sceProvider.enabled(false);
+//  });
+// $sce();
+////////////////////
+
+
+
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
+    $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
+
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
+
   $stateProvider
 
     .state('app', {
@@ -99,5 +118,15 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos');
-  $compileProvider.imgSrcSanitizationWhitelist('img/');
+  //$compileProvider.imgSrcSanitizationWhitelist('img/');
+});
+
+app.config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'http://images.contentful.com/**'
+  ]);
+
 });

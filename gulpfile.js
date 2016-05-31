@@ -20,7 +20,11 @@ gulp.task('default', ['lint', 'browserify']);
 gulp.task('lint', function() { 
  gulp.src(['./www/js/**/*.js']) 
   .pipe(jshint()) 
+<<<<<<< HEAD
   .pipe(jshint.reporter('default'));
+=======
+  .pipe(jshint.reporter('default')); 
+>>>>>>> Jimmi
 });
 
 gulp.task('browserify', function() { 

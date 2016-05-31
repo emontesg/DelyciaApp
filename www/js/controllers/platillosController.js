@@ -1,9 +1,9 @@
 var DelyciaConstants = require('./../delyciaConstants');
 
-function PlatillosController($scope, $ionicGesture) {
+function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	$scope.delyciaBanner = 'img/158453881.png';
 	$scope.platillos = DelyciaConstants.PLATILLOS;
-
+	$scope.dishes = [];
 	$scope.currentImageIndex = 0;
 
     $scope.options = {
@@ -11,6 +11,34 @@ function PlatillosController($scope, $ionicGesture) {
 	  pager: false,
 	  speed: 500
 	};
+	
+
+	//console.log(contentfulService.getPlatos());
+	$scope.$on('ready',function(data,items){
+		//console.log(items);
+		createJSONItems(items);
+	});
+
+	$scope.getTrustedResourceUrl = function(url){
+   		return $sce.getTrustedResourceUrl(url);
+	};
+
+	function createJSONItems(items){
+		//{id:'1', src:'img/158358533.png', title:'Sorbeto', restaurant:'cafe miel', price:50000, rating:1, distance: '5 kms', status: 'op'}, 
+		var dishes = [];
+		var index = 1;
+		items.forEach(function(plato){
+			var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+			console.log($sce.getTrustedResourceUrl(imgLink));
+
+			dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: 'op'});
+		});
+		console.log(dishes);
+		console.log($scope.platillos);
+
+		$scope.platillos = dishes;
+	}
+
 
 	$scope.infoEnable = true;
 
@@ -45,4 +73,4 @@ function PlatillosController($scope, $ionicGesture) {
 	}, element);
 }
 
-module.exports = ['$scope', '$ionicGesture', PlatillosController];
+module.exports = ['$scope', '$ionicGesture','ContentfulService','$sce', PlatillosController];
