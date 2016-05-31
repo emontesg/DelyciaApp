@@ -1,4 +1,4 @@
-function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
+function PlatillosController($scope, $ionicGesture, contentfulService, $sce, RequestService) {
 	$scope.delyciaBanner = 'img/158453881.png';
 	if(contentfulService.dishes.length === 0)
 	{
@@ -18,6 +18,7 @@ function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	  speed: 500
 	};
 	
+		console.log("hola");
 
 	//console.log(contentfulService.getPlatos());
 	$scope.$on('ready',function(data,items){
@@ -40,6 +41,7 @@ function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	$scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
 		$scope.currentImageIndex = data.activeIndex;
 		console.log($scope.currentImageIndex);
+
 	});
 
 	$scope.gesture = {
@@ -62,4 +64,4 @@ function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	}, element);
 }
 
-module.exports = ['$scope', '$ionicGesture','ContentfulService','$sce', PlatillosController];
+module.exports = ['$scope', '$ionicGesture','ContentfulService','$sce','RequestService', PlatillosController];

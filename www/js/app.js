@@ -17,6 +17,7 @@ var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
 
 var contentfulService = require('./services/contentfulService');
+var requestService = require('./services/requestService');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
@@ -43,8 +44,8 @@ app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
 
-
 app.factory('ContentfulService',contentfulService);
+app.service('RequestService',requestService);
 ////////////////////WARNING
 // app.config(function($sceProvider) {
 //    // Completely disable SCE.  For demonstration purposes only!
