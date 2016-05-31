@@ -25,4 +25,15 @@ $app->get(
     }
 );
 
+$app->post(
+    '/app/addFavorite',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+        
+        $result = $appController->addToFavorites($request);
+        return $response->withJson($result);
+    }
+);
+
+
 $app->run();

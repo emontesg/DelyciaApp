@@ -29,4 +29,15 @@ class AppService {
         return $result;
     }
 
+    public function addToFavorites($idPlatillo, $idUsuario, $fechaHora){
+        $result = [];
+        $add_favorites_query = "INSERT INTO TFavoritos (idPlatillo, idUsuario, FechaHora) VALUES (:idPlatillo, :idUsuario, :fechaHora)";
+        $add_params = [
+                        ":idPlatillo" =>$idPlatillo,
+                        ":idUsuario" =>$idUsuario,
+                        ":fechaHora" =>$fechaHora
+                    ];
+        $result = $this->storage->query($add_favorites_query, $add_params);
+        return $result;
+    }
 }
