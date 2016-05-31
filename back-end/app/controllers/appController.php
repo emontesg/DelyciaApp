@@ -18,7 +18,7 @@ class AppController {
 
     public function addToFavorites($request){
     	$result = [];
-    	$data = $request->getParseBody();
+        $data = $request->getParsedBody();
 
     	if (array_key_exists("idPlatillo", $data)) {
             $idPlatillo = $data["idPlatillo"];
