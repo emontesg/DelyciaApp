@@ -2,7 +2,7 @@ function MasinfoController($scope, $stateParams, contentfulService) {
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.platilloIndex = $stateParams.platilloIndex;
 
-	if(contentfulService.dishes.length === 0)
+	if(contentfulService.mainDishes.length === 0)
 	{
 		$scope.platillos = [];
 		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
@@ -10,7 +10,7 @@ function MasinfoController($scope, $stateParams, contentfulService) {
 	}
 	else
 	{
-		$scope.platillos = contentfulService.dishes;
+		$scope.platillos = contentfulService.mainDishes;
 		$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
 	}
 	

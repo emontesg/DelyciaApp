@@ -1,12 +1,12 @@
 function PlatillosController($scope, $ionicGesture, contentfulService,$sce) {
 	$scope.delyciaBanner = 'img/158453881.png';
-	if(contentfulService.dishes.length === 0)
+	if(contentfulService.mainDishes.length === 0)
 	{
 		$scope.platillos = [{id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''}];
 	}
 	else
 	{
-		$scope.platillos = contentfulService.dishes;
+		$scope.platillos = contentfulService.mainDishes;
 	}
 	
 	$scope.dishes = [];
