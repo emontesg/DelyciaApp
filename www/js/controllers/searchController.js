@@ -1,10 +1,23 @@
-var DelyciaConstants = require('./../delyciaConstants');
-
-function SearchController($scope, $stateParams) {
+function SearchController($scope, $stateParams, contentfulService) {
 	$scope.platilloIndex = $stateParams.platilloIndex;
 
-	$scope.platillos = DelyciaConstants.PLATILLOS;
-	$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
+	if(contentfulService.mainDishes.length === 0)
+	{
+		$scope.platillos = [];
+		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
+
+	}
+	else
+	{
+		$scope.platillos = contentfulService.mainDishes;
+		$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
+	}
+	
+
+	$scope.$on('ready',function(data,items){
+		$scope.platillos = items;
+		$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
+	});
 
 	$scope.searchType = [
 		{
@@ -46,4 +59,4 @@ function SearchController($scope, $stateParams) {
 	};
 }
 
-module.exports = ['$scope', '$stateParams', SearchController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', SearchController];

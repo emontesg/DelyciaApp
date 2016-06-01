@@ -6,6 +6,8 @@ function ContentfulService($rootScope, $sce){
 	var platos = [];
 
 	self.dishes = [];
+	self.mainDishes = [];
+	self.total = 0;
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -22,15 +24,25 @@ function ContentfulService($rootScope, $sce){
 			//console.log(entries);
 			platos = entries;
 			var dishes = [];
-			var index = 1;
+			var index = 0;
 			var items = entries.items;
-			items.forEach(function(plato){
-				var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+			for(var i = 0, l = items.length; i < l; i++)
+			{	
+				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
 
-				dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: 'ABIERTO'});
-			});
+				dishes.push({id:index++, 
+							src:$sce.getTrustedResourceUrl(imgLink), 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: 'ABIERTO'})
+			}
 
-			self.dishes = dishes;
+			self.dishes = platos;
+			self.mainDishes = dishes;
+			self.total = entries.total;
 
 			$rootScope.$broadcast('ready',dishes);
 		});
