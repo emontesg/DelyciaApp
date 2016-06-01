@@ -14,19 +14,7 @@
       <ion-scroll class="restaurant-scroll">
         <div class="white-background">
           <div class="restaurant-platillos-container">
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
-            <div class="restaurant-thumbnail"><img src="{{currentPlatillo.src}}"></div>
+            <div ng-repeat="dish in restaurantDishes" class="restaurant-thumbnail"><img ng-src="{{dish.src}}"></div>
           </div>
           </div>
       </ion-scroll>
