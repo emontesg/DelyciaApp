@@ -16,6 +16,7 @@ var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
 
+
 var contentfulService = require('./services/contentfulService');
 var requestService = require('./services/requestService');
 
