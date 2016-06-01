@@ -103,7 +103,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.restaurant', {
-      url: '/restaurant/:restaurantId/:platilloIndex',
+      url: '/restaurant/:platilloIndex',
       views: {
         'menuContent': {
           templateUrl: 'templates/restaurant.html',
