@@ -40,4 +40,17 @@ class AppService {
         $result = $this->storage->query($add_favorites_query, $add_params);
         return $result;
     }
+
+    public function addReview($idPlato, $rating, $comentario, $idUsuario){
+        $result = [];
+        $add_review_query = "INSERT INTO TRating (comentario, idPlato, idUsuario, rating) VALUES (:comentario, :idPlato, :idUsuario, :rating)";
+        $review_params = [
+                        ":comentario" =>$comentario,
+                        ":idPlato" =>$idPlato,
+                        ":idUsuario" =>$idUsuario
+                        ":rating" =>$rating
+                    ];
+        $result = $this->storage->query($add_review_query, $review_params);
+        return $result;
+    }
 }

@@ -59,4 +59,9 @@ class AppController {
         } 
         return $result;
     }
+
+    public function addReview($request){
+        $result = [];
+        $data = $request->getParsedBody();
+    }
 }

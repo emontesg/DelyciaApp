@@ -17,8 +17,6 @@ function PlatillosController($scope, $ionicGesture, contentfulService, $sce, Req
 	  pager: false,
 	  speed: 500
 	};
-	
-		console.log("hola");
 
 	//console.log(contentfulService.getPlatos());
 	$scope.$on('ready',function(data,items){
