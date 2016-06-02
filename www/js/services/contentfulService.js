@@ -25,9 +25,43 @@ function ContentfulService($rootScope, $sce){
 			var index = 1;
 			var items = entries.items;
 			items.forEach(function(plato){
+//				console.log(plato);
 				var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+				var abierto = false;
+				var estado = 'cerrado';
 
-				dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: 'ABIERTO'});
+				var dateAbierto = new Date(plato.fields.restaurante.fields.horarioInicio);
+				var dateCierre = new Date(plato.fields.restaurante.fields.horarioFinal);
+				
+				var horaAbierto = dateAbierto.getHours();
+				var horaCierre = dateCierre.getHours();				
+
+				var minAbierto = dateAbierto.getMinutes();
+				var minCierre = dateCierre.getMinutes();
+				
+				var horaActual = new Date().getHours();
+
+				if(horaActual>= horaAbierto && horaActual<=horaCierre){
+						abierto = true;
+
+				 		if(horaActual == horaAbierto){
+					  		if(new Date().getMinutes() <= minAbierto){
+					  			abierto = false;
+					  		}
+				  		}
+
+				  		if(horaActual == horaCierre){
+					  		if(new Date().getMinutes() >= minCierre){
+					  			abierto = false;
+					  		}							
+					  	}
+				}
+				if(abierto){
+					estado = 'abierto';
+				}
+
+				/////
+				dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: estado});
 			});
 
 			self.dishes = dishes;
