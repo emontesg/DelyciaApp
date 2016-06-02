@@ -8,6 +8,7 @@ function ContentfulService($rootScope, $sce){
 	self.dishes = [];
 	self.mainDishes = [];
 	self.total = 0;
+	self.searchDishes = [];
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -22,7 +23,6 @@ function ContentfulService($rootScope, $sce){
 		})
 		.then(function(entries){
 			//console.log(entries);
-			platos = entries;
 			var dishes = [];
 			var index = 0;
 			var items = entries.items;
@@ -37,20 +37,24 @@ function ContentfulService($rootScope, $sce){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: 'ABIERTO'})
+							status: 'ABIERTO'});
 			}
 
-			self.dishes = platos;
+			self.dishes = entries;
 			self.mainDishes = dishes;
 			self.total = entries.total;
 
 			$rootScope.$broadcast('ready',dishes);
 		});
 
-	self.getPlatos = function(){
-		
-		return platos;
-	};
+	self.getDishJson = function(index)
+	{
+		var dish = self.dishes.items[index];
+		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
+		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
+			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
+			rating:1, distance: '5 kms', status: 'ABIERTO'};
+	}
 
 	return self;
 }
