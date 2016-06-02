@@ -1,9 +1,9 @@
 function RestaurantController($scope, $stateParams, contentfulService, $sce) {
-	$scope.platilloIndex = $stateParams.platilloIndex;
+	$scope.platilloId = $stateParams.platilloId;
 
-	if(contentfulService.mainDishes.length !== 0)
+	if(contentfulService.dishes.length !== 0)
 	{
-		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloIndex];
+		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
 
 		var dishes = contentfulService.dishes.items;
 
