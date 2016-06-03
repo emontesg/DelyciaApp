@@ -22,6 +22,10 @@ li {
     cursor:pointer;
 }
 
+.swiper-slide img {
+    width: 100% !important;
+}
+
 .delycia-logo
 {
     width: 12vw;
