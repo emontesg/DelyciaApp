@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -17,7 +17,7 @@ class AppService {
         $result = [];
         $get_all_query = "SELECT * FROM TRecordatorio LIMIT 10";
         $params = [];
-        
+
         $result = $this->storage->query($get_all_query, $params);
 
         if (count($result['data'] > 0)) {
@@ -28,6 +28,8 @@ class AppService {
         }
         return $result;
     }
+
+
 
     public function addToFavorites($idPlatillo, $idUsuario, $fechaHora){
         $result = [];
