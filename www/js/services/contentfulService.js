@@ -28,6 +28,40 @@ function ContentfulService($rootScope, $sce){
 			var items = entries.items;
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
+
+				//var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+				var abierto = false;
+				var estado = 'cerrado';
+
+				var dateAbierto = new Date(items[i].fields.restaurante.fields.horarioInicio);
+				var dateCierre = new Date(items[i].fields.restaurante.fields.horarioFinal);
+				
+				var horaAbierto = dateAbierto.getHours();
+				var horaCierre = dateCierre.getHours();				
+
+				var minAbierto = dateAbierto.getMinutes();
+				var minCierre = dateCierre.getMinutes();
+				
+				var horaActual = new Date().getHours();
+
+				if(horaActual>= horaAbierto && horaActual<=horaCierre){
+						abierto = true;
+
+				 		if(horaActual == horaAbierto){
+					  		if(new Date().getMinutes() <= minAbierto){
+					  			abierto = false;
+					  		}
+				  		}
+
+				  		if(horaActual == horaCierre){
+					  		if(new Date().getMinutes() >= minCierre){
+					  			abierto = false;
+					  		}							
+					  	}
+				}
+				if(abierto){
+					estado = 'abierto';
+				}
 				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
 
 				dishes.push({id:index++, 
@@ -37,7 +71,7 @@ function ContentfulService($rootScope, $sce){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: 'ABIERTO'});
+							status: estado});
 			}
 
 			self.dishes = entries;
