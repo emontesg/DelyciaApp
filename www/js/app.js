@@ -16,7 +16,9 @@ var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
 
+
 var contentfulService = require('./services/contentfulService');
+var requestService = require('./services/requestService');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate']);
 
@@ -43,8 +45,8 @@ app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
 
-
 app.factory('ContentfulService',contentfulService);
+app.service('RequestService',requestService);
 ////////////////////WARNING
 // app.config(function($sceProvider) {
 //    // Completely disable SCE.  For demonstration purposes only!
@@ -72,7 +74,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
   })
 
   .state('app.search', {
-    url: '/search/:platilloIndex',
+    url: '/search/:platilloId',
     views: {
       'menuContent': {
         templateUrl: 'templates/search.html',
@@ -82,7 +84,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
   })
 
     .state('app.platillos', {
-      url: '/platillos',
+      url: '/platillos/:type',
       views: {
         'menuContent': {
           templateUrl: 'templates/platillos.html',
@@ -92,7 +94,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.masinfo', {
-      url: '/platillos/:platilloId/:platilloIndex',
+      url: '/platillos/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/masinfo.html',
@@ -102,7 +104,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.restaurant', {
-      url: '/restaurant/:restaurantId/:platilloIndex',
+      url: '/restaurant/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/restaurant.html',
@@ -112,7 +114,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.favorites', {
-      url: '/favorites/:platilloId/:platilloIndex',
+      url: '/favorites/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/favorites.html',
@@ -122,7 +124,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.share', {
-      url: '/share/:platilloId/:platilloIndex',
+      url: '/share/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/share.html'
@@ -131,7 +133,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.reviews', {
-      url: '/reviews/:platilloId/:platilloIndex',
+      url: '/reviews/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/reviews.html'
@@ -157,9 +159,9 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/platillos');
+  $urlRouterProvider.otherwise('/app/platillos/0');
   $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
-  //$compileProvider.imgSrcSanitizationWhitelist('img/');
+  // $compileProvider.imgSrcSanitizationWhitelist('img/');
 });
 
 app.config(function($sceDelegateProvider) {

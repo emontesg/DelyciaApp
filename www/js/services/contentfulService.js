@@ -6,6 +6,9 @@ function ContentfulService($rootScope, $sce){
 	var platos = [];
 
 	self.dishes = [];
+	self.mainDishes = [];
+	self.total = 0;
+	self.searchDishes = [];
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -20,18 +23,18 @@ function ContentfulService($rootScope, $sce){
 		})
 		.then(function(entries){
 			//console.log(entries);
-			platos = entries;
 			var dishes = [];
-			var index = 1;
+			var index = 0;
 			var items = entries.items;
-			items.forEach(function(plato){
-//				console.log(plato);
-				var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+			for(var i = 0, l = items.length; i < l; i++)
+			{	
+
+				//var imgLink= 'http:' +plato.fields.foto.fields.file.url;
 				var abierto = false;
 				var estado = 'cerrado';
 
-				var dateAbierto = new Date(plato.fields.restaurante.fields.horarioInicio);
-				var dateCierre = new Date(plato.fields.restaurante.fields.horarioFinal);
+				var dateAbierto = new Date(items[i].fields.restaurante.fields.horarioInicio);
+				var dateCierre = new Date(items[i].fields.restaurante.fields.horarioFinal);
 				
 				var horaAbierto = dateAbierto.getHours();
 				var horaCierre = dateCierre.getHours();				
@@ -59,20 +62,33 @@ function ContentfulService($rootScope, $sce){
 				if(abierto){
 					estado = 'abierto';
 				}
+				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
 
-				/////
-				dishes.push({id:index++, src:$sce.getTrustedResourceUrl(imgLink), title:plato.fields.nombre, restaurant:plato.fields.restaurante.fields.nombre, price:plato.fields.precio, rating:1, distance: '5 kms', status: estado});
-			});
+				dishes.push({id:index++, 
+							src:$sce.getTrustedResourceUrl(imgLink), 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: estado});
+			}
 
-			self.dishes = dishes;
+			self.dishes = entries;
+			self.mainDishes = dishes;
+			self.total = entries.total;
 
 			$rootScope.$broadcast('ready',dishes);
 		});
 
-	self.getPlatos = function(){
-		
-		return platos;
-	};
+	self.getDishJson = function(index)
+	{
+		var dish = self.dishes.items[index];
+		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
+		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
+			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
+			rating:1, distance: '5 kms', status: 'ABIERTO'};
+	}
 
 	return self;
 }
