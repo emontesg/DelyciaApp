@@ -22,6 +22,15 @@ li {
     cursor:pointer;
 }
 
+.scroll {
+    height: 100%;
+}
+ 
+#map {
+    width: 100%;
+    height: 100%;
+}
+
 .swiper-slide img {
     width: 100% !important;
 }
@@ -446,6 +455,7 @@ li {
     border-radius: 3px;
     margin-right: 2vw;
     font-size: 2.8vw;
+    cursor: pointer;
 }
 
 .restaurant-distance .ion-navigate
@@ -491,6 +501,33 @@ li {
     width: 32vw;
     top: -6vw;
 }
+
+.restaurant-map
+{
+    height:70vw;
+}
+
+.restaurant-location-info,.restaurant-time-info
+{
+    margin: 4vw 7vw 0 7vw;
+}
+
+.restaurant-location-info .header,
+.restaurant-time-info .header
+{
+    font-weight: 500;
+}
+
+.restaurant-location-info .info,
+.restaurant-time-info .info
+{
+    font-weight: 300;
+}
+
+/*.restaurant-time-info
+{
+    margin: 3vw 3vw 0 3vw;
+}*/
 
 .white-background
 {

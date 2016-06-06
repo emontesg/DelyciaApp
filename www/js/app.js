@@ -7,6 +7,7 @@
 
 // var angular = require('angular');
  require('angular-animate');
+ require('ng-cordova');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
@@ -18,7 +19,7 @@ var searchController = require('./controllers/searchController');
 
 var contentfulService = require('./services/contentfulService');
 
-var app = angular.module('starter', ['ionic', 'ngAnimate']);
+var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -159,6 +160,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos/0');
   $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
+  $ionicConfigProvider.views.maxCache(0);
   // $compileProvider.imgSrcSanitizationWhitelist('img/');
 });
 

@@ -54,7 +54,7 @@ function ContentfulService($rootScope, $sce){
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
 			rating:1, distance: '5 kms', status: 'ABIERTO'};
-	}
+	};
 
 	return self;
 }

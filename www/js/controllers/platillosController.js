@@ -16,7 +16,7 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	}
 
 	$scope.dishes = [];
-	$scope.currentImageIndex = 0;
+	// $scope.currentImageIndex = 0;
 
     $scope.options = {
 	  loop: true,
@@ -41,11 +41,12 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	});
 
 	$scope.$on("$ionicSlides.slideChangeStart", function(event, data){
+		// console.log(data.activeIndex);
 	});
 
 	$scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
-		$scope.currentImageIndex = data.activeIndex;
-		console.log($scope.currentImageIndex);
+		// $scope.currentImageIndex = data.activeIndex;
+		// console.log($scope.currentImageIndex);
 	});
 
 	$scope.gesture = {
