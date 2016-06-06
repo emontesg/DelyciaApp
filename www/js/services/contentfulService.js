@@ -29,39 +29,6 @@ function ContentfulService($rootScope, $sce){
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
 
-				//var imgLink= 'http:' +plato.fields.foto.fields.file.url;
-				var abierto = false;
-				var estado = 'cerrado';
-
-				var dateAbierto = new Date(items[i].fields.restaurante.fields.horarioInicio);
-				var dateCierre = new Date(items[i].fields.restaurante.fields.horarioFinal);
-				
-				var horaAbierto = dateAbierto.getHours();
-				var horaCierre = dateCierre.getHours();				
-
-				var minAbierto = dateAbierto.getMinutes();
-				var minCierre = dateCierre.getMinutes();
-				
-				var horaActual = new Date().getHours();
-
-				if(horaActual>= horaAbierto && horaActual<=horaCierre){
-						abierto = true;
-
-				 		if(horaActual == horaAbierto){
-					  		if(new Date().getMinutes() <= minAbierto){
-					  			abierto = false;
-					  		}
-				  		}
-
-				  		if(horaActual == horaCierre){
-					  		if(new Date().getMinutes() >= minCierre){
-					  			abierto = false;
-					  		}							
-					  	}
-				}
-				if(abierto){
-					estado = 'abierto';
-				}
 				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
 
 				dishes.push({id:index++, 
@@ -71,7 +38,8 @@ function ContentfulService($rootScope, $sce){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: estado});
+							status: getState(items[i])
+						});
 			}
 
 			self.dishes = entries;
@@ -88,6 +56,88 @@ function ContentfulService($rootScope, $sce){
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
 			rating:1, distance: '5 kms', status: 'ABIERTO'};
+	}
+
+	function getState(item){
+		//var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+		//console.log(item)
+
+		var abierto = false;
+		var estado = 'cerrado';
+
+		restaurantSchedule = getSchedule(item);
+
+		var dateAbierto = new Date(restaurantSchedule.horarioInicio);
+		var dateCierre = new Date(restaurantSchedule.horarioFinal);
+		
+		var horaAbierto = dateAbierto.getHours();
+		var horaCierre = dateCierre.getHours();				
+
+		var minAbierto = dateAbierto.getMinutes();
+		var minCierre = dateCierre.getMinutes();
+		
+		var horaActual = new Date().getHours();
+
+		if(horaActual>= horaAbierto && horaActual<=horaCierre){
+				abierto = true;
+
+		 		if(horaActual == horaAbierto){
+			  		if(new Date().getMinutes() <= minAbierto){
+			  			abierto = false;
+			  		}
+		  		}
+
+		  		if(horaActual == horaCierre){
+			  		if(new Date().getMinutes() >= minCierre){
+			  			abierto = false;
+			  		}							
+			  	}
+		}
+		if(abierto){
+			estado = 'abierto';
+		}
+
+		return estado;
+
+	}
+
+	function getSchedule(item){
+		var actualDay = new Date().getDay();
+		var restaurantSchedule = {};
+
+		switch(actualDay){
+			case 0:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioDomingo;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalDomingo;
+			break;
+			case 1:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioLunes;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalLunes;
+			break;
+			case 2:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioMartes;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalMartes;
+			break;
+			case 3:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioMiercoles;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalMiercoles;
+			break;
+			case 4:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioJueves;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalJueves;
+			break;
+			case 5:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioViernes;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalViernes;
+			break;
+			case 6:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioSabado;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalSabado;
+			break;
+		}
+
+		return restaurantSchedule
+		
 	}
 
 	return self;
