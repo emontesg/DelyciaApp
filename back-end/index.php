@@ -43,5 +43,20 @@ $app->post(
         return $response->withJson($result);
     }
 );
+//-------------------------BACK-END---------------------------------------------
+//Paso 1
+//Manera en la cual se comunica el servicio de angular con el controlador de PHP
+//Se le da nombre a la ruta del post : '/app/addReview'
+//Se hace un new del controller de php con el que nos vamos a comunicar y se llama 
+//al método deseado que se encuentra en el controlador
+$app->post(
+    '/app/addReview',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+        $result = $appController->addReview($request);
+        return $response->withJson($result);
+    }
+);
+
 
 $app->run();

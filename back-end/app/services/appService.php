@@ -42,15 +42,21 @@ class AppService {
         $result = $this->storage->query($add_favorites_query, $add_params);
         return $result;
     }
-
-    public function addReview($idPlato, $rating, $comentario, $idUsuario){
+//-------------------------BACK-END---------------------------------------------
+//Paso 3
+//En esta parte llegan los parámetros enviados desde el controllador de php.
+// Se escribe el query y se declaran los parámetros necesarios para el insert.
+//La clase storage se encarga de meter los datos en la BD
+//Una vez finalizada esta parte probar en Postman.
+    public function addReview($idPlato, $rating, $comentario, $idUsuario, $visible){
         $result = [];
-        $add_review_query = "INSERT INTO TRating (comentario, idPlato, idUsuario, rating) VALUES (:comentario, :idPlato, :idUsuario, :rating)";
+        $add_review_query = "INSERT INTO TRating (idPlato, rating, comentario, idUsuario, visible) VALUES (:idPlato, :rating, :comentario, :idUsuario, :visible)";
         $review_params = [
-                        ":comentario" =>$comentario,
                         ":idPlato" =>$idPlato,
+                        ":rating" =>$rating,
+                        ":comentario" =>$comentario,
                         ":idUsuario" =>$idUsuario,
-                        ":rating" =>$rating
+                        ":visible" =>$visible
                     ];
         $result = $this->storage->query($add_review_query, $review_params);
         return $result;
