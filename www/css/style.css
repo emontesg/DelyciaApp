@@ -115,20 +115,23 @@ li {
     border-right: solid 1px #ddd;
 }
 
-.menu-image-rating .rating-hearts
+.menu-image-rating .rating-hearts,
+.review-rating .rating-hearts
 {
     display: flex;
     position: absolute;
     margin-left: 1.5vw;
 }
 
-.menu-image-rating .ion-ios-heart
+.menu-image-rating .ion-ios-heart,
+.review-rating .ion-ios-heart
 {
     padding: 0 0.5vw;
     color: lightpink;
 }
 
-.menu-image-rating .rating-hearts .active
+.menu-image-rating .rating-hearts .active,
+.review-rating .rating-hearts .active
 {
     color:red;
 }
@@ -186,7 +189,7 @@ li {
 {
     width: 10vw;
     height: 10vw;
-    background-image: url("../img/more-icon.png");
+    background-image: url("../img/plus-icon2.svg");
     background-size: contain;
     position: absolute;
     top: 38vw;
@@ -195,7 +198,7 @@ li {
 
 .masinfo-button.active
 {
-    background-image: url("../img/more-icon2.png");
+    background-image: url("../img/plus-icon.svg");
     background-size: contain;
     cursor:pointer;
 }
@@ -204,16 +207,16 @@ li {
 {
     width: 10vw;
     height: 10vw;
-    background-image: url("../img/search-icon.png");
+    background-image: url("../img/zoom-icon2.svg");
     background-size: contain;
     position: absolute;
-    top: 48vw;
+    top: 50vw;
     left: 86vw;
 }
 
 .search-button.active
 {
-    background-image: url("../img/search-icon2.png");
+    background-image: url("../img/zoom-icon.svg");
     background-size: contain;
     cursor:pointer;
 }
@@ -642,6 +645,65 @@ li {
     text-align: center;
     font-size: 4vw;
     font-weight: 300;
+}
+
+.review-content
+{
+    margin:20vw 10vw 0 10vw;
+}
+
+.review-input
+{
+    min-height: 13vw;
+}
+
+.review-reviews
+{
+    margin-top: 10vw;
+}
+
+.review-review
+{
+    background-color: white;
+    padding: 3vw;
+}
+
+.review-user
+{
+    color: #666;
+}
+
+.review-comment
+{
+
+}
+
+.review-rating
+{
+    font-size: 3vw;
+    position: relative;
+    width: 31%;
+    margin-top: 1vw;
+    color: white;
+    display: flex;
+    width: 100%
+}
+
+.review-rating .rating-hearts
+{
+    font-size: 5vw;
+    cursor: pointer;
+}
+
+.review-submit-button
+{
+    position: absolute;
+    right: 0;
+    border: solid 1px #666;
+    padding: 0 3vw;
+    font-size: 3vw;
+    line-height: 4vw;
+    cursor: pointer;
 }
 
 .fade.ng-hide {

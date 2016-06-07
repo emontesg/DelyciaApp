@@ -16,6 +16,7 @@ var masinfoController = require('./controllers/masinfoController');
 var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
+var reviewController = require('./controllers/reviewController');
 
 var contentfulService = require('./services/contentfulService');
 
@@ -43,6 +44,7 @@ app.controller('MasinfoCtrl', masinfoController);
 app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
+app.controller('ReviewCtrl', reviewController);
 
 
 app.factory('ContentfulService',contentfulService);
@@ -135,7 +137,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       url: '/reviews/:platilloId',
       views: {
         'menuContent': {
-          templateUrl: 'templates/reviews.html'
+          templateUrl: 'templates/reviews.html',
+          controller: 'ReviewCtrl'
         }
       }
     })
