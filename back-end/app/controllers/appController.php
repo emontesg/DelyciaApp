@@ -39,16 +39,8 @@ class AppController {
             ];
             return $result;
         }
-
-        if (array_key_exists("fechaHora", $data)) {
-            $fechaHora = $data["fechaHora"];
-        }else {
-            $result = [
-                "error" => true,
-                "message" => "The fechaHora data field is missing."
-            ];
-            return $result;
-        }
+        //Server's date
+        $fechaHora = date("Y-m-d");
 
         if (isset($idPlatillo, $idUsuario, $fechaHora)) {
             $result = $this->AppService->addToFavorites($idPlatillo, $idUsuario, $fechaHora);
@@ -63,5 +55,21 @@ class AppController {
     public function addReview($request){
         $result = [];
         $data = $request->getParsedBody();
+    }
+
+    public function getAllFavorites($request){
+        $result = [];
+        $data = $request->getParsedBody();
+        $idUsuario = $data['idUsuario'];
+        
+        if (isset($idUsuario)) {
+            $result = $this->AppService->getAllFavorites($idUsuario);
+        } else {
+            $result = [ 
+                'error' => true,
+                'message' => "We couldn't find the requested favorites."
+            ];
+        }
+        return $result;
     }
 }

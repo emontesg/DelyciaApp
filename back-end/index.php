@@ -35,5 +35,13 @@ $app->post(
     }
 );
 
+$app->post(
+    '/app/getAllFavorites',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+        $result = $appController->getAllFavorites($request);
+        return $response->withJson($result);
+    }
+);
 
 $app->run();

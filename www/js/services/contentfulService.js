@@ -1,13 +1,14 @@
 var contentful = require('contentful'); 
 
 
-function ContentfulService($rootScope, $sce){
+function ContentfulService($rootScope, $sce, RequestService){
 	var self = this;
 	var platos = [];
-
+	var user = localStorage.getItem('userLogged');
 	self.dishes = [];
 	self.mainDishes = [];
 	self.total = 0;
+	self.userFavorites = [];
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -45,6 +46,7 @@ function ContentfulService($rootScope, $sce){
 			self.total = entries.total;
 
 			$rootScope.$broadcast('ready',dishes);
+			self.getAllFavorites();
 		});
 
 	self.getPlatos = function(){
@@ -52,7 +54,36 @@ function ContentfulService($rootScope, $sce){
 		return platos;
 	};
 
+	self.getAllFavorites = function(){
+		var exist = false;
+		RequestService.getAllFavorites(user).then(function (response){
+            var favoritesList = response.data;
+            	if(favoritesList != null){
+            		for (var i = 0; i< favoritesList.length; i++){
+            			for(var j = 0; j < self.dishes.items.length; j++){
+            				if(favoritesList[i].idPlatillo === self.dishes.items[j].sys.id){
+            					if(self.userFavorites != null){
+            						for (var x = 0; x < self.userFavorites.length; x++) {
+            							if(favoritesList[i].idPlatillo === self.userFavorites[x].sys.id){
+            								exist = true;
+            								x = self.userFavorites.length;
+            							}
+            						}
+            						if(exist === false){
+            							self.userFavorites.push(self.dishes.items[j]);
+            						}
+            					}else{
+            						self.userFavorites.push(self.dishes.items[j]);
+            					}
+             				}
+            			}
+            		}
+            	}
+            }, function (reject){
+        });
+    };
+
 	return self;
 }
 
-module.exports = ['$rootScope', '$sce',ContentfulService];
+module.exports = ['$rootScope', '$sce', 'RequestService',ContentfulService];

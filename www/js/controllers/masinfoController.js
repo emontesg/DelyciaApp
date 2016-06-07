@@ -1,4 +1,4 @@
-function MasinfoController($scope, $stateParams, contentfulService) {
+function MasinfoController($scope, $stateParams, contentfulService,RequestService) {
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.platilloIndex = $stateParams.platilloIndex;
 
@@ -19,6 +19,7 @@ function MasinfoController($scope, $stateParams, contentfulService) {
 		$scope.platillos = items;
 		$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
 	});
+
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', MasinfoController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', MasinfoController];

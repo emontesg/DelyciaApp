@@ -2,7 +2,7 @@
 <html>
   <head>
 
-    <base href="<?php $base = dirname($_SERVER['PHP_SELF']) === '/' ? '/' : dirname($_SERVER['PHP_SELF']) . '/'; echo $base ?>"/>
+  
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
@@ -68,6 +68,7 @@
            FB.api('/me', 'GET', {fields: 'first_name, last_name, name, id'}, function(response){
              document.getElementById('status').innerHTML = response.id;
              console.log(response);
+             localStorage.setItem("userLogged", response.id);
            });
          }
          function getPic(){

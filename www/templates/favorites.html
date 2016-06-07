@@ -4,13 +4,13 @@
     <div class="favorites-content">
     	<div class="favorites-title">Tus favoritos</div>
       <ion-scroll class="favorites-scroll">
-        <div class="favorite" ng-repeat="platillo in platillos">
-          <div class="favorite-thumbnail"><img ng-src="{{platillo.src}}"></div>
+        <div class="favorite" ng-repeat="platillo in myFavoritesList">
+          <div class="favorite-thumbnail"><img ng-src="{{platillo.fields.foto.fields.file.url}}"></div>
           <div class="favorite-info">
-            <div class="favorite-name">{{platillo.title}}</div>
-            <div class="favorite-restaurant">{{platillo.restaurant}}</div>
+            <div class="favorite-name">{{platillo.fields.nombre}}</div>
+            <div class="favorite-restaurant">{{platillo.fields.restaurante.nombre}}</div>
             <div class="favorite-footer">
-              <div class="favorite-distance"><div class="ion-navigate"></div>{{platillo.distance}}</div>
+              <div class="favorite-distance"><div class="ion-navigate"></div>5km</div>
               <div class="favorite-icon"><div class="ion-ios-stopwatch-outline"></div></div>
               <div class="favorite-icon"><div class="ion-share"></div></div>
             </div>

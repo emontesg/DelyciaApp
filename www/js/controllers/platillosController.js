@@ -1,4 +1,4 @@
-function PlatillosController($scope, $ionicGesture, contentfulService, $sce, RequestService) {
+function PlatillosController($scope, $ionicGesture, contentfulService, $sce) {
 	$scope.delyciaBanner = 'img/158453881.png';
 	if(contentfulService.mainDishes.length === 0)
 	{
@@ -62,4 +62,4 @@ function PlatillosController($scope, $ionicGesture, contentfulService, $sce, Req
 	}, element);
 }
 
-module.exports = ['$scope', '$ionicGesture','ContentfulService','$sce','RequestService', PlatillosController];
+module.exports = ['$scope', '$ionicGesture','ContentfulService','$sce', PlatillosController];
