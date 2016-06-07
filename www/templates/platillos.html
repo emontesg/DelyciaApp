@@ -25,8 +25,8 @@
 					<div class="menu-image-status">{{platillo.status}}</div>
 					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
-				<div class="masinfo-button active" ui-sref="app.masinfo({platilloId: {{platillo.id}}, platilloIndex: {{$index}}})" ng-show="infoEnable"></div>
-				<div class="search-button active" ui-sref="app.search({platilloIndex: {{$index}}})" ng-show="infoEnable"></div>
+				<div class="masinfo-button active" ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-show="infoEnable"></div>
+				<div class="search-button active" ui-sref="app.search({platilloId: {{platillo.id}}})" ng-show="infoEnable"></div>
 				<div class="masinfo-button" ng-show="!infoEnable"></div>
 				<div class="search-button" ng-show="!infoEnable"></div>
 			</div>

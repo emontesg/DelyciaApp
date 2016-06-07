@@ -1,14 +1,19 @@
-function PlatillosController($scope, $ionicGesture, contentfulService, $sce) {
+function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, $sce, RequestService) {
+	var type = parseInt($stateParams.type);
 	$scope.delyciaBanner = 'img/158453881.png';
 	if(contentfulService.mainDishes.length === 0)
 	{
 		$scope.platillos = [{id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''}];
 	}
-	else
+	else if(type === 0)
 	{
 		$scope.platillos = contentfulService.mainDishes;
 	}
-	
+	else
+	{
+		$scope.platillos = contentfulService.searchDishes;
+	}
+
 	$scope.dishes = [];
 	$scope.currentImageIndex = 0;
 
@@ -62,4 +67,4 @@ function PlatillosController($scope, $ionicGesture, contentfulService, $sce) {
 	}, element);
 }
 
-module.exports = ['$scope', '$ionicGesture','ContentfulService','$sce', PlatillosController];
+module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService','$sce','RequestService', PlatillosController];

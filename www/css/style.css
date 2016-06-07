@@ -595,6 +595,14 @@ li {
     cursor: pointer;
 }
 
+.search-message
+{
+    color: #E7025D;
+    text-align: center;
+    font-size: 4vw;
+    font-weight: 300;
+}
+
 .fade.ng-hide {
   opacity: 0;
 }
