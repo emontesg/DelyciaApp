@@ -7,6 +7,7 @@
 
 // var angular = require('angular');
  require('angular-animate');
+ require('ng-cordova');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
@@ -15,12 +16,13 @@ var masinfoController = require('./controllers/masinfoController');
 var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
+var reviewController = require('./controllers/reviewController');
 
 
 var contentfulService = require('./services/contentfulService');
 var requestService = require('./services/requestService');
 
-var app = angular.module('starter', ['ionic', 'ngAnimate']);
+var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -44,6 +46,7 @@ app.controller('MasinfoCtrl', masinfoController);
 app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
+app.controller('ReviewCtrl', reviewController);
 
 app.factory('ContentfulService',contentfulService);
 app.service('RequestService',requestService);
@@ -136,7 +139,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       url: '/reviews/:platilloId',
       views: {
         'menuContent': {
-          templateUrl: 'templates/reviews.html'
+          templateUrl: 'templates/reviews.html',
+          controller: 'ReviewCtrl'
         }
       }
     })
@@ -161,6 +165,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos/0');
   $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
+  $ionicConfigProvider.views.maxCache(0);
   // $compileProvider.imgSrcSanitizationWhitelist('img/');
 });
 
