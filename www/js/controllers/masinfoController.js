@@ -1,4 +1,4 @@
-function MasinfoController($scope, $stateParams, contentfulService) {
+function MasinfoController($scope, $stateParams, contentfulService,RequestService) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	if(contentfulService.mainDishes.length === 0)
@@ -15,6 +15,7 @@ function MasinfoController($scope, $stateParams, contentfulService) {
 	$scope.$on('ready',function(data,items){
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
 	});
+
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', MasinfoController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', MasinfoController];

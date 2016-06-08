@@ -3,17 +3,24 @@
   	<div class="black-background"></div>
     <div class="restaurant-container">
       <div class="restaurant-header">
-        <div class="restaurant-header-background"><img src="{{currentPlatillo.src}}"></div>
+        <div class="restaurant-header-background"><img ng-src="{{currentPlatillo.src}}"></div>
         <div class="restaurant-header-title">{{currentPlatillo.restaurant}}</div>
         <div class="restaurant-header-footer">
           <div class="restaurant-status">{{currentPlatillo.status}} (9PM)</div>
-          <div class="restaurant-distance"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
+          <div class="restaurant-distance" ng-click="loadMap()"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
           <div class="restaurant-call">Llamar</div>
         </div>
       </div>
       <ion-scroll class="restaurant-scroll">
         <div class="white-background">
-          <div class="restaurant-platillos-container">
+          <div ng-show="mapShow">
+            <div class="restaurant-map">
+              <div id="map" data-tap-disabled="true"></div>
+            </div>
+            <div class="restaurant-location-info"><div class="header">DIRECCI&Oacute;N</div><div class="info">{{address}}</div></div>
+            <div class="restaurant-time-info"><div class="header">HORARIO</div><div></div class="info"></div>
+          </div>
+          <div class="restaurant-platillos-container" ng-show="!mapShow">
             <div ng-repeat="dish in restaurantDishes" class="restaurant-thumbnail"><img ng-src="{{dish.src}}"></div>
           </div>
           </div>

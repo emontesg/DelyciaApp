@@ -1,14 +1,14 @@
 var contentful = require('contentful'); 
 
 
-function ContentfulService($rootScope, $sce){
+function ContentfulService($rootScope, $sce, RequestService){
 	var self = this;
 	var platos = [];
-
+	var user = localStorage.getItem('userLogged');
 	self.dishes = [];
 	self.mainDishes = [];
 	self.total = 0;
-	self.searchDishes = [];
+	self.userFavorites = [];
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -23,45 +23,13 @@ function ContentfulService($rootScope, $sce){
 		})
 		.then(function(entries){
 			//console.log(entries);
+			platos = entries;
 			var dishes = [];
 			var index = 0;
 			var items = entries.items;
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
 
-				//var imgLink= 'http:' +plato.fields.foto.fields.file.url;
-				var abierto = false;
-				var estado = 'cerrado';
-
-				var dateAbierto = new Date(items[i].fields.restaurante.fields.horarioInicio);
-				var dateCierre = new Date(items[i].fields.restaurante.fields.horarioFinal);
-				
-				var horaAbierto = dateAbierto.getHours();
-				var horaCierre = dateCierre.getHours();				
-
-				var minAbierto = dateAbierto.getMinutes();
-				var minCierre = dateCierre.getMinutes();
-				
-				var horaActual = new Date().getHours();
-
-				if(horaActual>= horaAbierto && horaActual<=horaCierre){
-						abierto = true;
-
-				 		if(horaActual == horaAbierto){
-					  		if(new Date().getMinutes() <= minAbierto){
-					  			abierto = false;
-					  		}
-				  		}
-
-				  		if(horaActual == horaCierre){
-					  		if(new Date().getMinutes() >= minCierre){
-					  			abierto = false;
-					  		}							
-					  	}
-				}
-				if(abierto){
-					estado = 'abierto';
-				}
 				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
 
 				dishes.push({id:index++, 
@@ -71,14 +39,16 @@ function ContentfulService($rootScope, $sce){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: estado});
+							status: getState(items[i])
+						});
 			}
 
-			self.dishes = entries;
+			self.dishes = platos;
 			self.mainDishes = dishes;
 			self.total = entries.total;
 
 			$rootScope.$broadcast('ready',dishes);
+			self.getAllFavorites();
 		});
 
 	self.getDishJson = function(index)
@@ -88,9 +58,120 @@ function ContentfulService($rootScope, $sce){
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
 			rating:1, distance: '5 kms', status: 'ABIERTO'};
+	};
+
+	function getState(item){
+		//var imgLink= 'http:' +plato.fields.foto.fields.file.url;
+		//console.log(item)
+
+		var abierto = false;
+		var estado = 'cerrado';
+
+		restaurantSchedule = getSchedule(item);
+
+		var dateAbierto = new Date(restaurantSchedule.horarioInicio);
+		var dateCierre = new Date(restaurantSchedule.horarioFinal);
+		
+		var horaAbierto = dateAbierto.getHours();
+		var horaCierre = dateCierre.getHours();				
+
+		var minAbierto = dateAbierto.getMinutes();
+		var minCierre = dateCierre.getMinutes();
+		
+		var horaActual = new Date().getHours();
+
+		if(horaActual>= horaAbierto && horaActual<=horaCierre){
+				abierto = true;
+
+		 		if(horaActual == horaAbierto){
+			  		if(new Date().getMinutes() <= minAbierto){
+			  			abierto = false;
+			  		}
+		  		}
+
+		  		if(horaActual == horaCierre){
+			  		if(new Date().getMinutes() >= minCierre){
+			  			abierto = false;
+			  		}							
+			  	}
+		}
+		if(abierto){
+			estado = 'abierto';
+		}
+
+		return estado;
+
 	}
+
+	function getSchedule(item){
+		var actualDay = new Date().getDay();
+		var restaurantSchedule = {};
+
+		switch(actualDay){
+			case 0:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioDomingo;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalDomingo;
+			break;
+			case 1:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioLunes;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalLunes;
+			break;
+			case 2:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioMartes;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalMartes;
+			break;
+			case 3:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioMiercoles;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalMiercoles;
+			break;
+			case 4:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioJueves;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalJueves;
+			break;
+			case 5:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioViernes;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalViernes;
+			break;
+			case 6:
+				restaurantSchedule.horarioInicio = item.fields.restaurante.fields.horarioInicioSabado;
+				restaurantSchedule.horarioFinal = item.fields.restaurante.fields.horarioFinalSabado;
+			break;
+		}
+
+		return restaurantSchedule
+		
+	}
+
+	self.getAllFavorites = function(){
+		var exist = false;
+		RequestService.getAllFavorites(user).then(function (response){
+            var favoritesList = response.data;
+            	if(favoritesList != null){
+            		for (var i = 0; i< favoritesList.length; i++){
+            			for(var j = 0; j < self.dishes.items.length; j++){
+            				if(favoritesList[i].idPlatillo === self.dishes.items[j].sys.id){
+            					if(self.userFavorites != null){
+            						for (var x = 0; x < self.userFavorites.length; x++) {
+            							if(favoritesList[i].idPlatillo === self.userFavorites[x].sys.id){
+            								exist = true;
+            								x = self.userFavorites.length;
+            							}
+            						}
+            						if(exist === false){
+            							self.userFavorites.push(self.dishes.items[j]);
+            						}
+            					}else{
+            						self.userFavorites.push(self.dishes.items[j]);
+            					}
+             				}
+            			}
+            		}
+            	}
+            }, function (reject){
+        });
+    };
 
 	return self;
 }
 
-module.exports = ['$rootScope', '$sce',ContentfulService];
+module.exports = ['$rootScope', '$sce', 'RequestService',ContentfulService];

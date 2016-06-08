@@ -1,6 +1,26 @@
-<ion-view view-title="Ver reviews">
+<ion-view view-title="Reviews">
   <ion-content class="no-header" scroll="false">
-  	<div class="black-background"></div>
+  	<div class="black-background">
+  		<div class="review-content">
+		  	<label class="item item-input">
+	          <textarea placeholder="Comentario" class="review-input"></textarea>
+	        </label>
+	        <div class="review-rating">
+	        	<div>Calificar:</div>
+				<div class="rating-hearts">
+					<div ng-repeat="heart in hearts" ng-click="onHeartClick($index)" 
+					ng-class="heart.active ? 'ion-ios-heart active' : 'ion-ios-heart'"></div>
+				</div>
+				<div class="review-submit-button">Enviar</div>
+			</div>
+	        <div class="review-reviews">
+	        	<div class="review-review">
+	        		<div class="review-user">user</div>
+	        		<div class="review-comment">comment comment comment comment comment comment</div>
+	        	</div>
+	        </div>
+		</div>
+  	</div>
 
   </ion-content>
 </ion-view>

@@ -30,6 +30,7 @@
     "gulp-preprocess": "^2.0.0",
     "gulp-util": "^2.2.14",
     "jshint": "^2.9.2",
+    "ng-cordova": "^0.1.26-alpha",
     "shelljs": "^0.3.0",
     "vinyl-source-stream": "^1.1.0"
   },
