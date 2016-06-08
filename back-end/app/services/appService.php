@@ -42,6 +42,17 @@ class AppService {
         $result = $this->storage->query($add_favorites_query, $add_params);
         return $result;
     }
+
+    public function addCriteria($TipoComida, $idUsuario){
+        $result = [];
+        $add_criteria_query = 'INSERT INTO tcriterios (TipoComida, idUsuario) VALUES (:TipoComida,:idUsuario)';
+        $criteria_params = [
+                            ':TipoComida'=> $TipoComida,
+                            'idUsuario' => $idUsuario
+                            ];
+        $result = $this->storage->query($add_criteria_query,$criteria_params);
+        return $result;
+    }
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
 //En esta parte llegan los parámetros enviados desde el controllador de php.

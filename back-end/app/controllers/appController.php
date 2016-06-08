@@ -51,6 +51,41 @@ class AppController {
         } 
         return $result;
     }
+
+    public function addCriteria($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if(array_key_exists('TipoComida', $data)){
+            $TipoComida = $data['TipoComida'];
+        }else{
+            $result = [
+                "error" => true,
+                "message" => "no wey!"
+            ];
+            return $result;
+        }
+
+        if(array_key_exists('idUsuario', $data)){
+            $idUsuario = $data['idUsuario'];
+        }else{
+            $result = [
+                'error' => true,
+                'message' => 'no manches!'
+            ];
+            return $result;
+        }
+
+        //----------------whats
+        if(isset($TipoComida, $idUsuario)){
+            $result = $this->AppService->addCriteria($TipoComida,$idUsuario);
+            return $result;
+        }else{
+            $result['error'] = true;
+            $result['message'] = 'You must send all the information required';
+        }
+    }
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 2
 //se recibe el onjeto enviado desde el servicio de angular y se descompone,
