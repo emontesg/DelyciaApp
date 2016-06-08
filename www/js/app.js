@@ -59,7 +59,7 @@ app.factory('ContentfulService',contentfulService);
 
 
 
-app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
     $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
 
