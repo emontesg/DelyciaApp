@@ -1,5 +1,8 @@
 function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, $sce, RequestService) {
 	var type = parseInt($stateParams.type);
+
+	$scope.showSearchButton = type === 0 ? true : false;
+
 	$scope.delyciaBanner = 'img/158453881.png';
 	if(contentfulService.mainDishes.length === 0)
 	{
@@ -16,10 +19,13 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 
 	$scope.dishes = [];
 
+	var initialSlide = type >= 2 ? type-2 : 0;
+
     $scope.options = {
 	  loop: true,
 	  pager: false,
-	  speed: 500
+	  speed: 500,
+	  initialSlide: initialSlide
 	};
 
 	//console.log(contentfulService.getPlatos());
@@ -34,33 +40,12 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 
 	$scope.infoEnable = true;
 
-	$scope.$on("$ionicSlides.sliderInitialized", function(event, data){
-	});
 
-	$scope.$on("$ionicSlides.slideChangeStart", function(event, data){
-	});
+	$scope.onImageClick = function()
+	{
+		$scope.infoEnable = !$scope.infoEnable;
+	}
 
-	$scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
-	});
-
-	$scope.gesture = {
-		used: ''
-	};  
-
-	$scope.onGesture = function(gesture) {
-		$scope.gesture.used = gesture;
-		console.log(gesture);
-	};
-
-
-	var element = angular.element(document.querySelector('#platilloContent')); 
-
-	$ionicGesture.on('tap', function(e){
-		$scope.$apply(function() {
-			$scope.gesture.used = 'Tap';
-			$scope.infoEnable = !$scope.infoEnable;
-		});
-	}, element);
 }
 
 module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService','$sce','RequestService', PlatillosController];

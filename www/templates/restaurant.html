@@ -7,8 +7,8 @@
         <div class="restaurant-header-title">{{currentPlatillo.restaurant}}</div>
         <div class="restaurant-header-footer">
           <div class="restaurant-status">{{currentPlatillo.status}} (9PM)</div>
-          <div class="restaurant-distance" ng-click="loadMap()"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
-          <div class="restaurant-call">Llamar</div>
+          <div ng-click="loadMap()" ng-class="mapShow ? 'restaurant-distance active' : 'restaurant-distance'"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
+          <div class="restaurant-call" ng-click="onCallClick()">Llamar</div>
         </div>
       </div>
       <ion-scroll class="restaurant-scroll">
@@ -21,7 +21,7 @@
             <div class="restaurant-time-info"><div class="header">HORARIO</div><div></div class="info"></div>
           </div>
           <div class="restaurant-platillos-container" ng-show="!mapShow">
-            <div ng-repeat="dish in restaurantDishes" class="restaurant-thumbnail"><img ng-src="{{dish.src}}"></div>
+            <div ng-repeat="dish in restaurantDishes" class="restaurant-thumbnail" ng-click="onDishClick($index)"><img ng-src="{{dish.src}}"></div>
           </div>
           </div>
       </ion-scroll>

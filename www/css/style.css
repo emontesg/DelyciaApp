@@ -22,6 +22,11 @@ li {
     cursor:pointer;
 }
 
+.delycia-menu-item
+{
+    cursor:pointer;
+}
+
 .scroll {
     height: 100%;
 }
@@ -187,13 +192,13 @@ li {
 
 .masinfo-button
 {
-    width: 10vw;
-    height: 10vw;
+    width: 15vw;
+    height: 15vw;
     background-image: url("../img/plus-icon2.svg");
     background-size: contain;
     position: absolute;
     top: 38vw;
-    left: 86vw;
+    left: 80vw;
 }
 
 .masinfo-button.active
@@ -205,13 +210,13 @@ li {
 
 .search-button
 {
-    width: 10vw;
-    height: 10vw;
+    width: 15vw;
+    height: 15vw;
     background-image: url("../img/zoom-icon2.svg");
     background-size: contain;
     position: absolute;
-    top: 50vw;
-    left: 86vw;
+    top: 55vw;
+    left: 80vw;
 }
 
 .search-button.active
@@ -219,6 +224,11 @@ li {
     background-image: url("../img/zoom-icon.svg");
     background-size: contain;
     cursor:pointer;
+}
+
+.search-buton.hide
+{
+    display: none;
 }
 
 .semitransparent-black-background
@@ -359,7 +369,7 @@ li {
     color: #666;
     border: solid 1px #aaa;
     border-radius: 3px;
-    padding: 0.2vw 2vw;
+    padding: 1vw 2vw 0 2vw;
     display: flex;
     margin: 0 1vw 0 0;
 }
@@ -373,10 +383,11 @@ li {
 {
     color: white;
     background-color: #999;
-    padding: 0.4vw 1.2vw 0 1.2vw;
+    padding: 0.5vw 1.2vw 0.5vw 1.2vw;
     border-radius: 3px;
     margin: 0 1vw 0 0;
     cursor:pointer;
+    font-size: 6vw;
 }
 
 .favorite-remove
@@ -447,6 +458,12 @@ li {
     margin-right: 2vw;
     font-size: 2.8vw;
     font-weight: 300;
+    line-height: 4vw;
+}
+
+.restaurant-status.closed
+{
+    background-color: red;
 }
 
 .restaurant-distance
@@ -459,6 +476,13 @@ li {
     margin-right: 2vw;
     font-size: 2.8vw;
     cursor: pointer;
+}
+
+.restaurant-distance.active
+{
+    background-color: #4CF900;
+    color: black;
+    border-color: transparent;
 }
 
 .restaurant-distance .ion-navigate
@@ -496,6 +520,7 @@ li {
     overflow:hidden;
     position: relative;
     margin: 0.5vw;
+    cursor: pointer;
 }
 
 .restaurant-thumbnail img
@@ -542,7 +567,7 @@ li {
 .search-container
 {
     position: relative;
-    margin-top: 50px;
+    margin-top: 8vw;
     padding-top: 15vw;
 }
 
@@ -554,6 +579,7 @@ li {
     margin: 6vw;
     text-align: center;
     cursor: pointer;
+    line-height: 4vw;
 }
 
 .search-options
@@ -619,6 +645,7 @@ li {
     border-color: white;
     background-color: transparent;
     border-radius: 0;
+    border-width: 1px;
 }
 
 .search-options label
@@ -637,6 +664,7 @@ li {
     width: 26vw;
     padding: 1vw 2vw;
     cursor: pointer;
+    line-height: 6vw;
 }
 
 .search-message

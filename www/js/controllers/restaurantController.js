@@ -1,4 +1,4 @@
-function RestaurantController($scope, $stateParams, contentfulService, $sce, $cordovaGeolocation) {
+function RestaurantController($scope, $stateParams, contentfulService, $sce, $cordovaGeolocation, $location, $window) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	$scope.mapShow = false;
@@ -30,13 +30,26 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 					title: dishes[i].fields.nombre,
 					price:dishes[i].fields.precio, 
 					rating:1, 
-					distance: '5 kms', 
+					distance: '5 kms',
+					status: 'ABIERTO' 
 				});
 			}
 		}
 	}
 
 	var options = {timeout: 10000, enableHighAccuracy: true};
+
+	$scope.onCallClick = function()
+	{
+		// $window.plugins.CallNumber.callNumber(onSuccess, onError, '88042119', false);
+		window.PhoneCaller.call('22757532', onSuccess, onError);
+	};
+
+	$scope.onDishClick = function(index)
+	{
+		contentfulService.searchDishes = $scope.restaurantDishes;
+		$location.path('/app/platillos/' + (index + 2));
+	};
 
 	$scope.loadMap = function()
 	{
@@ -104,6 +117,14 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 	{
 		$scope.map.panTo(center);
 	}
+
+	function onSuccess(result){
+	  console.log("Success:"+result);
+	}
+	 
+	function onError(result) {
+	  console.log("Error:"+result);
+	}
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$cordovaGeolocation', RestaurantController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$cordovaGeolocation', '$location', '$window', RestaurantController];
