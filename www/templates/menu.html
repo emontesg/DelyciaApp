@@ -23,16 +23,16 @@
         <ion-item menu-close ng-click="login()">
           Login
         </ion-item>
-        <ion-item menu-close href="#/app/platillos/0">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.platillos({type: 0})">
           Platillos
         </ion-item>
-        <ion-item menu-close href="#/app/favorites/0">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.favorites({platilloId: 0})">
           Favoritos
         </ion-item>
-        <ion-item menu-close href="#/app/friends">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.friends()">
           Amigos
         </ion-item>
-        <ion-item menu-close href="#/app/configurations">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.configurations()">
           Configuraciones
         </ion-item>
       </ion-list>

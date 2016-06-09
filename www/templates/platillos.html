@@ -7,7 +7,7 @@
 					<div class="menu-image-title">{{platillo.title}}</div>
 					<div class="menu-image-restaurant">{{platillo.restaurant}}</div>
 				</div>
-				<img class="img-responsive" ng-src="{{getTrustedResourceUrl(platillo.src)}}" />
+				<img class="img-responsive" ng-src="{{getTrustedResourceUrl(platillo.src)}}" ng-click="onImageClick()"/>
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
 					<div class="menu-image-rating">
 						<div class="rating-hearts">
@@ -25,10 +25,8 @@
 					<div class="menu-image-status">{{platillo.status}}</div>
 					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
-				<div class="masinfo-button active" ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-show="infoEnable"></div>
-				<div class="search-button active" ui-sref="app.search({platilloId: {{platillo.id}}})" ng-show="infoEnable"></div>
-				<div class="masinfo-button" ng-show="!infoEnable"></div>
-				<div class="search-button" ng-show="!infoEnable"></div>
+				<div ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
+				<div ui-sref="app.search({platilloId: {{platillo.id}}})" ng-class="showSearchButton ? infoEnable ? 'search-button active' : 'search-button' : 'search-button hide'"></div>
 			</div>
 		</ion-slide-page>
 	</ion-slides>

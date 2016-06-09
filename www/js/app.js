@@ -95,7 +95,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.masinfo', {
-      url: '/platillos/:platilloId',
+      url: '/masinfo/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/masinfo.html',
@@ -163,7 +163,6 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/platillos/0');
   $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
-  $ionicConfigProvider.views.maxCache(0);
   // $compileProvider.imgSrcSanitizationWhitelist('img/');
 });
 
