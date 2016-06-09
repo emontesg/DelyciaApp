@@ -88,9 +88,11 @@
     <splash src="resources/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+    <preference name="CrosswalkAnimatable" value="true" />
   </platform>
   <plugin name="cordova-plugin-phonecaller" source="npm" version="0.0.2" />
   <plugin name="org.apache.cordova.geolocation" spec="0.3.10" source="pgb" />
+  <plugin name="com.telerik.plugins.nativepagetransitions" source="npm" />
 <!--   <plugin spec="https://github.com/Wizcorp/phonegap-facebook-plugin.git" source="git">
     <param name="APP_ID" value="1186835011381116"/>
     <param name="APP_NAME" value="DelyciaApp"/>

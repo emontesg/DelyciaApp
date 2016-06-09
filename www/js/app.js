@@ -8,6 +8,7 @@
 // var angular = require('angular');
  require('angular-animate');
  require('ng-cordova');
+ require('ionic-native-transitions');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
@@ -20,7 +21,7 @@ var reviewController = require('./controllers/reviewController');
 
 var contentfulService = require('./services/contentfulService');
 
-var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova']);
+var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -59,11 +60,23 @@ app.factory('ContentfulService',contentfulService);
 
 
 
-app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
     $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
 
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
+
+    $ionicNativeTransitionsProvider.setDefaultOptions({
+        duration: 100, // in milliseconds (ms), default 400, 
+        slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4 
+        iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1 
+        androiddelay: -1, // same as above but for Android, default -1 
+        winphonedelay: -1, // same as above but for Windows Phone, default -1, 
+        fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android) 
+        fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android) 
+        triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option 
+        backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back 
+    });
 
   $stateProvider
 

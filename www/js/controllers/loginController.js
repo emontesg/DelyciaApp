@@ -1,4 +1,4 @@
-function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook) {
+function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordovaOauth) {
   
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -48,4 +48,4 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook) {
     }, 1000);
   };
 }
-module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', LoginController];
+module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', '$cordovaOauth', LoginController];
