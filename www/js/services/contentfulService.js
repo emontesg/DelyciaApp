@@ -1,7 +1,7 @@
 var contentful = require('contentful'); 
 
 
-function ContentfulService($rootScope, $sce){
+function ContentfulService($rootScope, $sce, $ImageCacheFactory){
 	var self = this;
 	var platos = [];
 
@@ -26,19 +26,24 @@ function ContentfulService($rootScope, $sce){
 			var dishes = [];
 			var index = 0;
 			var items = entries.items;
+			var images = [];
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
-				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
+				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
 				dishes.push({id:index++, 
-							src:$sce.getTrustedResourceUrl(imgLink), 
+							src:imgLink, 
 							title:items[i].fields.nombre, 
 							restaurant:items[i].fields.restaurante.fields.nombre, 
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
 							status: 'ABIERTO'});
+
+				images.push(imgLink);
 			}
+
+			$ImageCacheFactory.Cache(images);
 
 			self.dishes = entries;
 			self.mainDishes = dishes;
@@ -59,4 +64,4 @@ function ContentfulService($rootScope, $sce){
 	return self;
 }
 
-module.exports = ['$rootScope', '$sce',ContentfulService];
+module.exports = ['$rootScope', '$sce', '$ImageCacheFactory', ContentfulService];

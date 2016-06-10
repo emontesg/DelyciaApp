@@ -90,6 +90,7 @@
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
     <preference name="CrosswalkAnimatable" value="true" />
   </platform>
+  <plugin name="org.crosswalk.engine" version="1.3.0" source="pgb"/>
   <plugin name="cordova-plugin-phonecaller" source="npm" version="0.0.2" />
   <plugin name="org.apache.cordova.geolocation" spec="0.3.10" source="pgb" />
   <plugin name="com.telerik.plugins.nativepagetransitions" source="npm" />
