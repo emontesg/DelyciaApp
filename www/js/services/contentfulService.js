@@ -1,7 +1,6 @@
 var contentful = require('contentful'); 
 
-
-function ContentfulService($rootScope, $sce, RequestService){
+function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory){
 	var self = this;
 	var platos = [];
 	var user = localStorage.getItem('userLogged');
@@ -27,23 +26,27 @@ function ContentfulService($rootScope, $sce, RequestService){
 			var dishes = [];
 			var index = 0;
 			var items = entries.items;
+			var images = [];
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
 
-				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
+				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
 				dishes.push({id:index++, 
-							src:$sce.getTrustedResourceUrl(imgLink), 
+							src:imgLink, 
 							title:items[i].fields.nombre, 
 							restaurant:items[i].fields.restaurante.fields.nombre, 
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
 							status: getState(items[i])
-						});
+
+				images.push(imgLink);
 			}
 
-			self.dishes = platos;
+			$ImageCacheFactory.Cache(images);
+
+			self.dishes = entries;
 			self.mainDishes = dishes;
 			self.total = entries.total;
 
@@ -174,4 +177,4 @@ function ContentfulService($rootScope, $sce, RequestService){
 	return self;
 }
 
-module.exports = ['$rootScope', '$sce', 'RequestService',ContentfulService];
+module.exports = ['$rootScope', '$sce', 'RequestService', '$ImageCacheFactory', ContentfulService];

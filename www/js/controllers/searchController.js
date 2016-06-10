@@ -1,4 +1,4 @@
-function SearchController($scope, $stateParams, contentfulService, $sce, $location) {
+function SearchController($scope, $stateParams, contentfulService, $sce, $location, $ionicLoading) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	var checkedDistance = -1;
@@ -247,4 +247,4 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 	}
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$location', SearchController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$location', '$ionicLoading', SearchController];

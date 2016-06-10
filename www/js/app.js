@@ -23,7 +23,8 @@ var reviewController = require('./controllers/reviewController');
 var contentfulService = require('./services/contentfulService');
 var requestService = require('./services/requestService');
 
-var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions']);
+var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions',
+  'ionic.ion.imageCacheFactory']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -65,8 +66,9 @@ app.service('RequestService',requestService);
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
     $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
-
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
+
+    $ionicConfigProvider.scrolling.jsScrolling(false);
 
     $ionicNativeTransitionsProvider.setDefaultOptions({
         duration: 100, // in milliseconds (ms), default 400, 

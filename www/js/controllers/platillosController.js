@@ -1,7 +1,10 @@
-function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, $sce, RequestService) {
+function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, $ionicLoading, RequestService) {
+	$ionicLoading.show();
 	var type = parseInt($stateParams.type);
 
 	$scope.showSearchButton = type === 0 ? true : false;
+
+	$scope.hasReview = false;
 
 	$scope.delyciaBanner = 'img/158453881.png';
 	if(contentfulService.mainDishes.length === 0)
@@ -11,10 +14,12 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	else if(type === 0)
 	{
 		$scope.platillos = contentfulService.mainDishes;
+		$ionicLoading.hide();
 	}
 	else
 	{
 		$scope.platillos = contentfulService.searchDishes;
+		$ionicLoading.hide();
 	}
 
 	$scope.dishes = [];
@@ -32,11 +37,8 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	$scope.$on('ready',function(data,items){
 		//console.log(items);
 		$scope.platillos = items;
+		$ionicLoading.hide();
 	});
-
-	$scope.getTrustedResourceUrl = function(url){
-   		return $sce.getTrustedResourceUrl(url);
-	};
 
 	$scope.infoEnable = true;
 
@@ -48,4 +50,4 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 
 }
 
-module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService','$sce','RequestService', PlatillosController];
+module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService', '$ionicLoading', 'RequestService', PlatillosController];
