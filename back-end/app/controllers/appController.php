@@ -86,6 +86,54 @@ class AppController {
         }
     }
 
+    public function getCriteriaByUserId($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if(array_key_exists('idUsuario', $data)){
+            $idUsuario = $data['idUsuario'];
+        }else{
+            $result['error'] = true;
+            $result['message'] = 'pos no';
+            return $result;
+        }
+
+        if(isset($idUsuario)){
+            $result = $this->AppService->getCriteriaByUserId($idUsuario);
+            return $result;
+        }else{
+            $result['error'] = true;
+            $result['message'] = 'que noooo';
+            return $result;
+        }
+    }
+
+    public function deleteCriteriaById($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if(array_key_exists('idCriterio', $data)){
+            $idCriterio = $data['idCriterio'];
+        }else{
+            $result = [
+                'error' => true,
+                'message' => 'no dude!'
+            ];
+            return $result;
+        }
+
+        if(isset($idCriterio)){
+            $result= $this->AppService->deleteCriteriaById($idCriterio);
+            return $result;
+        }else{
+            $result = [
+                'error' => true,
+                'message' => 'no por yisus!'
+            ];
+            return $result;
+        }
+    }
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 2
 //se recibe el onjeto enviado desde el servicio de angular y se descompone,

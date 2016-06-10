@@ -48,10 +48,26 @@ class AppService {
         $add_criteria_query = 'INSERT INTO tcriterios (TipoComida, idUsuario) VALUES (:TipoComida,:idUsuario)';
         $criteria_params = [
                             ':TipoComida'=> $TipoComida,
-                            'idUsuario' => $idUsuario
+                            ':idUsuario' => $idUsuario
                             ];
         $result = $this->storage->query($add_criteria_query,$criteria_params);
         return $result;
+    }
+
+    public function getCriteriaByUserId($idUsuario){
+        $result = [];
+        $get_criteria_by_user_query = 'SELECT * FROM tcriterios WHERE idUsuario = :idUsuario';
+        $criteria_params = [':idUsuario' => $idUsuario];
+        $result = $this->storage->query($get_criteria_by_user_query,$criteria_params);
+        return $result;
+    }
+
+    public function deleteCriteriaById($idCriterio){
+        $result = [];
+        $delete_criteria_query = 'DELETE FROM tcriterios WHERE idCriterio = :idCriterio';
+        $delete_params = [':idCriterio' => $idCriterio];
+        $result = $this->storage->query($delete_criteria_query,$delete_params);
+        return $result;   
     }
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
