@@ -69,6 +69,25 @@ class AppService {
         $result = $this->storage->query($delete_criteria_query,$delete_params);
         return $result;   
     }
+
+    public function test($idUsuario, $listaCriterios){
+        $result = [];
+        $test_query = 'INSERT INTO tcriterios (TipoComida, idUsuario) VALUES (:TipoComida,:idUsuario)';
+
+        for ($i=0; $i < count($listaCriterios); $i++) { 
+            $test_params = [
+                            ':TipoComida' =>$listaCriterios[$i]['TipoComida'],
+                            ':idUsuario' => $idUsuario
+                            ];
+            $result = $this->storage->query($test_query, $test_params);
+            
+        }
+
+        //$result['noobs everywhere'] = $idUsuario;
+        
+        return $result;
+
+    }
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
 //En esta parte llegan los parámetros enviados desde el controllador de php.

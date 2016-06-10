@@ -134,6 +134,39 @@ class AppController {
         }
     }
 
+    public function test($request){
+        $result = [];
+        $data = $request->getParsedBody();
+        $listaCriterios = [];
+
+        if(array_key_exists('idUsuario', $data[0])){
+            $idUsuario = $data[0]['idUsuario'];
+        }else{
+            $result = [
+                'error' => true,
+                'message' => 'dammed jimmi :@'
+            ];
+            return $result;
+        }
+
+        for ($i=1; $i < count($data); $i++) { 
+            array_push($listaCriterios, $data[$i]);
+        }
+
+        if(isset($idUsuario) && count($listaCriterios) > 0){
+            $result = $this->AppService->test($idUsuario, $listaCriterios);
+            return $result;
+        }else{
+            $result = [
+                        'error' => true,
+                        'message' => 'dammn daniels!'
+            ];
+            return $result;
+
+        }
+        
+    }
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 2
 //se recibe el onjeto enviado desde el servicio de angular y se descompone,
