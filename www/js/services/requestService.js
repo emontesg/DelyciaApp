@@ -36,24 +36,24 @@ var RequestService = function($http, $location, $rootScope){
 
         getAllFavorites : function(idUsuario){
             var route = url + backEnd + 'getAllFavorites';
-            //$rootScope.allData = [];
             data = {
                 idUsuario : idUsuario
             };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
 
-            // if (data) {
-            //     $http.post(route, data).then(function(response){
-            //         $rootScope.allData = response.data;
-            //         console.log($rootScope.allData);
-            //     });
-            // }else{
-            //     console.log("no estoy entrando");
-            // }
-            // console.log($rootScope.allData);
+        getAllReviews : function(idPlatillo){
+            var route = url + backEnd + 'getAllReviews';
+            data = {
+                idPlatillo : idPlatillo
+            };
             if (data) {
                 return $http.post(route, data);
             }
         }
+
 
     };
 

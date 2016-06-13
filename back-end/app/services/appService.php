@@ -62,10 +62,12 @@ class AppService {
         return $result;
     }
 
-    public function getAllReviews(){
+    public function getAllReviews($idPlatillo){
         $result = [];
-        $get_all_query = "SELECT * FROM TRating";
-        $getAll_params = [];
+        $get_all_query = "SELECT * FROM TRating WHERE idPlato = :idPlatillo";
+        $getAll_params = [
+                        ":idPlatillo" =>$idPlatillo
+                        ];
 
         $result = $this->storage->query($get_all_query, $getAll_params);
 

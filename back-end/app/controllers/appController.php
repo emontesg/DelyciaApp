@@ -120,8 +120,28 @@ class AppController {
 
     }
 
-    public function getAllReviews(){
-        $result = $this->AppService->getAllReviews();
+    public function getAllReviews($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if (array_key_exists("idPlatillo", $data)) {
+            $idPlatillo = $data["idPlatillo"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idPlatillo data field is missing."
+            ];
+            return $result;
+        }
+
+        if (isset($idPlatillo)) {
+            $result = $this->AppService->getAllReviews($idPlatillo);
+        } else {
+            $result = [ 
+                'error' => true,
+                'message' => "We couldn't find the requested reviews."
+            ];
+        }
         return $result;
     }   
 

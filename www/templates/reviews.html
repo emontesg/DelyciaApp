@@ -14,9 +14,9 @@
 				<div class="review-submit-button">Enviar</div>
 			</div>
 	        <div class="review-reviews">
-	        	<div class="review-review">
+	        	<div class="review-review" ng-repeat = "review in allReviews">
 	        		<div class="review-user">user</div>
-	        		<div class="review-comment">comment comment comment comment comment comment</div>
+	        		<div class="review-comment">{{review.comentario}}</div>
 	        	</div>
 	        </div>
 		</div>

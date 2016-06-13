@@ -67,7 +67,7 @@ $app->post(
     }
 );
 
-$app->get(
+$app->post(
     '/app/getAllReviews',
     function ($request, $response) {
         $appController = new App\Controllers\AppController();
