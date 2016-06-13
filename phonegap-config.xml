@@ -21,6 +21,7 @@
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
+  <preference name="android-build-tool" value="gradle" />.
 
   <preference name="phonegap-version" value="cli-5.2.0" />
   <preference name="permissions" value="android.permission.CALL_PHONE"/>
@@ -94,10 +95,10 @@
   <plugin name="cordova-plugin-phonecaller" source="npm" version="0.0.2" />
   <plugin name="org.apache.cordova.geolocation" spec="0.3.10" source="pgb" />
   <plugin name="com.telerik.plugins.nativepagetransitions" source="npm" />
-<!--   <plugin spec="https://github.com/Wizcorp/phonegap-facebook-plugin.git" source="git">
+  <plugin name="cordova-plugin-facebook4" source="npm">
     <param name="APP_ID" value="1186835011381116"/>
     <param name="APP_NAME" value="DelyciaApp"/>
-  </plugin> -->
+  </plugin>
   <plugin name="cordova-plugin-whitelist" version="1.2.2" source="npm" />
   <access origin="*"/>
   <allow-intent href="tel:*" />

@@ -41,7 +41,26 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-compat",
+    {
+      "locator": "https://github.com/Rohfosho/CordovaCallNumberPlugin.git",
+      "id": "mx.ferreyra.callnumber"
+    },
+    {
+      "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git",
+      "id": "cordova-plugin-inappbrowser"
+    },
+    "cordova-plugin-crosswalk-webview",
+    {
+      "id": "cordova-plugin-facebook4",
+      "locator": "cordova-plugin-facebook4",
+      "variables": {
+        "APP_ID": "1186835011381116",
+        "APP_NAME": "DelyciaApp"
+      }
+    }
   ],
   "cordovaPlatforms": [
     "ios",
