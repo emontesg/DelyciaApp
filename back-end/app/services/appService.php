@@ -62,6 +62,24 @@ class AppService {
         return $result;
     }
 
+    // public function getAllReviews($idUsuario){
+    //     $result = [];
+    //     $get_all_query = "SELECT * FROM TFavoritos WHERE idUsuario = :idUsuario";
+    //     $getAll_params = [
+    //                     ":idUsuario" =>$idUsuario
+    //                 ];
+
+    //     $result = $this->storage->query($get_all_query, $getAll_params);
+
+    //     if (count($result['data'] > 0)) {
+    //         return $result['data'];
+    //     } else {
+    //         $result['message'] = "You havet add favorites yet.";
+    //         $result['error'] = true;
+    //     }
+    //     return $result;
+    // }
+
     public function getAllFavorites($idUsuario){
         $result = [];
         $get_all_query = "SELECT * FROM TFavoritos WHERE idUsuario = :idUsuario";
