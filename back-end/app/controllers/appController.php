@@ -53,9 +53,9 @@ class AppController {
     }
 //-------------------------BACK-END---------------------------------------------
 //Paso 2
-//se recibe el onjeto enviado desde el servicio de angular y se descompone,
+//se recibe el objeto enviado desde el servicio de angular y se descompone,
 //para validar si los datos que vienen en el objeto son válidos. Si los son
-// se envian al serviocio de php para que sean ingresados en la BD.
+// se envian al servicio de php para que sean ingresados en la BD.
     public function addReview($request){
         $result = [];
         $data = $request->getParsedBody();
@@ -120,6 +120,11 @@ class AppController {
 
     }
 
+    public function getAllReviews(){
+        $result = $this->AppService->getAllReviews();
+        return $result;
+    }   
+
     public function getAllFavorites($request){
         $result = [];
         $data = $request->getParsedBody();
@@ -134,5 +139,37 @@ class AppController {
             ];
         }
         return $result;
+    }
+
+    public function removeFavorite($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if (array_key_exists("idPlatillo", $data)) {
+            $idPlatillo = $data["idPlatillo"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idPlatillo data field is missing."
+            ];
+            return $result;
+        }
+        if (array_key_exists("idUsuario", $data)) {
+            $idUsuario = $data["idUsuario"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idUsuario data field is missing."
+            ];
+            return $result;
+        }
+
+        if (isset($idPlatillo, $idUsuario)) {
+            $result = $this->AppService->removeFavorites($idPlatillo, $idUsuario);
+            return $result; 
+        } else {
+            $result['error'] = true;
+            $result['message'] = 'You must send all the information required';
+        } 
     }
 }

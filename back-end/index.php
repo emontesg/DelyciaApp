@@ -43,6 +43,15 @@ $app->post(
         return $response->withJson($result);
     }
 );
+
+$app->post(
+    '/app/removeFavorite',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+        $result = $appController->removeFavorite($request);
+        return $response->withJson($result);
+    }
+);
 //-------------------------BACK-END---------------------------------------------
 //Paso 1
 //Manera en la cual se comunica el servicio de angular con el controlador de PHP
@@ -57,6 +66,17 @@ $app->post(
         return $response->withJson($result);
     }
 );
+
+$app->get(
+    '/app/getAllReviews',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+
+        $result = $appController->getAllReviews($request);
+        return $response->withJson($result);
+    }
+);
+
 
 
 $app->run();

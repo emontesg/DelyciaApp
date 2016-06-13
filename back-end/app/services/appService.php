@@ -62,23 +62,21 @@ class AppService {
         return $result;
     }
 
-    // public function getAllReviews($idUsuario){
-    //     $result = [];
-    //     $get_all_query = "SELECT * FROM TFavoritos WHERE idUsuario = :idUsuario";
-    //     $getAll_params = [
-    //                     ":idUsuario" =>$idUsuario
-    //                 ];
+    public function getAllReviews(){
+        $result = [];
+        $get_all_query = "SELECT * FROM TRating";
+        $getAll_params = [];
 
-    //     $result = $this->storage->query($get_all_query, $getAll_params);
+        $result = $this->storage->query($get_all_query, $getAll_params);
 
-    //     if (count($result['data'] > 0)) {
-    //         return $result['data'];
-    //     } else {
-    //         $result['message'] = "You havet add favorites yet.";
-    //         $result['error'] = true;
-    //     }
-    //     return $result;
-    // }
+        if (count($result['data'] > 0)) {
+            return $result['data'];
+        } else {
+            $result['message'] = "No reviews added yet.";
+            $result['error'] = true;
+        }
+        return $result;
+    }
 
     public function getAllFavorites($idUsuario){
         $result = [];
@@ -92,9 +90,21 @@ class AppService {
         if (count($result['data'] > 0)) {
             return $result['data'];
         } else {
-            $result['message'] = "You havet add favorites yet.";
+            $result['message'] = "You haven't add favorites yet.";
             $result['error'] = true;
         }
         return $result;
+    }
+
+    public function removeFavorites($idPlatillo, $idUsuario){
+        $result = [];
+        $remove_query = "DELETE FROM TFavoritos WHERE idPlatillo = :idPlatillo and idUsuario = :idUsuario";
+        $remove_params = [
+                        ":idPlatillo" =>$idPlatillo,
+                        ":idUsuario" =>$idUsuario
+                    ];
+        $result = $this->storage->query($remove_query, $remove_params);
+        return $result;
+
     }
 }
