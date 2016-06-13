@@ -40,6 +40,7 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 							rating:1, 
 							distance: '5 kms', 
 							status: getState(items[i])
+						});
 
 				images.push(imgLink);
 			}
@@ -141,7 +142,7 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 			break;
 		}
 
-		return restaurantSchedule
+		return restaurantSchedule;
 		
 	}
 
@@ -149,11 +150,11 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 		var exist = false;
 		RequestService.getAllFavorites(user).then(function (response){
             var favoritesList = response.data;
-            	if(favoritesList != null){
+            	if(favoritesList !== null){
             		for (var i = 0; i< favoritesList.length; i++){
             			for(var j = 0; j < self.dishes.items.length; j++){
             				if(favoritesList[i].idPlatillo === self.dishes.items[j].sys.id){
-            					if(self.userFavorites != null){
+            					if(self.userFavorites !== null){
             						for (var x = 0; x < self.userFavorites.length; x++) {
             							if(favoritesList[i].idPlatillo === self.userFavorites[x].sys.id){
             								exist = true;
