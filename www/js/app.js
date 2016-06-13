@@ -20,6 +20,7 @@ var searchController = require('./controllers/searchController');
 var reviewController = require('./controllers/reviewController');
 
 var contentfulService = require('./services/contentfulService');
+var preloaderService = require('./services/preloaderService');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions',
   'ionic.ion.imageCacheFactory']);
@@ -50,6 +51,7 @@ app.controller('ReviewCtrl', reviewController);
 
 
 app.factory('ContentfulService',contentfulService);
+app.factory('PreloaderService', preloaderService);
 ////////////////////WARNING
 // app.config(function($sceProvider) {
 //    // Completely disable SCE.  For demonstration purposes only!

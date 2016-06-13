@@ -40,10 +40,46 @@ function ContentfulService($rootScope, $sce, $ImageCacheFactory){
 							distance: '5 kms', 
 							status: 'ABIERTO'});
 
-				images.push(imgLink);
+				dishes.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: 'ABIERTO'});
+
+				dishes.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: 'ABIERTO'});
+
+				dishes.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: 'ABIERTO'});
+
+				dishes.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: 'ABIERTO'});
+
+				// images.push(imgLink);
 			}
 
-			$ImageCacheFactory.Cache(images);
+			// $ImageCacheFactory.Cache(images);
 
 			self.dishes = entries;
 			self.mainDishes = dishes;
