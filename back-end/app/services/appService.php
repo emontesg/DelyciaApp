@@ -98,6 +98,40 @@ class AppService {
 
         return $result;
     }
+
+    public function addFriend($idUsuario,$idAmigo){
+        $result = [];
+        $add_friend_query = 'INSERT INTO tamigos (idUsuario, idAmigo, contInv) VALUES (:idUsuario, :idAmigo, 0)';
+        $add_friend_params = [':idUsuario' => $idUsuario,
+                                ':idAmigo'=> $idAmigo
+                                ];
+        $result = $this->storage->query($add_friend_query,$add_friend_params);
+
+        return $result;
+
+    }
+
+    public function getFriendsByUserId($idUsuario){
+        $result = [];
+        $get_friends_query = 'SELECT * FROM tusuarios WHERE idUsuario IN (SELECT idAmigo FROM tamigos WHERE idUsuario = :idUsuario)';
+
+        $get_friends_params = [':idUsuario' => $idUsuario];
+
+        $result = $this->storage->query($get_friends_query,$get_friends_params);
+
+        return $result;
+    }
+
+    public function deleteFriend($idUsuario, $idAmigo){
+        $result = [];
+        $delete_friend_query = 'DELETE FROM tamigos WHERE idUsuario = :idUsuario AND idAmigo = :idAmigo';
+        $delete_friend_params = [":idUsuario" => $idUsuario, ':idAmigo' => $idAmigo];
+
+        $result = $this->storage->query($delete_friend_query,$delete_friend_params);
+
+        return $result;
+    }
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
 //En esta parte llegan los parámetros enviados desde el controllador de php.

@@ -184,6 +184,71 @@ class AppController {
         }
     }
 
+    public function addFriend($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if(array_key_exists('idUsuario', $data) && array_key_exists('idAmigo', $data)){
+            $idUsuario = $data['idUsuario'];
+            $idAmigo = $data['idAmigo'];
+        }else{
+             $result = [
+                        'error' => true,
+                        'message' => 'iu no need friends!'
+            ];
+            return $result;
+        }
+
+        if(isset($idUsuario,$idAmigo)){
+            $result = $this->AppService->addFriend($idUsuario, $idAmigo);
+        }else{
+            $result = [
+                        'error' => true,
+                        'message' => 'iu no need friends!'
+            ];
+        }
+        return $result;
+    }
+
+    public function getFriendsByUserId($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if(array_key_exists('idUsuario', $data)){
+            $idUsuario = $data['idUsuario'];
+        }else{
+            //fk off
+        }
+
+        if(isset($idUsuario)){
+            $result = $this->AppService->getFriendsByUserId($idUsuario);
+        }else{
+            //fk off x2
+        }
+
+        return $result;
+    }
+
+    public function deleteFriend($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if(array_key_exists('idAmigo', $data) && array_key_exists('idUsuario', $data)){
+            $idAmigo = $data['idAmigo'];
+            $idUsuario = $data['idUsuario'];
+        }else{
+            //nevaaa!
+        }
+
+        if(isset($idUsuario,$idAmigo)){
+            $result = $this->AppService->deleteFriend($idUsuario, $idAmigo);
+        }else{
+            //chissss
+        }
+
+        return $result;
+    }
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 2
 //se recibe el onjeto enviado desde el servicio de angular y se descompone,

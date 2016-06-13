@@ -89,6 +89,31 @@ $app->post(
 );
 
 
+$app->post('/app/addFriend',
+    function($request, $response){
+        $appController = new App\Controllers\AppController();
+        $result = $appController->addFriend($request);
+        return $response->withJson($result);
+    }
+);
+
+$app->post('/app/getFriendsByUserId',
+    function($request, $response){
+        $appController = new App\Controllers\AppController();
+        $result = $appController->getFriendsByUserId($request);
+        return $response->withJson($result);
+    }
+);
+
+$app->post('/app/deleteFriend',
+    function($request, $response){
+        $appController = new App\Controllers\AppController();
+        $result = $appController->deleteFriend($request);
+        return $response->withJson($result);
+    }
+);
+
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 1
 //Manera en la cual se comunica el servicio de angular con el controlador de PHP
