@@ -71,13 +71,24 @@ $app->post(
 );
 
 $app->post(
-    '/app/test',
+    '/app/addCriteriaArray',
     function($request, $response){
         $appController = new App\Controllers\AppController();
-        $result = $appController->test($request);
+        $result = $appController->addCriteriaArray($request);
         return $response->withJson($result);
     }
 );
+
+$app->post(
+    '/app/deleteCriteriaArray',
+    function($request, $response){
+        $appController = new App\Controllers\AppController();
+        $result = $appController->deleteCriteriaArray($request);
+        return $response->withJson($result);
+    }
+);
+
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 1
 //Manera en la cual se comunica el servicio de angular con el controlador de PHP

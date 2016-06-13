@@ -134,7 +134,7 @@ class AppController {
         }
     }
 
-    public function test($request){
+    public function addCriteriaArray($request){
         $result = [];
         $data = $request->getParsedBody();
         $listaCriterios = [];
@@ -154,7 +154,7 @@ class AppController {
         }
 
         if(isset($idUsuario) && count($listaCriterios) > 0){
-            $result = $this->AppService->test($idUsuario, $listaCriterios);
+            $result = $this->AppService->addCriteriaArray($idUsuario, $listaCriterios);
             return $result;
         }else{
             $result = [
@@ -165,6 +165,23 @@ class AppController {
 
         }
         
+    }
+
+    public function deleteCriteriaArray($request){
+        $result = [];
+        $data = $request->getParsedBody();
+        $listaIds = [];
+
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]['idCriterio'] != null ) {
+                array_push($listaIds, $data[$i]['idCriterio']);
+            }
+        }
+
+        if(count($listaIds) > 0){
+            $result = $this->AppService->deleteCriteriaArray($listaIds);
+            return $result;
+        }
     }
 
 //-------------------------BACK-END---------------------------------------------

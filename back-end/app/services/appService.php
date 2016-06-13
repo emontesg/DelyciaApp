@@ -70,7 +70,7 @@ class AppService {
         return $result;   
     }
 
-    public function test($idUsuario, $listaCriterios){
+    public function addCriteriaArray($idUsuario, $listaCriterios){
         $result = [];
         $test_query = 'INSERT INTO tcriterios (TipoComida, idUsuario) VALUES (:TipoComida,:idUsuario)';
 
@@ -87,6 +87,16 @@ class AppService {
         
         return $result;
 
+    }
+    public function deleteCriteriaArray($listaIds){
+        $result = [];
+        $delete_query = 'DELETE FROM tcriterios WHERE idCriterio = :idCriterio';
+        for ($i=0; $i < count($listaIds); $i++) {         
+            $delete_params = [':idCriterio' => $listaIds[$i]];  
+            $result = $this->storage->query($delete_query,$delete_params);
+        }
+
+        return $result;
     }
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
