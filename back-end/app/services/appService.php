@@ -106,6 +106,7 @@ class AppService {
                         ":idUsuario" =>$idUsuario
                     ];
         $result = $this->storage->query($remove_query, $remove_params);
+        $result = $remove_params;
         return $result;
 
     }

@@ -1,14 +1,13 @@
 var DelyciaConstants = require('./../delyciaConstants');
 
 function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope) {
+	
 	$scope.platilloId = $stateParams.platilloId;
-
 	$scope.platillos = DelyciaConstants.PLATILLOS;
 	$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
 	$scope.realId = ContentfulService.dishes.items[$scope.platilloId].sys.id;
 	$scope.myFavoritesList = ContentfulService.userFavorites;
 	$scope.user = localStorage.getItem('userLogged');
-
 
 	$scope.addToFavorites = function(){
 		ContentfulService.getAllFavorites();
@@ -34,6 +33,26 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		}
 	};
 	$scope.addToFavorites();
-}
 
+	$scope.removeFavorites = function(pidPlatillo){
+
+		if($scope.myFavoritesList.length > 0){
+			for(var i = 0; i < $scope.myFavoritesList.length; i++){
+				if($scope.myFavoritesList[i].sys.id === pidPlatillo){
+					$scope.myFavoritesList.splice(i,1);
+					i = $scope.myFavoritesList.length;
+
+					var obj ={
+							idPlatillo : pidPlatillo,
+							idUsuario : $scope.user
+					};
+				RequestService.removeFavorite(obj).then(function (response){
+				}, function (reject){
+        		});
+        		ContentfulService.getAllFavorites();
+			}
+		}
+	}
+}
+}
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', FavoritesController];
