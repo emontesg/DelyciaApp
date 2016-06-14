@@ -166,7 +166,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       url: '/friends',
       views: {
         'menuContent': {
-          templateUrl: 'templates/friends.html'
+          templateUrl: 'templates/friends.html',
+          controller: 'FriendsCtrl'
         }
       }
     })

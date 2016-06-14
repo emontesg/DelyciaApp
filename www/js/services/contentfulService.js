@@ -42,42 +42,6 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 							status: getState(items[i])
 						});
 
-				dishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:1, 
-							distance: '5 kms', 
-							status: 'ABIERTO'});
-
-				dishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:1, 
-							distance: '5 kms', 
-							status: 'ABIERTO'});
-
-				dishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:1, 
-							distance: '5 kms', 
-							status: 'ABIERTO'});
-
-				dishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:1, 
-							distance: '5 kms', 
-							status: 'ABIERTO'});
-
 				// images.push(imgLink);
 			}
 

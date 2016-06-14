@@ -63,6 +63,13 @@ li {
     
 }
 
+.item-divider.black
+{
+    color: white;
+    background-color: black;
+    border: none;
+}
+
 .image-background 
 {
     position: absolute;
