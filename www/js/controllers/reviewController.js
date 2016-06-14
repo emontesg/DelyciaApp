@@ -9,8 +9,10 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 					 {id: 2, active: false},
 					 {id: 3, active: false},
 					 {id: 4, active: false}];
+	$scope.heartCount = 0;
 
 	$scope.onHeartClick = function(id){
+		$scope.heartCount = id + 1;
 		for(var i = 0, l = $scope.hearts.length; i < l; i++)
 		{
 			if(i <= id)
@@ -40,14 +42,24 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	// });
 
 	$scope.getAllReviews = function(){
-		var exist = false;
 		RequestService.getAllReviews($scope.realId).then(function (response){
             $scope.allReviews = response.data;
-            console.log($scope.allReviews);
             }, function (reject){
         });
     };
     $scope.getAllReviews();
+
+    $scope.addReview = function(pcomentario){
+    	var obj ={
+    		idPlatillo : $scope.realId,
+    		rating : $scope.heartCount,
+    		comentario : pcomentario,
+    		idUsuario : $scope.user,
+    		visible : 0
+    	};
+    	$scope.allReviews.push(obj);
+    	RequestService.addReview(obj);
+    };
 
 }
 

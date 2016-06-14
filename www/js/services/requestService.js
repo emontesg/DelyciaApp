@@ -63,7 +63,22 @@ var RequestService = function($http, $location, $rootScope){
             if (data) {
                 return $http.post(route, data);
             }
+        },
+
+        addReview : function (obj){
+            var route = url + backEnd + 'addReview';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                rating : obj.rating,
+                comentario : obj.comentario,
+                idUsuario : obj.idUsuario,
+                visible : obj.visible
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
         }
+
 
     };
 
