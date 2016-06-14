@@ -44,6 +44,17 @@ var RequestService = function($http, $location, $rootScope){
             }
         },
 
+        removeFavorite : function(obj){
+            var route = url + backEnd + 'removeFavorite';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                idUsuario : obj.idUsuario
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
         getAllReviews : function(idPlatillo){
             var route = url + backEnd + 'getAllReviews';
             data = {
@@ -53,7 +64,6 @@ var RequestService = function($http, $location, $rootScope){
                 return $http.post(route, data);
             }
         }
-
 
     };
 
