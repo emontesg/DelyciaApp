@@ -29,17 +29,21 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordo
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
     $cordovaFacebook.login(["public_profile", "email", "user_friends"])
-    .then(function(success) {
-      // { id: "634565435",
-      //   lastName: "bob"
-      //   ...
-      // }
-    }, function (error) {
-      // error
-    });
+   .then(function(success) {
+     if (success.authResponse) {
+              facebookConnectPlugin.api('/me', null,
+                  function(response) {
+                      alert('Good to see you, ' +
+                          response.email + response.name + '.');
+                          console.log(response);
+                  });
+                
+
+          }
+   }, function (error) {
+     // error
+   });
   };
 }
 module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', '$cordovaOauth', LoginController];

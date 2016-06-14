@@ -18,6 +18,7 @@ var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
 var reviewController = require('./controllers/reviewController');
+var friendsController = require('./controllers/friendsController');
 
 var contentfulService = require('./services/contentfulService');
 var preloaderService = require('./services/preloaderService');
@@ -48,7 +49,7 @@ app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
 app.controller('ReviewCtrl', reviewController);
-
+app.controller('FriendsCtrl', friendsController);
 
 app.factory('ContentfulService',contentfulService);
 app.factory('PreloaderService', preloaderService);
@@ -164,7 +165,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       url: '/friends',
       views: {
         'menuContent': {
-          templateUrl: 'templates/friends.html'
+          templateUrl: 'templates/friends.html',
+          controller: 'FriendsCtrl'
         }
       }
     })
