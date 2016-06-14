@@ -775,6 +775,23 @@ li {
     cursor: pointer;
 }
 
+.splash-container
+{
+    position: relative;
+    margin: 50px 0 0 0;
+}
+
+.splash-start-button
+{
+    color: white;
+    cursor: pointer;
+}
+
+.splash-header-bar
+{
+    display:none;
+}
+
 .fade.ng-hide {
   opacity: 0;
 }

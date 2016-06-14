@@ -1,12 +1,9 @@
-function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, $ionicLoading) {
-	$ionicLoading.show();
+function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService) {
 	var type = parseInt($stateParams.type);
 
 	$scope.showSearchButton = type === 0 ? true : false;
-
 	$scope.hasReview = false;
 
-	$scope.delyciaBanner = 'img/158453881.png';
 	if(contentfulService.mainDishes.length === 0)
 	{
 		$scope.platillos = [{id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''}];
@@ -14,16 +11,13 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	else if(type === 0)
 	{
 		$scope.platillos = contentfulService.mainDishes;
-		$ionicLoading.hide();
 	}
 	else
 	{
 		$scope.platillos = contentfulService.searchDishes;
-		$ionicLoading.hide();
 	}
 
 	$scope.dishes = [];
-	// $scope.currentImageIndex = 0;
 
 	var initialSlide = type >= 2 ? type-2 : 0;
 
@@ -38,7 +32,10 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	$scope.$on('ready',function(data,items){
 		//console.log(items);
 		$scope.platillos = items;
-		$ionicLoading.hide();
+	});
+
+	$scope.$on('error', function(data) {
+
 	});
 
 	$scope.infoEnable = true;
@@ -49,4 +46,4 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	}
 }
 
-module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService', '$ionicLoading', PlatillosController];
+module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService', PlatillosController];

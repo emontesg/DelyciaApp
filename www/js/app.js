@@ -19,6 +19,7 @@ var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
 var reviewController = require('./controllers/reviewController');
 var friendsController = require('./controllers/friendsController');
+var splashController = require('./controllers/splashController');
 
 var contentfulService = require('./services/contentfulService');
 var preloaderService = require('./services/preloaderService');
@@ -50,6 +51,7 @@ app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
 app.controller('ReviewCtrl', reviewController);
 app.controller('FriendsCtrl', friendsController);
+app.controller('SplashCtrl', splashController);
 
 app.factory('ContentfulService',contentfulService);
 app.factory('PreloaderService', preloaderService);
@@ -91,6 +93,16 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
+
+    .state('app.splash', {
+      url: '/splash',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/splash.html',
+          controller: 'SplashCtrl'
+        }
+      }
+    })
 
   .state('app.search', {
     url: '/search/:platilloId',
@@ -180,7 +192,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/platillos/0');
+  $urlRouterProvider.otherwise('/app/splash');
   $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
   // $compileProvider.imgSrcSanitizationWhitelist('img/');
 });
