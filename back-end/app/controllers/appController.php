@@ -14,7 +14,44 @@ class AppController {
     public function getAll(){
         $result = $this->AppService->getAll();
         return $result;
-    }   
+    }
+		public function loginUser($request){
+			$result = [];
+				$data = $request->getParsedBody();
+
+			if (array_key_exists("id", $data)) {
+						$id = $data["id"];
+				}else {
+						$result = [
+								"error" => true,
+								"message" => "The idUser data field is missing."
+						];
+						return $result;
+				}
+
+				if (array_key_exists("name", $data)) {
+						$name = $data["name"];
+				}else {
+						$result = [
+								"error" => true,
+								"message" => "The name user data field is missing."
+						];
+						return $result;
+				}
+				$last_name = $data["last_name"];
+				$email = $data["email"];
+
+				//Server's date
+
+				if (isset($id, $name)) {
+						$result = $this->AppService->loginUser($id, $name, $last_name, $email);
+						return $result;
+				} else {
+						$result['error'] = true;
+						$result['message'] = 'You must send all the information required';
+				}
+				return $result;
+		}   
 
     public function addToFavorites($request){
     	$result = [];
@@ -44,11 +81,11 @@ class AppController {
 
         if (isset($idPlatillo, $idUsuario, $fechaHora)) {
             $result = $this->AppService->addToFavorites($idPlatillo, $idUsuario, $fechaHora);
-            return $result; 
+            return $result;
         } else {
             $result['error'] = true;
             $result['message'] = 'You must send all the information required';
-        } 
+        }
         return $result;
     }
 //-------------------------BACK-END---------------------------------------------
@@ -112,11 +149,11 @@ class AppController {
 
         if (isset($idPlatillo, $rating, $comentario, $idUsuario, $visible)) {
             $result = $this->AppService->addReview($idPlatillo, $rating, $comentario, $idUsuario, $visible);
-            return $result; 
+            return $result;
         } else {
             $result['error'] = true;
             $result['message'] = 'You must send all the information required';
-        } 
+        }
 
     }
 
@@ -137,23 +174,23 @@ class AppController {
         if (isset($idPlatillo)) {
             $result = $this->AppService->getAllReviews($idPlatillo);
         } else {
-            $result = [ 
+            $result = [
                 'error' => true,
                 'message' => "We couldn't find the requested reviews."
             ];
         }
         return $result;
-    }   
+    }
 
     public function getAllFavorites($request){
         $result = [];
         $data = $request->getParsedBody();
         $idUsuario = $data['idUsuario'];
-        
+
         if (isset($idUsuario)) {
             $result = $this->AppService->getAllFavorites($idUsuario);
         } else {
-            $result = [ 
+            $result = [
                 'error' => true,
                 'message' => "We couldn't find the requested favorites."
             ];
@@ -186,10 +223,10 @@ class AppController {
 
         if (isset($idPlatillo, $idUsuario)) {
             $result = $this->AppService->removeFavorites($idPlatillo, $idUsuario);
-            return $result; 
+            return $result;
         } else {
             $result['error'] = true;
             $result['message'] = 'You must send all the information required';
-        } 
+        }
     }
 }

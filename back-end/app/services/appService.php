@@ -28,6 +28,26 @@ class AppService {
         }
         return $result;
     }
+		public function loginUser($id, $name, $last_name, $email){
+		$result = [];
+		$get_all_query = "SELECT * FROM tusuarios WHERE idUsuario = :id";
+		$getAll_params = [
+										":id" =>$id,
+										":name" =>$name,
+										":last_name" =>$last_name,
+										":email" =>$email
+								];
+		$result = $this->storage->query($get_all_query, $getAll_params);
+		if (count($result['data'] > 0)) {
+			$add_user_query = "INSERT INTO Tusuarios (idUsuario, nombre, apellido, email) VALUES (:id, :name, :last_name, :email)";
+			$result = $this->storage->query($add_user_query, $getAll_params);
+			$result['message'] = "user insert";
+		} else {
+			$result['message'] = "No user insert";
+			return $result;
+		}
+
+}
 
 
 
