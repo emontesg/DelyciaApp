@@ -1,5 +1,5 @@
 var DelyciaConstants = require('./../delyciaConstants');
-function ReviewController($scope, $stateParams, contentfulService, RequestService) {
+function ReviewController($scope, $stateParams, contentfulService, RequestService, $rootScope) {
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.realId = contentfulService.dishes.items[$scope.platilloId].sys.id;
 	$scope.allReviews = [];
@@ -36,6 +36,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.getAllReviews();
 
     $scope.addReview = function(pcomentario){
+        $scope.allReviews = [];
     	var obj ={
     		idPlatillo : $scope.realId,
     		rating : $scope.heartCount,
@@ -43,8 +44,10 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		idUsuario : $scope.user,
     		visible : 0
     	};
-    	$scope.allReviews.push(obj);
-    	RequestService.addReview(obj);
+        if(obj !== null){
+            $scope.allReviews.push(obj);
+            RequestService.addReview(obj);
+        }
     };
 
     $scope.calculateAverageRating = function(){
@@ -65,4 +68,4 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', ReviewController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', '$rootScope', ReviewController];

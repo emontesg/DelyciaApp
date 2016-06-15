@@ -28,6 +28,8 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		}
 
 		if(exist === false){
+			console.log("here i am");
+			console.log(obj);
 			RequestService.addFavorite(obj);
 			$scope.myFavoritesList.push(ContentfulService.dishes.items[$scope.platilloId]);
 		}
