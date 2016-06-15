@@ -26,24 +26,10 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 		}
 	};
 
-	// if(contentfulService.mainDishes.length === 0)
-	// {
-	// 	$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
-
-	// }
-	// else
-	// {
-	// 	$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-	// }
-	
-
-	// $scope.$on('ready',function(data,items){
-	// 	$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-	// });
-
 	$scope.getAllReviews = function(){
 		RequestService.getAllReviews($scope.realId).then(function (response){
             $scope.allReviews = response.data;
+             $scope.calculateAverageRating()
             }, function (reject){
         });
     };
@@ -59,6 +45,22 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     	};
     	$scope.allReviews.push(obj);
     	RequestService.addReview(obj);
+    };
+
+    $scope.calculateAverageRating = function(){
+    	if($scope.allReviews !== null){
+    		var suma = 0;
+    		var promedio = 0;
+    		var cant = $scope.allReviews.length;
+    		var num = 0;
+
+    		for(var i = 0; i < $scope.allReviews.length; i++){
+    			num = parseInt($scope.allReviews[i].rating);
+    			suma = suma + num;
+    		}
+    		promedio = Math.round(suma / cant);
+    	}
+    	return promedio;
     };
 
 }

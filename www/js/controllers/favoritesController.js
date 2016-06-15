@@ -49,7 +49,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 				RequestService.removeFavorite(obj).then(function (response){
 				}, function (reject){
         		});
-        		ContentfulService.getAllFavorites();
 			}
 		}
 	}
