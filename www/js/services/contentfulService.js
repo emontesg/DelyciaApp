@@ -153,10 +153,10 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
             	if(favoritesList !== null){
             		for (var i = 0; i< favoritesList.length; i++){
             			for(var j = 0; j < self.dishes.items.length; j++){
-            				if(favoritesList[i].idPlatillo === self.dishes.items[j].sys.id){
+            				if(favoritesList[i].idPlato === self.dishes.items[j].sys.id){
             					if(self.userFavorites !== null){
             						for (var x = 0; x < self.userFavorites.length; x++) {
-            							if(favoritesList[i].idPlatillo === self.userFavorites[x].sys.id){
+            							if(favoritesList[i].idPlato === self.userFavorites[x].sys.id){
             								exist = true;
             								x = self.userFavorites.length;
             							}

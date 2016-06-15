@@ -23,6 +23,7 @@ var RequestService = function($http, $location, $rootScope){
         },
 
         addFavorite : function(obj){
+            console.log("RequestService");
             var route = url + backEnd + 'addFavorite';
             data = {
                 idPlatillo : obj.idPlatillo,
