@@ -24,8 +24,7 @@ var splashController = require('./controllers/splashController');
 var contentfulService = require('./services/contentfulService');
 var preloaderService = require('./services/preloaderService');
 
-var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions',
-  'ionic.ion.imageCacheFactory']);
+var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -69,7 +68,7 @@ app.factory('PreloaderService', preloaderService);
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
     $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|chrome-extension):/);
 
     $ionicConfigProvider.scrolling.jsScrolling(false);
 

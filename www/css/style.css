@@ -539,6 +539,7 @@ li {
     display: flex;
     border-radius: 3px;
     font-size: 3.2vw;
+    text-decoration: none;
 }
 
 .restaurant-scroll
