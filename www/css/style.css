@@ -238,6 +238,7 @@ li {
     height: 13vw;
     background-image: url("../img/plus-icon2.svg");
     background-size: contain;
+    background-repeat: no-repeat;
     position: absolute;
     top: 38vw;
     left: 80vw;
@@ -247,6 +248,7 @@ li {
 {
     background-image: url("../img/plus-icon.svg");
     background-size: contain;
+    background-repeat: no-repeat;
     cursor:pointer;
 }
 
@@ -256,6 +258,7 @@ li {
     height: 13vw;
     background-image: url("../img/zoom-icon2.svg");
     background-size: contain;
+    background-repeat: no-repeat;
     position: absolute;
     top: 53vw;
     left: 80vw;
@@ -265,6 +268,7 @@ li {
 {
     background-image: url("../img/zoom-icon.svg");
     background-size: contain;
+    background-repeat: no-repeat;
     cursor:pointer;
 }
 
@@ -784,13 +788,31 @@ li {
 
 .splash-start-button
 {
-    color: white;
     cursor: pointer;
+    background-color: white;
+    position: absolute;
+    padding: 2vw 3vw;
+    top: 85vw;
+    right: 40vw;
+    border-radius: 2px;
+    font-size: 3vw;
 }
 
 .splash-header-bar
 {
     display:none;
+}
+
+.splash-background
+{
+    background-image: url('../img/158453881.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
 }
 
 .fade.ng-hide {
