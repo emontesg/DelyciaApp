@@ -3,7 +3,7 @@ var contentful = require('contentful');
 function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory){
 	var self = this;
 	var platos = [];
-	var user = localStorage.getItem('userLogged');
+	var user = localStorage.getItem('idUser');
 	self.dishes = [];
 	self.mainDishes = [];
 	self.total = 0;
@@ -27,8 +27,7 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 			var index = 0;
 			var items = entries.items;
 			var images = [];
-			for(var i = 0, l = items.length; i < l; i++)
-			{	
+			for(var i = 0, l = items.length; i < l; i++){	
 
 				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
@@ -39,9 +38,11 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: getState(items[i])
-						});
+							status: getState(items[i]),
+							idContentful:items[i].sys.id
+						}); 
 
+				//console.log(dishes); 
 				// images.push(imgLink);
 			}
 
@@ -55,8 +56,7 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 			self.getAllFavorites();
 		});
 
-	self.getDishJson = function(index)
-	{
+	self.getDishJson = function(index){
 		var dish = self.dishes.items[index];
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
@@ -148,24 +148,29 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 
 	self.getAllFavorites = function(){
 		var exist = false;
+
 		RequestService.getAllFavorites(user).then(function (response){
             var favoritesList = response.data;
             	if(favoritesList !== null){
             		for (var i = 0; i< favoritesList.length; i++){
             			for(var j = 0; j < self.dishes.items.length; j++){
             				if(favoritesList[i].idPlato === self.dishes.items[j].sys.id){
+            				
             					if(self.userFavorites !== null){
+            				
             						for (var x = 0; x < self.userFavorites.length; x++) {
-            							if(favoritesList[i].idPlato === self.userFavorites[x].sys.id){
+            						
+            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){
             								exist = true;
             								x = self.userFavorites.length;
             							}
+            			
             						}
             						if(exist === false){
-            							self.userFavorites.push(self.dishes.items[j]);
+            							self.userFavorites.push(self.mainDishes[j]);
             						}
             					}else{
-            						self.userFavorites.push(self.dishes.items[j]);
+            						self.userFavorites.push(self.mainDishes[j]);
             					}
              				}
             			}
