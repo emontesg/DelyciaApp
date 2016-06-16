@@ -10,6 +10,8 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
   // Form data for the login modal
   $scope.loginData = {};
 
+  $scope.islogged = window.localStorage.getItem("idUser") !== null;
+
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
@@ -23,7 +25,10 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
   };
   $scope.logout = function() {
     facebookConnectPlugin.logout(function(success){
+      window.localStorage.clear();
+      $scope.islogged = false;
       alert("logOut");
+      $scope.closeLogin();
     }, function (failure){
       console.log(failure);
     });
@@ -42,6 +47,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
        facebookConnectPlugin.api('/me?fields=id,email,name,last_name', null,
            function(response) {
              window.localStorage.setItem("idUser", response.id);
+             $scope.islogged = true;
              //console.log(window.localStorage.getItem("idUser"));
              console.log(response);
              var obj = {
@@ -52,6 +58,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
             };
             console.log(obj);
             RequestService.loginUser(obj);
+            $scope.closeLogin();
            });
 
           }
