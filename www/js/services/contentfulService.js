@@ -148,12 +148,9 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 
 	self.getAllFavorites = function(){
 		var exist = false;
-
 		RequestService.getAllFavorites(user).then(function (response){
             var favoritesList = response.data;
             	if(favoritesList !== null){
-            		console.log("La lista de la bd trae algo");
-            		console.log(favoritesList);
             		for (var i = 0; i< favoritesList.length; i++){
             			for(var j = 0; j < self.mainDishes.length; j++){
             				if(favoritesList[i].idPlato === self.mainDishes[j].idContentful){

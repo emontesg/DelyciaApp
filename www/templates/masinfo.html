@@ -7,7 +7,7 @@
   			<div class="masinfo-menu-item">VER M&Aacute;S SOBRE</div>
   			<div class="masinfo-menu-subitem">{{currentPlatillo.restaurant}}</div>
   		</div>
-  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})">
+  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})" ng-click = "addFavoriteDish()">
   			<div class="masinfo-menu-item">SALVAR PLATO</div>
   			<div class="masinfo-menu-subitem">A TUS FAVORITOS</div>
   		</div>

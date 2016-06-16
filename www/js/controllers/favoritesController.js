@@ -5,31 +5,35 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.platillos = DelyciaConstants.PLATILLOS;
 	$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
-	$scope.realId = ContentfulService.mainDishes[$scope.platilloId].idContentful;
+	$scope.realId = 0;
 	$scope.myFavoritesList = ContentfulService.userFavorites;
 	$scope.user = localStorage.getItem('idUser');
-
+	ContentfulService.getAllFavorites();
+	
 	$scope.addToFavorites = function(){
 		ContentfulService.getAllFavorites();
-		var exist = false;
-		var obj = {
-				idUsuario : $scope.user,
-				idPlatillo : $scope.realId
-		};
+		if($scope.platilloId != -1){
+			$scope.realId = ContentfulService.mainDishes[$scope.platilloId].idContentful;
+			var exist = false;
+			var obj = {
+					idUsuario : $scope.user,
+					idPlatillo : $scope.realId
+			};
 
-		if($scope.myFavoritesList.length > 0){
-			for(var i = 0; i < $scope.myFavoritesList.length; i++){
-				if(obj.idPlatillo === $scope.myFavoritesList[i].idContentful){
-					exist = true;
-					add = i;
-					i = $scope.myFavoritesList.length;
+			if($scope.myFavoritesList.length > 0){
+				for(var i = 0; i < $scope.myFavoritesList.length; i++){
+					if(obj.idPlatillo === $scope.myFavoritesList[i].idContentful){
+						exist = true;
+						add = i;
+						i = $scope.myFavoritesList.length;
+					}
 				}
 			}
-		}
 
-		if(exist === false){
-			RequestService.addFavorite(obj);
-			$scope.myFavoritesList.push(ContentfulService.mainDishes[$scope.platilloId]);
+			if(exist === false){
+				RequestService.addFavorite(obj);
+				$scope.myFavoritesList.push(ContentfulService.mainDishes[$scope.platilloId]);
+			}
 		}
 	};
 	$scope.addToFavorites();

@@ -2,7 +2,7 @@ var RequestService = function($http, $location, $rootScope){
 
     var self = this;
     //var url = $location.absUrl(),
-    var url = 'http://localhost/',
+    var url = 'http://localhost:8888/',
     backEnd = 'delycia/back-end/app/';
 
     self.myPublicFunction = function()
@@ -23,7 +23,6 @@ var RequestService = function($http, $location, $rootScope){
         },
 
         addFavorite : function(obj){
-            console.log("RequestService");
             var route = url + backEnd + 'addFavorite';
             data = {
                 idPlatillo : obj.idPlatillo,
