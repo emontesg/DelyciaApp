@@ -5,12 +5,10 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.platillos = DelyciaConstants.PLATILLOS;
 	$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
-	//////
 	$scope.realId = ContentfulService.mainDishes[$scope.platilloId].idContentful;
-	//////
 	$scope.myFavoritesList = ContentfulService.userFavorites;
 	$scope.user = localStorage.getItem('idUser');
-	console.log($scope.myFavoritesList);
+
 	$scope.addToFavorites = function(){
 		ContentfulService.getAllFavorites();
 		var exist = false;
@@ -22,7 +20,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		if($scope.myFavoritesList.length > 0){
 			for(var i = 0; i < $scope.myFavoritesList.length; i++){
 				if(obj.idPlatillo === $scope.myFavoritesList[i].idContentful){
-					console.log('holi');
 					exist = true;
 					add = i;
 					i = $scope.myFavoritesList.length;
@@ -31,7 +28,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		}
 
 		if(exist === false){
-			
 			RequestService.addFavorite(obj);
 			$scope.myFavoritesList.push(ContentfulService.mainDishes[$scope.platilloId]);
 		}
