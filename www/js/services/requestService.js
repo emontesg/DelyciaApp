@@ -2,17 +2,17 @@ var RequestService = function($http, $location, $rootScope){
 
     var self = this;
     //var url = $location.absUrl(),
-    var url = 'http://localhost:8888/',
+    var url = 'http://localhost/',
     backEnd = 'delycia/back-end/app/';
 
     self.myPublicFunction = function()
     {
-        myPrivateFunction();  
+        myPrivateFunction();
     };
-    
+
     function myPrivateFunction()
     {
-        
+
     }
 
     var serviceFunctions = {
@@ -25,7 +25,7 @@ var RequestService = function($http, $location, $rootScope){
         addFavorite : function(obj){
             console.log("RequestService");
             var route = url + backEnd + 'addFavorite';
-            data = {   
+            data = {
                 idPlatillo : obj.idPlatillo,
                 idUsuario : obj.idUsuario
                 };
@@ -33,6 +33,20 @@ var RequestService = function($http, $location, $rootScope){
             if (data) {
                 return $http.post(route, data).then(function(response){});
             }
+        },
+        loginUser : function(obj){
+            var route = url + backEnd + 'loginUser';
+            data = {
+                id : obj.id,
+                name : obj.name,
+                last_name : obj.last_name,
+                email: obj.email
+
+                };
+                alert('aqui estoy');
+                console.log(data);
+                return $http.post(route, data);
+
         },
 
         getAllFavorites : function(idUsuario){

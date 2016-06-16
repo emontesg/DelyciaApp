@@ -1,5 +1,5 @@
-function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordovaOauth) {
-  
+function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, RequestService) {
+
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -21,6 +21,13 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordo
   $scope.closeLogin = function() {
     $scope.modal.hide();
   };
+  $scope.logout = function() {
+    facebookConnectPlugin.logout(function(success){
+      alert("logOut");
+    }, function (failure){
+      console.log(failure);
+    });
+  };
 
   // Open the login modal
   $scope.login = function() {
@@ -32,18 +39,25 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordo
     $cordovaFacebook.login(["public_profile", "email", "user_friends"])
    .then(function(success) {
      if (success.authResponse) {
-              facebookConnectPlugin.api('/me', null,
-                  function(response) {
-                      alert('Good to see you, ' +
-                          response.email + response.name + '.');
-                          console.log(response);
-                  });
-                
+       facebookConnectPlugin.api('/me?fields=id,email,name,last_name', null,
+           function(response) {
+             window.localStorage.setItem("idUser", response.id);
+             //console.log(window.localStorage.getItem("idUser"));
+             console.log(response);
+             var obj = {
+                id : response.id,
+                name : response.name,
+                last_name : response.last_name,
+                email : response.email
+            };
+            console.log(obj);
+            RequestService.loginUser(obj);
+           });
 
           }
    }, function (error) {
-     // error
+     console.log(error);
    });
   };
 }
-module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', '$cordovaOauth', LoginController];
+module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook','RequestService', LoginController];
