@@ -7,11 +7,11 @@
   			<div class="masinfo-menu-item">VER M&Aacute;S SOBRE</div>
   			<div class="masinfo-menu-subitem">{{currentPlatillo.restaurant}}</div>
   		</div>
-  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})" ng-click = "addFavoriteDish()">
+  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})" ng-show="islogged">
   			<div class="masinfo-menu-item">SALVAR PLATO</div>
   			<div class="masinfo-menu-subitem">A TUS FAVORITOS</div>
   		</div>
-  		<div class="line" ui-sref="app.share({platilloId: {{currentPlatillo.id}}})">
+  		<div class="line" ui-sref="app.share({platilloId: {{currentPlatillo.id}}})" ng-show="islogged">
   			<div class="masinfo-menu-item">COMPARTIR</div>
   			<div class="masinfo-menu-subitem">CON AMIGOS</div>
   		</div>

@@ -6,8 +6,8 @@
     </div>
   </ion-header-bar>
   <ion-content>
-    <button class="button button-block button-positive" ng-click="doLogin()">Log in con Facebook</button>
+    <button ng-show="!islogged" class="button button-block button-positive" ng-click="doLogin()">Log in con Facebook</button>
+    <button ng-show="islogged" class="button button-block" ng-click="logout()">Logout</button>
     <button class="button button-block" ng-click="closeLogin()">Cerrar</button>
-    <button class="button button-block" ng-click="logout()">Logout</button>
   </ion-content>
 </ion-modal-view>

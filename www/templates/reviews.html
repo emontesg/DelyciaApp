@@ -2,16 +2,18 @@
   <ion-content class="no-header" scroll="false">
   	<div class="black-background">
   		<div class="review-content">
-		  	<label class="item item-input">
-	          <textarea placeholder="Comentario" class="review-input" ng-model = "comentario"></textarea>
-	        </label>
-	        <div class="review-rating">
-	        	<div>Calificar:</div>
-				<div class="rating-hearts">
-					<div ng-repeat="heart in hearts" ng-click="onHeartClick($index)" 
-					ng-class="heart.active ? 'ion-ios-heart active' : 'ion-ios-heart'"></div>
+  			<div ng-show="islogged">
+			  	<label class="item item-input">
+		          <textarea placeholder="Comentario" class="review-input" ng-model = "comentario"></textarea>
+		        </label>
+		        <div class="review-rating">
+		        	<div>Calificar:</div>
+					<div class="rating-hearts">
+						<div ng-repeat="heart in hearts" ng-click="onHeartClick($index)" 
+						ng-class="heart.active ? 'ion-ios-heart active' : 'ion-ios-heart'"></div>
+					</div>
+					<div class="review-submit-button" ng-click="addReview(comentario)">Enviar</div>
 				</div>
-				<div class="review-submit-button" ng-click="addReview(comentario)">Enviar</div>
 			</div>
 	        <div class="review-reviews">
 	        	<div class="review-review" ng-repeat = "review in allReviews">

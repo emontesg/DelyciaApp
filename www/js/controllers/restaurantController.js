@@ -8,6 +8,8 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 	var center = null;
 	var restaurant = null;
 
+	$scope.number = '';
+
 	if(contentfulService.dishes.length !== 0)
 	{
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
@@ -15,6 +17,8 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 		var dishes = contentfulService.dishes.items;
 
 		restaurant = dishes[$scope.currentPlatillo.id].fields.restaurante;
+		$scope.number = restaurant.fields.telefono;
+
 		$scope.restaurantDishes = [];
 
 		var restaurantContentfulId = restaurant.sys.id;
@@ -38,12 +42,6 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 	}
 
 	var options = {timeout: 10000, enableHighAccuracy: true};
-
-	$scope.onCallClick = function()
-	{
-		// $window.plugins.CallNumber.callNumber(onSuccess, onError, '88042119', false);
-		window.PhoneCaller.call('22757532', onSuccess, onError);
-	};
 
 	$scope.onDishClick = function(index)
 	{

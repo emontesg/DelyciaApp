@@ -21,7 +21,8 @@
     <ion-content>
       <ion-list>
         <ion-item menu-close ng-click="login()">
-          Login
+          <div ng-show="!islogged">Login</div>
+          <div ng-show="islogged">Logout</div>
         </ion-item>
         <ion-item menu-close class="delycia-menu-item" ui-sref="app.platillos({type: 0})">
           Platillos
@@ -29,10 +30,10 @@
         <ion-item menu-close class="delycia-menu-item" ui-sref="app.favorites({platilloId: -1})">
           Favoritos
         </ion-item>
-        <ion-item menu-close class="delycia-menu-item" ui-sref="app.friends()">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.friends()" ng-show="islogged">
           Amigos
         </ion-item>
-        <ion-item menu-close class="delycia-menu-item" ui-sref="app.configurations()">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.configurations()" ng-show="islogged">
           Configuraciones
         </ion-item>
       </ion-list>

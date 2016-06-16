@@ -1,6 +1,7 @@
 var DelyciaConstants = require('./../delyciaConstants');
 function ReviewController($scope, $stateParams, contentfulService, RequestService, $rootScope) {
 	$scope.platilloId = $stateParams.platilloId;
+    $scope.islogged = window.localStorage.getItem("idUser") !== null;
 	$scope.realId = contentfulService.dishes.items[$scope.platilloId].sys.id;
 	$scope.allReviews = [];
 	$scope.user = localStorage.getItem('userLogged');
