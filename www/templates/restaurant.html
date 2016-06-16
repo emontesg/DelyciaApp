@@ -8,7 +8,7 @@
         <div class="restaurant-header-footer">
           <div class="restaurant-status">{{currentPlatillo.status}} (9PM)</div>
           <div ng-click="loadMap()" ng-class="mapShow ? 'restaurant-distance active' : 'restaurant-distance'"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
-          <div class="restaurant-call" ng-click="onCallClick()">Llamar</div>
+          <a href="tel: {{number}}" class="restaurant-call">Llamar</a>
         </div>
       </div>
       <ion-scroll class="restaurant-scroll">

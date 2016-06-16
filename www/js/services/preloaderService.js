@@ -145,3 +145,4 @@ function PreloaderService( $q, $rootScope ) {
     // Return the factory instance.
     return( Preloader );
 }
+module.exports = ['$q', '$rootScope', PreloaderService];

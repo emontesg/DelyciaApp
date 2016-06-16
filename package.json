@@ -60,7 +60,9 @@
         "APP_ID": "1186835011381116",
         "APP_NAME": "DelyciaApp"
       }
-    }
+    },
+    "cordova-plugin-app-event",
+    "pushwoosh-cordova-plugin"
   ],
   "cordovaPlatforms": [
     "ios",
