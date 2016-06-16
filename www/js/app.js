@@ -23,8 +23,11 @@ var splashController = require('./controllers/splashController');
 
 var contentfulService = require('./services/contentfulService');
 var preloaderService = require('./services/preloaderService');
+var notificationService = require('./services/notificationService');
 
 var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions']);
+
+var platform = '';
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -54,6 +57,7 @@ app.controller('SplashCtrl', splashController);
 
 app.factory('ContentfulService',contentfulService);
 app.factory('PreloaderService', preloaderService);
+app.factory('NotificationService', notificationService);
 ////////////////////WARNING
 // app.config(function($sceProvider) {
 //    // Completely disable SCE.  For demonstration purposes only!
@@ -62,8 +66,6 @@ app.factory('PreloaderService', preloaderService);
 //  });
 // $sce();
 ////////////////////
-
-
 
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
@@ -204,3 +206,74 @@ app.config(function($sceDelegateProvider) {
     'http://images.contentful.com/**'
   ]);
 });
+
+function initPushwoosh() {
+    var pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
+ 
+    if(platform === 'iOS')
+    {
+        //set push notification callback before we initialize the plugin
+      document.addEventListener('push-notification', function(event) {
+                                  //get the notification payload
+                                  var notification = event.notification;
+   
+                                  //display alert to the user for example
+                                  alert(notification.aps.alert);
+                                 
+                                  //clear the app badge
+                                  pushNotification.setApplicationIconBadgeNumber(0);
+                              });
+
+      //initialize the plugin
+      pushNotification.onDeviceReady({pw_appid:"P77614-4AB60"});
+
+      //register for pushes
+      pushNotification.registerDevice(
+          function(status) {
+              var deviceToken = status['deviceToken'];
+              console.warn('registerDevice: ' + deviceToken);
+          },
+          function(status) {
+              console.warn('failed to register : ' + JSON.stringify(status));
+              alert(JSON.stringify(['failed to register ', status]));
+          }
+      );
+       
+      //reset badges on app start
+      pushNotification.setApplicationIconBadgeNumber(0);
+    }
+    else if(platform === 'Android')
+    {
+      //set push notifications handler
+      document.addEventListener('push-notification', function(event) {
+          var title = event.notification.title;
+          var userData = event.notification.userdata;
+                                   
+          if(typeof(userData) != "undefined") {
+              console.warn('user data: ' + JSON.stringify(userData));
+          }
+                                       
+          alert(title);
+      });
+      //initialize Pushwoosh with projectid: "GOOGLE_PROJECT_NUMBER", pw_appid : "PUSHWOOSH_APP_ID". This will trigger all pending push notifications on start.
+      pushNotification.onDeviceReady({ projectid: "572544632214", pw_appid : "P77614-4AB60" });
+
+      //register for pushes
+      pushNotification.registerDevice(
+          function(status) {
+              var pushToken = status;
+              console.warn('push token: ' + pushToken);
+          },
+          function(status) {
+              console.warn(JSON.stringify(['failed to register ', status]));
+          }
+      );
+    }
+}
+
+document.addEventListener('deviceready', function () {
+    // cordova.plugins.notification.local is now available
+    platform = device.platform;
+
+    // initPushwoosh();
+}, false);
