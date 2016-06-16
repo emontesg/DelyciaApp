@@ -91,7 +91,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 
 			self.dishes = entries;
 			self.total = entries.total;
-			// self.getAllFavorites();
+			self.getAllFavorites();
 
 			// $ImageCacheFactory.Cache(images);
 			preloaderService.preloadImages(images).then(firstLoadResolve,
