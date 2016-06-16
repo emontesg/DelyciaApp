@@ -152,19 +152,17 @@ function ContentfulService($rootScope, $sce, RequestService, $ImageCacheFactory)
 		RequestService.getAllFavorites(user).then(function (response){
             var favoritesList = response.data;
             	if(favoritesList !== null){
+            		console.log("La lista de la bd trae algo");
+            		console.log(favoritesList);
             		for (var i = 0; i< favoritesList.length; i++){
-            			for(var j = 0; j < self.dishes.items.length; j++){
-            				if(favoritesList[i].idPlato === self.dishes.items[j].sys.id){
-            				
+            			for(var j = 0; j < self.mainDishes.length; j++){
+            				if(favoritesList[i].idPlato === self.mainDishes[j].idContentful){
             					if(self.userFavorites !== null){
-            				
             						for (var x = 0; x < self.userFavorites.length; x++) {
-            						
             							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){
             								exist = true;
             								x = self.userFavorites.length;
             							}
-            			
             						}
             						if(exist === false){
             							self.userFavorites.push(self.mainDishes[j]);

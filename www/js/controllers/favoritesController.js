@@ -35,10 +35,9 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.addToFavorites();
 
 	$scope.removeFavorites = function(pidPlatillo){
-
 		if($scope.myFavoritesList.length > 0){
 			for(var i = 0; i < $scope.myFavoritesList.length; i++){
-				if($scope.myFavoritesList[i].sys.id === pidPlatillo){
+				if($scope.myFavoritesList[i].idContentful === pidPlatillo){
 					$scope.myFavoritesList.splice(i,1);
 					i = $scope.myFavoritesList.length;
 
@@ -46,12 +45,12 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 							idPlatillo : pidPlatillo,
 							idUsuario : $scope.user
 					};
-				RequestService.removeFavorite(obj).then(function (response){
-				}, function (reject){
-        		});
+					RequestService.removeFavorite(obj).then(function (response){
+					}, function (reject){
+        			});
+				}
 			}
 		}
-	}
-}
+	};
 }
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', FavoritesController];
