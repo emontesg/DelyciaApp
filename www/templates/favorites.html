@@ -16,7 +16,7 @@
     <div class="favorites-content">
       <ion-scroll class="favorites-scroll">
         <ion-list can-swipe="true" show-delete="false">
-          <ion-item-sliding ng-repeat="platillo in platillos">
+          <ion-item-sliding ng-repeat="platillo in myFavoritesList">
             <ion-item class="favorite">
               <div class="favorite-thumbnail"><img ng-src="{{platillo.src}}"></div>
               <div class="favorite-info">
