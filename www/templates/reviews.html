@@ -1,25 +1,72 @@
 <ion-view view-title="Reviews">
-  <ion-content class="no-header" scroll="false">
-  	<div class="black-background">
-  		<div class="review-content">
-		  	<label class="item item-input">
-	          <textarea placeholder="Comentario" class="review-input"></textarea>
-	        </label>
-	        <div class="review-rating">
-	        	<div>Calificar:</div>
+  <ion-nav-bar class="bar-light bar-delycia-white">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+  </ion-nav-bar>
+
+  <ion-content scroll="false">
+  	<div class="review-content">
+  		<div class="review-header">
+  			<div class="review-thumbnail"><img ng-src="{{currentPlatillo.src}}"/></div>
+  			<div class="review-item-info">
+  				<div class="container">
+  				<div class="review-rating">
+					<div class="review-dish-hearts">
+						<div ng-repeat="i in [0,1,2,3,4]" 
+						ng-class="getHeartClass($index, ratingRound)"></div>
+					</div>
+					<div class="rating-number">({{testRating}})</div>
+				</div>
+				<div class="review-item-name">{{currentPlatillo.title}}</div>
+				<div class="review-item-restaurant">{{currentPlatillo.restaurant}}</div>
+				<div ng-click="onTastedButtonClick()" ng-class="makeRating ? 'review-item-button hiding' : 'review-item-button'">¿Ya lo probaste?</div>
+				</div>
+  			</div>
+  		</div>
+  		<div ng-show="!makeRating" class="review-count">221 Reviews</div>
+  		<ion-scroll class="review-scroll" ng-show="!makeRating">
+  		<div class="review-reviews">
+  			<div class="review-review" ng-repeat="review in testReviews track by $index">
+  				<div ng-class="getReviewColor($index)"></div>
+  				<div class="container">
+	  				<div class="review-left-side">
+	  					<div class="review-photo-thumbnail"><img ng-src="{{currentPlatillo.src}}"/></div>
+	  					<div class="rating-hearts">
+							<div ng-repeat="i in [0, 1, 2, 3, 4]" ng-class="getHeartClass($index, review.rating)"></div>
+						</div>
+	  				</div>
+	  				<div class="review-right-side">
+	  					<div class="review-user">{{review.name}}</div>
+	  					<div class="review-comment">{{review.comment}}</div>
+	  					<div class="review-date">{{review.date}}</div>
+	  				</div>
+	  			</div>
+  			</div>
+  		</div>
+  		</ion-scroll>
+  		<div class="review-form" ng-show="makeRating">
+  			<div class="review-form-title">¿Cómo estuvo tu experiencia?</div>
+  			<div class="review-rating">
 				<div class="rating-hearts">
 					<div ng-repeat="heart in hearts" ng-click="onHeartClick($index)" 
-					ng-class="heart.active ? 'ion-ios-heart active' : 'ion-ios-heart'"></div>
+					ng-class="heart.active ? 'ion-heart active' : 'ion-heart'"></div>
 				</div>
-				<div class="review-submit-button">Enviar</div>
 			</div>
-	        <div class="review-reviews">
-	        	<div class="review-review">
-	        		<div class="review-user">user</div>
-	        		<div class="review-comment">comment comment comment comment comment comment</div>
-	        	</div>
+			<label class="item item-input">
+	          <textarea placeholder="Aún si tu experiencia no fue la mejor, danos tu opinión más constructiva :)" class="review-input"></textarea>
+	        </label>
+	        <div class="review-form-footer">
+	        	<div class="return" ng-click="onReturnButtonClick()"><div class="ion-ios-close-outline"></div>Volver</div>
+	        	<div class="submit" ng-click="onSubmitButtonClick()"><div class="ion-ios-checkmark-outline"></div>Enviar</div>
 	        </div>
-		</div>
+  		</div>
   	</div>
 
   </ion-content>
