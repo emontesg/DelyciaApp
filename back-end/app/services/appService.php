@@ -28,27 +28,27 @@ class AppService {
         }
         return $result;
     }
-		public function loginUser($id, $name, $last_name, $email, $pic){
-		$result = [];
-		$get_all_query = "SELECT * FROM tusuarios WHERE idUsuario = :id";
-		$getAll_params = [
-										":id" =>$id,
-										":name" =>$name,
-										":last_name" =>$last_name,
-										":email" =>$email,
-										":pic" =>$pic
-								];
-		$result = $this->storage->query($get_all_query, $getAll_params);
-		if (count($result['data'] > 0)) {
-			$add_user_query = "INSERT INTO Tusuarios (idUsuario, nombre, apellido, email, picture) VALUES (:id, :name, :last_name, :email, :pic)";
-			$result = $this->storage->query($add_user_query, $getAll_params);
-			$result['message'] = "user insert";
-		} else {
-			$result['message'] = "No user insert";
-			return $result;
-		}
+		// public function loginUser($id, $name, $last_name, $email, $pic){
+		// $result = [];
+		// $get_all_query = "SELECT * FROM tusuarios WHERE idUsuario = :id";
+		// $getAll_params = [
+		// 								":id" =>$id,
+		// 								":name" =>$name,
+		// 								":last_name" =>$last_name,
+		// 								":email" =>$email,
+		// 								":pic" =>$pic
+		// 						];
+		// $result = $this->storage->query($get_all_query, $getAll_params);
+		// if (count($result['data'] > 0)) {
+		// 	$add_user_query = "INSERT INTO Tusuarios (idUsuario, nombre, apellido, email, picture) VALUES (:id, :name, :last_name, :email, :pic)";
+		// 	$result = $this->storage->query($add_user_query, $getAll_params);
+		// 	$result['message'] = "user insert";
+		// } else {
+		// 	$result['message'] = "No user insert";
+		// 	return $result;
+		// }
 
-}
+//}
 
 
 
@@ -91,7 +91,7 @@ class AppService {
 
         if(count($validation['data']) > 0){
             //si ya existe el review del usuario
-            $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible 
+            $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible, fecha =:fechaHora
             WHERE idUsuario = :idUsuario and idPlato = :idPlato";
             $result = $this->storage->query($update_review, $review_params);
         }else{
