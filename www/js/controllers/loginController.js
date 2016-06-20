@@ -49,13 +49,14 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
              window.localStorage.setItem("idUser", response.id);
              $scope.islogged = true;
              var picture= response.picture;
+             var pic = picture.data.url;
              console.log(response);
              var obj = {
                 id : response.id,
                 name : response.name,
                 last_name : response.last_name,
                 email : response.email,
-                pic : picture.data.url
+                pic : pic
             };
             console.log(obj);
             RequestService.loginUser(obj);

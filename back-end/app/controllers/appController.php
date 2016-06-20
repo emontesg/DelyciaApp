@@ -41,9 +41,6 @@ class AppController {
 				$last_name = $data["last_name"];
 				$email = $data["email"];
 				$pic = $data["pic"];
-
-				//Server's date
-
 				if (isset($id, $name)) {
 						$result = $this->AppService->loginUser($id, $name, $last_name, $email, $pic);
 						return $result;
