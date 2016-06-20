@@ -12,6 +12,8 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
 
   $scope.islogged = window.localStorage.getItem("idUser") !== null;
 
+  $scope.isMac = window.localStorage.getItem("isMac");
+
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
@@ -26,6 +28,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
   $scope.logout = function() {
     facebookConnectPlugin.logout(function(success){
       window.localStorage.clear();
+      window.localStorage.setItem("isMac", $scope.isMac);
       $scope.islogged = false;
       alert("logOut");
       $scope.closeLogin();
@@ -49,13 +52,14 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
              window.localStorage.setItem("idUser", response.id);
              $scope.islogged = true;
              var picture= response.picture;
+             var pic = picture.data.url;
              console.log(response);
              var obj = {
                 id : response.id,
                 name : response.name,
                 last_name : response.last_name,
                 email : response.email,
-                pic : picture.data.url
+                pic : pic
             };
             console.log(obj);
             RequestService.loginUser(obj);
