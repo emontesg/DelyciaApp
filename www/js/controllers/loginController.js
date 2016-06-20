@@ -44,17 +44,18 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
     $cordovaFacebook.login(["public_profile", "email", "user_friends"])
    .then(function(success) {
      if (success.authResponse) {
-       facebookConnectPlugin.api('/me?fields=id,email,name,last_name', null,
+       facebookConnectPlugin.api('/me?fields=id,email,name,last_name,picture', null,
            function(response) {
              window.localStorage.setItem("idUser", response.id);
              $scope.islogged = true;
-             //console.log(window.localStorage.getItem("idUser"));
+             var picture= response.picture;
              console.log(response);
              var obj = {
                 id : response.id,
                 name : response.name,
                 last_name : response.last_name,
-                email : response.email
+                email : response.email,
+                pic : picture.data.url
             };
             console.log(obj);
             RequestService.loginUser(obj);

@@ -39,11 +39,10 @@ var RequestService = function($http, $location, $rootScope){
                 id : obj.id,
                 name : obj.name,
                 last_name : obj.last_name,
-                email: obj.email
+                email: obj.email,
+                picture: obj.pic
 
                 };
-                alert('aqui estoy');
-                console.log(data);
                 return $http.post(route, data);
 
         },
