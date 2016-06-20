@@ -369,7 +369,7 @@ li {
 
 .favorites-scroll
 {
-    height: 170vw;
+    height: 160vw;
 }
 
 .favorites-title
@@ -832,7 +832,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
 {
     background-color: white;
     /*padding: 3vw;*/
-    display: flex;
+    display: inline-flex;
     margin-bottom: 1vw;
     -webkit-box-shadow: 0px 10px 14px -8px rgba(0,0,0,0.2);
     -moz-box-shadow: 0px 10px 14px -8px rgba(0,0,0,0.2);
@@ -841,7 +841,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
 
 .review-review .container
 {
-    display: flex;
+    display: inline-flex;
     padding: 5vw 2vw;
     width: 97vw;
 }
@@ -876,6 +876,16 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     background-color: #363537;
 }
 
+.review-left-side
+{
+    width: 25vw;
+}
+
+.review-right-side
+{
+    width: 75vw;
+}
+
 .review-photo-thumbnail
 {
     width: 15vw;
@@ -892,6 +902,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     cursor: pointer;
     display: flex;
     padding-left: 3vw;
+    line-height: 5vw;
 }
 
 .review-left-side .rating-hearts .ion-heart
@@ -903,6 +914,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
 {
     color: #7F055F;
     font-size: 3vw;
+    line-height: 4vw;
 }
 
 .review-comment
@@ -910,6 +922,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     font-size: 3.5vw;
     color: #444;
     margin: 1vw 0;
+    line-height: 4.5vw;
 }
 
 .review-date
@@ -917,6 +930,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     font-size: 2.8vw;
     color: #777;
     text-transform: uppercase;
+    line-height: 3.8vw;
 }
 
 .review-rating
@@ -934,6 +948,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     font-size: 5vw;
     cursor: pointer;
     display: flex;
+    line-height: 6vw;
 }
 
 .rating-number
@@ -942,6 +957,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     left: 27vw;
     color: #999;
     font-size: 5vw;
+    line-height: 6vw;
 }
 
 .review-submit-button
@@ -974,6 +990,8 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
 .review-header
 {
     display: flex;
+    max-height: 43vw;
+    height: 43vw;
 }
 
 .review-item-info
@@ -988,6 +1006,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
 .review-item-info .container
 {
     margin: 7vw 2vw 4vw 4vw;
+    position: relative;
 }
 
 .review-item-name
@@ -1012,9 +1031,12 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     background-color: #7F055F;
     color: white;
     font-size: 3.6vw;
-    width: 33vw;
     padding: 2vw 2vw;
-    margin-top: 5vw;
+/*    margin-top: 5vw;
+    display: inline-block;*/
+    line-height: 3.6vw;
+    position: absolute;
+    bottom: -10vw;
 }
 
 .review-item-button.hiding
@@ -1029,11 +1051,12 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     font-size: 5vw;
     font-weight: 300;
     padding: 5vw 7vw;
+    line-height: 5vw;
 }
 
 .review-scroll
 {
-    height: 113vw;
+    height: 103vw;
 }
 
 .review-form
