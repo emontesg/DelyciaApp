@@ -40,18 +40,19 @@ class AppController {
 				}
 				$last_name = $data["last_name"];
 				$email = $data["email"];
+				$pic = $data["pic"];
 
 				//Server's date
 
 				if (isset($id, $name)) {
-						$result = $this->AppService->loginUser($id, $name, $last_name, $email);
+						$result = $this->AppService->loginUser($id, $name, $last_name, $email, $pic);
 						return $result;
 				} else {
 						$result['error'] = true;
 						$result['message'] = 'You must send all the information required';
 				}
 				return $result;
-		}   
+		}
 
     public function addToFavorites($request){
     	$result = [];
