@@ -1,22 +1,38 @@
-<ion-view view-title="">
-  <ion-content class="no-header" scroll="false">
-  	<div class="black-background"></div>
+<ion-view view-title="Tus favoritos">
+  <ion-nav-bar class="bar-light">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+  </ion-nav-bar>
+
+  <ion-content scroll="false">
+  	<div class="favorite-background"></div>
     <div class="favorites-content">
-    	<div class="favorites-title">Tus favoritos</div>
       <ion-scroll class="favorites-scroll">
-        <div class="favorite" ng-repeat="platillo in myFavoritesList">
-          <div class="favorite-thumbnail"><img ng-src="{{platillo.src}}"></div>
-          <div class="favorite-info">
-            <div class="favorite-name">{{platillo.title}}</div>
-            <div class="favorite-restaurant">{{platillo.restaurant}}</div>
-            <div class="favorite-footer">
-              <div class="favorite-distance"><div class="ion-navigate"></div>5km</div>
-              <div class="favorite-icon"><div class="ion-ios-stopwatch-outline"></div></div>
-              <div class="favorite-icon"><div class="ion-share"></div></div>
-            </div>
-            <div class="favorite-remove" ng-click = "removeFavorites(platillo.idContentful)"><div class="ion-close"></div></div>
-          </div>
-        </div>
+        <ion-list can-swipe="true" show-delete="false">
+          <ion-item-sliding ng-repeat="platillo in platillos">
+            <ion-item class="favorite">
+              <div class="favorite-thumbnail"><img ng-src="{{platillo.src}}"></div>
+              <div class="favorite-info">
+                <div class="favorite-name">{{platillo.title}}</div>
+                <div class="favorite-restaurant">{{platillo.restaurant}}</div>
+                <div class="favorite-footer">
+                  <div class="favorite-distance"><div class="ion-navigate"></div>{{platillo.distance}}</div>
+                </div>
+                <div class="favorite-arrow"><div class="ion-ios-arrow-forward"></div></div>
+              </div>
+              <ion-option-button class="button-light favorite-slide-button remember" ng-click=""><div class="icon1 ion-ios-stopwatch-outline"></div><div class="text">Recordar</div></ion-option-button>
+              <ion-option-button class="button-light favorite-slide-button share" ng-click=""><div class="icon1 ion-share"></div><div class="text">Compartir</div></ion-option-button>
+              <ion-option-button class="button-light favorite-slide-button remove" ng-click="removeFavorites(platillo.idContentful)"><div class="icon1 ion-close"></div><div class="text">Eliminar</div></ion-option-button>
+            </ion-item>
+          </ion-item-sliding>
+        </ion-list>
       </ion-scroll>
     </div>
   </ion-content>

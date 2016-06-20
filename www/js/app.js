@@ -70,9 +70,9 @@ app.factory('NotificationService', notificationService);
 ////////////////////
 
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
-    $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|chrome-extension):/);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|http):\/\//);
+    // $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|chrome-extension|http):/);
 
     $ionicConfigProvider.scrolling.jsScrolling(false);
 
@@ -279,3 +279,15 @@ document.addEventListener('deviceready', function () {
 
     // initPushwoosh();
 }, false);
+
+ionic.Platform.ready(function(){
+    var currentPlatform = ionic.Platform.platform();
+    if(currentPlatform === 'macintel')
+    {
+      window.localStorage.setItem("isMac", true);
+    }
+    else
+    {
+      window.localStorage.setItem("isMac", false);
+    }
+  });
