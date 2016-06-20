@@ -1,7 +1,5 @@
 function SplashController($scope, $ionicLoading, contentfulService, $location, $ionicHistory) {
 	var navbar =  document.getElementsByClassName("nav-bar-block");
-	navbar[0].classList.add('splash-header-bar');
-	navbar[1].classList.add('splash-header-bar');
 
 	$ionicLoading.show();
 	$scope.isLoading = true;
@@ -13,8 +11,6 @@ function SplashController($scope, $ionicLoading, contentfulService, $location, $
 
 	$scope.onStartClick = function()
 	{
-		navbar[0].classList.remove('splash-header-bar');
-		navbar[1].classList.remove('splash-header-bar');
 		$ionicHistory.nextViewOptions({
 		  disableAnimate: false,
 		  disableBack: true

@@ -1,4 +1,15 @@
 <ion-view view-title="">
+	<ion-nav-bar class="bar-clear">
+	  <ion-nav-back-button>
+	  </ion-nav-back-button>
+
+	  <ion-nav-buttons side="left">
+	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+	    </button>
+	  </ion-nav-buttons>
+
+	  <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+	</ion-nav-bar>
   <ion-content id="platilloContent" class="no-header" scroll="false">
 	<ion-slides  options="options" slider="data.slider">
 		<ion-slide-page ng-repeat="platillo in platillos track by $index">
