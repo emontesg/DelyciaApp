@@ -28,7 +28,7 @@ class AppService {
         }
         return $result;
     }
-		public function loginUser($id, $name, $last_name, $email){
+	public function loginUser($id, $name, $last_name, $email){
 		$result = [];
 		$get_all_query = "SELECT * FROM tusuarios WHERE idUsuario = :id";
 		$getAll_params = [
@@ -68,7 +68,7 @@ class AppService {
 // Se escribe el query y se declaran los parámetros necesarios para el insert.
 //La clase storage se encarga de meter los datos en la BD
 //Una vez finalizada esta parte probar en Postman.
-    public function addReview($idPlato, $rating, $comentario, $idUsuario, $visible){
+    public function addReview($idPlato, $rating, $comentario, $idUsuario, $visible, $fechaHora){
         //Data que ayuda a verificar si el usuario ya ha hechc un comentario
         $validation = [];
         $query_validation = "SELECT * FROM trating where idUsuario = :idUser and idPlato = :idPlato";
@@ -84,60 +84,51 @@ class AppService {
                         ":rating" =>$rating,
                         ":comentario" =>$comentario,
                         ":idUsuario" =>$idUsuario,
-                        ":visible" =>$visible
+                        ":visible" =>$visible,
+                        ":fechaHora" => $fechaHora
                     ];
 
         if(count($validation['data']) > 0){
             //si ya existe el review del usuario
-            $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible 
+            $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible, fecha = :fechaHora 
             WHERE idUsuario = :idUsuario and idPlato = :idPlato";
             $result = $this->storage->query($update_review, $review_params);
         }else{
-            $add_review_query = "INSERT INTO TRating (idPlato, rating, comentario, idUsuario, visible) VALUES (:idPlato, :rating, :comentario, :idUsuario, :visible)";
+            $add_review_query = "INSERT INTO TRating (idPlato, rating, comentario, idUsuario, visible, fecha) VALUES (:idPlato, :rating, :comentario, :idUsuario, :visible, :fechaHora)";
             $result = $this->storage->query($add_review_query, $review_params);
         }
         return $result;
     }
 
-    // public function addReview($idPlato, $rating, $comentario, $idUsuario, $visible){
-    //     $result = [];
-    //     $validation = [];
-    //     $query_validation = "\SELECT * FROM trating where idUsuario = :idUser";
-    //     $validation_params = [
-    //                     ":idUser" =>$idUsuario
-    //                 ];
-    //     $validation = $this->storage->query($query_validation, $validation_params);
-    //     $review_params = [
-    //                     ":idPlato" =>$idPlato,
-    //                     ":rating" =>$rating,
-    //                     ":comentario" =>$comentario,
-    //                     ":idUsuario" =>$idUsuario,
-    //                     ":visible" =>$visible
-    //                 ];
-
-    //     if(count($validation['data'] == null)){
-    //         echo("no trajo registros");
-    //         $add_review_query = "INSERT INTO TRating (idPlato, rating, comentario, idUsuario, visible) VALUES (:idPlato, :rating, :comentario, :idUsuario, :visible)";
-
-    //         $result = $this->storage->query($add_review_query, $review_params);
-
-    //     }else{
-    //         echo(count($validation['data']));
-    //         $result = $validation['data'];
-    //         $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible 
-    //         WHERE idUsuario = :idUsuario and idPlato = :idPlato";
-    //         $this->storage->query($update_review, $review_params);
-    //     }
-    //     return $result;
-    // }
     public function getAllReviews($idPlatillo){
         $result = [];
-        $get_all_query = "SELECT * FROM TRating WHERE idPlato = :idPlatillo";
+        $get_all_query = "SELECT trating.comentario, trating.fecha, trating.idPlato, trating.idUsuario, trating.rating, trating.visible, tusuarios.apellido, tusuarios.nombre, tusuarios.email, tusuarios.telefono, tusuarios.picture 
+            FROM trating 
+            INNER JOIN tusuarios ON tusuarios.idUsuario = trating.idUsuario 
+            WHERE trating.idPlato = :idPlatillo 
+            ORDER BY fecha DESC";
         $getAll_params = [
                         ":idPlatillo" =>$idPlatillo
                         ];
 
         $result = $this->storage->query($get_all_query, $getAll_params);
+
+        if (count($result['data'] > 0)) {
+            return $result['data'];
+        } else {
+            $result['message'] = "No reviews added yet.";
+            $result['error'] = true;
+        }
+        return $result;
+    }
+
+    public function getCantReviews($idPlatillo){
+        $result = [];
+        $get_query = "SELECT COUNT(comentario) FROM trating WHERE idPlato = :idPlatillo";
+        $getAll_params = [
+                        ":idPlatillo" =>$idPlatillo
+                        ];
+        $result = $this->storage->query($get_query, $getAll_params);
 
         if (count($result['data'] > 0)) {
             return $result['data'];

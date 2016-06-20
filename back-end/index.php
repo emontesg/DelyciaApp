@@ -86,6 +86,14 @@ $app->post(
     }
 );
 
+$app->post(
+    '/app/getCantReviews',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
 
+        $result = $appController->getCantReviews($request);
+        return $response->withJson($result);
+    }
+);
 
 $app->run();

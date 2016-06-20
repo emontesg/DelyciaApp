@@ -146,9 +146,11 @@ class AppController {
             ];
             return $result;
         }
+                //Server's date
+        $fechaHora = date("Y-m-d");
 
-        if (isset($idPlatillo, $rating, $comentario, $idUsuario, $visible)) {
-            $result = $this->AppService->addReview($idPlatillo, $rating, $comentario, $idUsuario, $visible);
+        if (isset($idPlatillo, $rating, $comentario, $idUsuario, $visible, $fechaHora)) {
+            $result = $this->AppService->addReview($idPlatillo, $rating, $comentario, $idUsuario, $visible, $fechaHora);
             return $result;
         } else {
             $result['error'] = true;
@@ -173,6 +175,31 @@ class AppController {
 
         if (isset($idPlatillo)) {
             $result = $this->AppService->getAllReviews($idPlatillo);
+        } else {
+            $result = [
+                'error' => true,
+                'message' => "We couldn't find the requested reviews."
+            ];
+        }
+        return $result;
+    }
+
+    public function getCantReviews($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if (array_key_exists("idPlatillo", $data)) {
+            $idPlatillo = $data["idPlatillo"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idPlatillo data field is missing."
+            ];
+            return $result;
+        }
+
+        if (isset($idPlatillo)) {
+            $result = $this->AppService->getCantReviews($idPlatillo);
         } else {
             $result = [
                 'error' => true,
