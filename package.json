@@ -16,6 +16,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.4",
     "jquery": "^2.2.3",
+    "moment": "^2.13.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "replace": "^0.3.0"

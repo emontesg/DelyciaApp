@@ -90,6 +90,16 @@ var RequestService = function($http, $location, $rootScope){
             if (data) {
                 return $http.post(route, data);
             }
+        },
+
+        getCantReviews : function(idPlatillo){
+            var route = url + backEnd + 'getCantReviews';
+            data = {
+                idPlatillo : idPlatillo
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
         }
 
 

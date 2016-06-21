@@ -6,6 +6,11 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.isMac = window.localStorage.getItem("isMac");
 	$scope.realId = contentfulService.dishes.items[$scope.platilloId].sys.id;
 	$scope.allReviews = [];
+	$scope.promedio = 0;
+	$scope.numPromedio = 0;
+	$scope.cantReviews = 0;
+	var moment = require('moment');
+	moment().format();
 	$scope.user = localStorage.getItem('userLogged');
 	$scope.hearts = [{id: 0, active: false},
 					 {id: 1, active: false},
@@ -42,13 +47,31 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 
 	$scope.getAllReviews = function(){
 		RequestService.getAllReviews($scope.realId).then(function (response){
-            $scope.allReviews = response.data;
-             $scope.calculateAverageRating()
+			
+            for(var i = 0; i < response.data.length; i++){
+            	var date = response.data[i].fecha;
+            	response.data[i].fecha = $scope.getRealDate(date);
+            	$scope.allReviews.push(response.data[i]);
+            }
+			
+			$scope.calculateAverageRating();
+			$scope.promedio = $scope.calculateAverageRating(); 
+            
             }, function (reject){
         });
     };
     $scope.getAllReviews();
 
+    $scope.getCantReviews = function(){
+		RequestService.getCantReviews($scope.realId).then(function (response){
+			$scope.cantReviews = response.data;
+			console.log($scope.cantReviews);
+            }, function (reject){
+        });
+    };
+ 	
+ 	$scope.getCantReviews();
+    
     $scope.addReview = function(pcomentario){
         $scope.allReviews = [];
     	var obj ={
@@ -75,7 +98,8 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     			num = parseInt($scope.allReviews[i].rating);
     			suma = suma + num;
     		}
-    		promedio = Math.round(suma / cant);
+    		promedio = Math.floor(suma / cant);
+    		$scope.numPromedio = suma / cant;
     	}
     	return promedio;
     };
@@ -148,6 +172,16 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	$scope.$on('ready',function(data,items){
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
 	});
+
+	$scope.getRealDate = function (pfecha){
+		moment.updateLocale('en', {
+    		months : [
+        			"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+        			"Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    			]
+		});
+		return moment(pfecha).format('LL');
+	};
 
 }
 

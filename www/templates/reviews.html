@@ -20,9 +20,9 @@
   				<div class="review-rating">
 					<div class="review-dish-hearts">
 						<div ng-repeat="i in [0,1,2,3,4]" 
-						ng-class="getHeartClass($index, ratingRound)"></div>
+						ng-class="getHeartClass($index, promedio)"></div>
 					</div>
-					<div class="rating-number">({{testRating}})</div>
+					<div class="rating-number">({{numPromedio}})</div>
 				</div>
 				<div class="review-item-name">{{currentPlatillo.title}}</div>
 				<div class="review-item-restaurant">{{currentPlatillo.restaurant}}</div>
@@ -30,22 +30,22 @@
 				</div>
   			</div>
   		</div>
-  		<div ng-show="!makeRating" class="review-count">221 Reviews</div>
+  		<div ng-show="!makeRating" class="review-count">{{cantReviews}} Reviews</div>
   		<ion-scroll class="review-scroll" ng-show="!makeRating">
   		<div class="review-reviews">
-  			<div class="review-review" ng-repeat="review in testReviews track by $index">
+  			<div class="review-review" ng-repeat="review in allReviews">
   				<div ng-class="getReviewColor($index)"></div>
   				<div class="container">
 	  				<div class="review-left-side">
-	  					<div class="review-photo-thumbnail"><img ng-src="{{currentPlatillo.src}}"/></div>
+	  					<div class="review-photo-thumbnail"><img ng-src="{{review.picture}}"/></div>
 	  					<div class="rating-hearts">
 							<div ng-repeat="i in [0, 1, 2, 3, 4]" ng-class="getHeartClass($index, review.rating)"></div>
 						</div>
 	  				</div>
 	  				<div class="review-right-side">
-	  					<div class="review-user">{{review.name}}</div>
-	  					<div class="review-comment">{{review.comment}}</div>
-	  					<div class="review-date">{{review.date}}</div>
+	  					<div class="review-user">{{review.nombre}}</div>
+	  					<div class="review-comment">{{review.comentario}}</div>
+	  					<div class="review-date">{{review.fecha}}</div>
 	  				</div>
 	  			</div>
   			</div>

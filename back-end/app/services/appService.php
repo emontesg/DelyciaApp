@@ -125,14 +125,16 @@ class AppService {
 
     public function getCantReviews($idPlatillo){
         $result = [];
-        $get_query = "SELECT COUNT(comentario) FROM trating WHERE idPlato = :idPlatillo";
+        $resultado = 0;
+        $get_query = "SELECT comentario FROM trating WHERE idPlato = :idPlatillo";
         $getAll_params = [
                         ":idPlatillo" =>$idPlatillo
                         ];
         $result = $this->storage->query($get_query, $getAll_params);
 
         if (count($result['data'] > 0)) {
-            return $result['data'];
+            $resultado = count($result['data']);
+            return $resultado;
         } else {
             $result['message'] = "No reviews added yet.";
             $result['error'] = true;

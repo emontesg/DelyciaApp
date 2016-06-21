@@ -12,6 +12,10 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 	var waitingLoadDishes = [];
 	var waitingLoadImages = [];
 
+
+	var moment = require('moment');
+	moment().format();
+
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
 		space: 'jeecg2rod0h5',
@@ -259,7 +263,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 		waitingLoadImages.splice(0, 1);
 		loadMoreImages();
 	}
-
+	
 	return self;
 }
 
