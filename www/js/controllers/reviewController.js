@@ -69,7 +69,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
             }, function (reject){
         });
     };
- 	
  	$scope.getCantReviews();
     
     $scope.addReview = function(pcomentario){
@@ -81,6 +80,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		idUsuario : $scope.user,
     		visible : 0
     	};
+    	console.log(obj);
         if(obj !== null){
             $scope.allReviews.push(obj);
             RequestService.addReview(obj);
@@ -152,9 +152,10 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 		$scope.makeRating = false;
 	};
 
-	$scope.onSubmitButtonClick = function()
+	$scope.onSubmitButtonClick = function(comentario)
 	{
 		$scope.makeRating = false;
+		$scope.addReview(comentario);
 	};
 
 
