@@ -97,13 +97,16 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		var promedio = 0;
     		var cant = $scope.allReviews.length;
     		var num = 0;
+    		var notRounded = 0;
 
     		for(var i = 0; i < $scope.allReviews.length; i++){
     			num = parseInt($scope.allReviews[i].rating);
     			suma = suma + num;
     		}
-    		promedio = Math.floor(suma / cant);
-    		$scope.numPromedio = suma / cant;
+    		notRounded = suma / cant;
+    		promedio = Math.floor(notRounded);
+    		$scope.numPromedio = notRounded.toFixed(1);
+    		console.log($scope.numPromedio);
     	}
     	return promedio;
     };
