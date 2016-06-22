@@ -7,7 +7,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
 	$scope.realId = 0;
 	$scope.myFavoritesList = ContentfulService.userFavorites;
-	$scope.user = localStorage.getItem('idUser');
+	$scope.user = window.localStorage.getItem('idUser');
 	ContentfulService.getAllFavorites();
 	
 	$scope.addToFavorites = function(){

@@ -11,7 +11,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	$scope.cantReviews = 0;
 	$scope.userReview = [];
 	$scope.comentario = "";
-	console.log();
 	var moment = require('moment');
 	moment().format();
 	$scope.user = window.localStorage.getItem('idUser');
@@ -58,7 +57,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
             		response.data[i].fecha = $scope.getRealDate(date);
             		$scope.allReviews.push(response.data[i]);
             	}
-				console.log($scope.allReviews);
 				$scope.calculateAverageRating();
 				$scope.promedio = $scope.calculateAverageRating(); 
 			}
@@ -84,7 +82,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		idUsuario : $scope.user,
     		visible : 0
     	};
-    	console.log(obj);
         if(obj !== null){
           	RequestService.addReview(obj).then(function (response){
 				$scope.getAllReviews();
