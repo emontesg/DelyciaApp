@@ -96,4 +96,15 @@ $app->post(
     }
 );
 
+$app->post(
+    '/app/getUserReview',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+
+        $result = $appController->getUserReviews($request);
+        return $response->withJson($result);
+    }
+);
+
+
 $app->run();

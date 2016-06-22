@@ -9,9 +9,13 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	$scope.promedio = 0;
 	$scope.numPromedio = 0;
 	$scope.cantReviews = 0;
+	$scope.userReview = [];
+	$scope.comentario = "";
+	console.log();
 	var moment = require('moment');
 	moment().format();
-	$scope.user = localStorage.getItem('userLogged');
+	$scope.user = window.localStorage.getItem('idUser');
+
 	$scope.hearts = [{id: 0, active: false},
 					 {id: 1, active: false},
 					 {id: 2, active: false},
@@ -46,17 +50,19 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	};
 
 	$scope.getAllReviews = function(){
+		$scope.allReviews = [];
 		RequestService.getAllReviews($scope.realId).then(function (response){
+			if( response.data !== null){
+            	for(var i = 0; i < response.data.length; i++){
+            		var date = response.data[i].fecha;
+            		response.data[i].fecha = $scope.getRealDate(date);
+            		$scope.allReviews.push(response.data[i]);
+            	}
+				console.log($scope.allReviews);
+				$scope.calculateAverageRating();
+				$scope.promedio = $scope.calculateAverageRating(); 
+			}
 			
-            for(var i = 0; i < response.data.length; i++){
-            	var date = response.data[i].fecha;
-            	response.data[i].fecha = $scope.getRealDate(date);
-            	$scope.allReviews.push(response.data[i]);
-            }
-			
-			$scope.calculateAverageRating();
-			$scope.promedio = $scope.calculateAverageRating(); 
-            
             }, function (reject){
         });
     };
@@ -65,14 +71,12 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.getCantReviews = function(){
 		RequestService.getCantReviews($scope.realId).then(function (response){
 			$scope.cantReviews = response.data;
-			console.log($scope.cantReviews);
             }, function (reject){
         });
     };
  	$scope.getCantReviews();
     
     $scope.addReview = function(pcomentario){
-        $scope.allReviews = [];
     	var obj ={
     		idPlatillo : $scope.realId,
     		rating : $scope.heartCount,
@@ -82,8 +86,11 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     	};
     	console.log(obj);
         if(obj !== null){
-            $scope.allReviews.push(obj);
-            RequestService.addReview(obj);
+          	RequestService.addReview(obj).then(function (response){
+				$scope.getAllReviews();
+            }, function (reject){
+        });
+
         }
     };
 
@@ -102,6 +109,22 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		$scope.numPromedio = suma / cant;
     	}
     	return promedio;
+    };
+
+    $scope.getUserRating = function(){
+    	var obj = {
+    		idPlatillo : $scope.realId,
+    		idUsuario: $scope.user
+    	};
+
+    	RequestService.getUserReview(obj).then(function (response){
+    		if(response.data !== null){
+    			$scope.userReview = response.data;
+    			$scope.comentario =  $scope.userReview[0].comentario;
+    			$scope.onHeartClick($scope.userReview[0].rating -1);
+    		}
+            }, function (reject){
+        });
     };
 
 	$scope.getHeartClass = function(index, rating)
@@ -145,6 +168,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 		{
 			$scope.makeRating = true;
 		}
+		$scope.getUserRating();
 	};
 
 	$scope.onReturnButtonClick = function()

@@ -28,27 +28,27 @@ class AppService {
         }
         return $result;
     }
-		// public function loginUser($id, $name, $last_name, $email, $pic){
-		// $result = [];
-		// $get_all_query = "SELECT * FROM tusuarios WHERE idUsuario = :id";
-		// $getAll_params = [
-		// 								":id" =>$id,
-		// 								":name" =>$name,
-		// 								":last_name" =>$last_name,
-		// 								":email" =>$email,
-		// 								":pic" =>$pic
-		// 						];
-		// $result = $this->storage->query($get_all_query, $getAll_params);
-		// if (count($result['data'] > 0)) {
-		// 	$add_user_query = "INSERT INTO Tusuarios (idUsuario, nombre, apellido, email, picture) VALUES (:id, :name, :last_name, :email, :pic)";
-		// 	$result = $this->storage->query($add_user_query, $getAll_params);
-		// 	$result['message'] = "user insert";
-		// } else {
-		// 	$result['message'] = "No user insert";
-		// 	return $result;
-		// }
+		public function loginUser($id, $name, $last_name, $email, $pic){
+		$result = [];
+		$get_all_query = "SELECT * FROM tusuarios WHERE idUsuario = :id";
+		$getAll_params = [
+										":id" =>$id,
+										":name" =>$name,
+										":last_name" =>$last_name,
+										":email" =>$email,
+										":pic" =>$pic
+								];
+		$result = $this->storage->query($get_all_query, $getAll_params);
+		if (count($result['data'] > 0)) {
+			$add_user_query = "INSERT INTO Tusuarios (idUsuario, nombre, apellido, email, picture) VALUES (:id, :name, :last_name, :email, :pic)";
+			$result = $this->storage->query($add_user_query, $getAll_params);
+			$result['message'] = "user insert";
+		} else {
+			$result['message'] = "No user insert";
+			return $result;
+		}
 
-//}
+}
 
 
 
@@ -116,6 +116,25 @@ class AppService {
 
         if (count($result['data'] > 0)) {
             return $result['data'];
+        } else {
+            $result['message'] = "No reviews added yet.";
+            $result['error'] = true;
+        }
+        return $result;
+    }
+
+    public function getUserReview($idPlatillo, $idUsuario){
+        $result = [];
+        $get_query = "SELECT * FROM trating WHERE idUsuario = :idUsuario and idPlato = :idPlatillo";
+        $get_params = [
+                        ":idUsuario" =>$idUsuario,
+                        ":idPlatillo" =>$idPlatillo
+                        ];
+        $result = $this->storage->query($get_query, $get_params);
+
+        if (count($result['data'] > 0)) {
+            $resultado = $result['data'];
+            return $resultado;
         } else {
             $result['message'] = "No reviews added yet.";
             $result['error'] = true;

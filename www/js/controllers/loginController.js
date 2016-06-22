@@ -33,7 +33,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
       alert("logOut");
       $scope.closeLogin();
     }, function (failure){
-      console.log(failure);
+
     });
   };
 
@@ -50,10 +50,11 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
        facebookConnectPlugin.api('/me?fields=id,email,name,last_name,picture', null,
            function(response) {
              window.localStorage.setItem("idUser", response.id);
+             console.log(response);
              $scope.islogged = true;
              var picture= response.picture;
              var pic = picture.data.url;
-             console.log(response);
+   
              var obj = {
                 id : response.id,
                 name : response.name,
@@ -61,14 +62,14 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
                 email : response.email,
                 pic : pic
             };
-            console.log(obj);
+
             RequestService.loginUser(obj);
             $scope.closeLogin();
            });
 
           }
    }, function (error) {
-     console.log(error);
+
    });
   };
 }

@@ -207,6 +207,41 @@ class AppController {
         return $result;
     }
 
+    public function getUserReviews($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if (array_key_exists("idPlatillo", $data)) {
+            $idPlatillo = $data["idPlatillo"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idPlatillo data field is missing."
+            ];
+            return $result;
+        }
+
+        if (array_key_exists("idUsuario", $data)) {
+            $idUsuario = $data["idUsuario"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idUsuario data field is missing."
+            ];
+            return $result;
+        }
+
+        if (isset($idPlatillo, $idUsuario)) {
+            $result = $this->AppService->getUserReview($idPlatillo, $idUsuario);
+        } else {
+            $result = [
+                'error' => true,
+                'message' => "We couldn't find the requested review."
+            ];
+        }
+        return $result;
+    }
+
     public function getAllFavorites($request){
         $result = [];
         $data = $request->getParsedBody();

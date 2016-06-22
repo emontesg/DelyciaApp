@@ -48,8 +48,8 @@
 	  					<div class="review-date">{{review.fecha}}</div>
 	  				</div>
 	  			</div>
-  			</div>
-  		</div>
+  			</div> 
+  		</div>  
   		</ion-scroll>
   		<div class="review-form" ng-show="makeRating">
   			<div class="review-form-title">¿Cómo estuvo tu experiencia?</div>
@@ -59,8 +59,8 @@
 					ng-class="heart.active ? 'ion-heart active' : 'ion-heart'"></div>
 				</div>
 			</div>
-			<label class="item item-input" ng-model = "comentario">
-	          <textarea placeholder="Aún si tu experiencia no fue la mejor, danos tu opinión más constructiva :)" class="review-input"></textarea>
+			<label class="item item-input">
+	          <textarea ng-model = "comentario" placeholder="Aún si tu experiencia no fue la mejor, danos tu opinión más constructiva :)" class="review-input"></textarea>
 	        </label>
 	        <div class="review-form-footer">
 	        	<div class="return" ng-click="onReturnButtonClick()"><div class="ion-ios-close-outline"></div>Volver</div>

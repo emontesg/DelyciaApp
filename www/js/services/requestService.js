@@ -100,6 +100,17 @@ var RequestService = function($http, $location, $rootScope){
             if (data) {
                 return $http.post(route, data);
             }
+        },
+
+        getUserReview : function(obj){
+            var route = url + backEnd + 'getUserReview';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                idUsuario : obj.idUsuario
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
         }
 
 
