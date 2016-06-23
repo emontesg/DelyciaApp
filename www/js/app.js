@@ -8,6 +8,7 @@
 // var angular = require('angular');
  require('angular-animate');
  require('ng-cordova');
+ require('ionic-native-transitions');
 // require('ionic');
 
 var loginController = require('./controllers/loginController');
@@ -17,12 +18,17 @@ var favoritesController = require('./controllers/favoritesController');
 var restaurantController = require('./controllers/restaurantController');
 var searchController = require('./controllers/searchController');
 var reviewController = require('./controllers/reviewController');
-
+var friendsController = require('./controllers/friendsController');
+var splashController = require('./controllers/splashController');
 
 var contentfulService = require('./services/contentfulService');
 var requestService = require('./services/requestService');
+var preloaderService = require('./services/preloaderService');
+var notificationService = require('./services/notificationService');
 
-var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova']);
+var app = angular.module('starter', ['ionic', 'ngAnimate', 'ngCordova', 'ngCordovaOauth', 'ionic-native-transitions']);
+
+var platform = '';
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -47,9 +53,13 @@ app.controller('FavoritesCtrl', favoritesController);
 app.controller('RestaurantCtrl', restaurantController);
 app.controller('SearchCtrl', searchController);
 app.controller('ReviewCtrl', reviewController);
+app.controller('FriendsCtrl', friendsController);
+app.controller('SplashCtrl', splashController);
 
 app.factory('ContentfulService',contentfulService);
 app.service('RequestService',requestService);
+app.factory('PreloaderService', preloaderService);
+app.factory('NotificationService', notificationService);
 ////////////////////WARNING
 // app.config(function($sceProvider) {
 //    // Completely disable SCE.  For demonstration purposes only!
@@ -59,13 +69,24 @@ app.service('RequestService',requestService);
 // $sce();
 ////////////////////
 
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|http):\/\//);
+    // $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|chrome-extension|http):/);
 
+    $ionicConfigProvider.scrolling.jsScrolling(false);
 
-app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
-    $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
-
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):\/\//);
+    $ionicNativeTransitionsProvider.setDefaultOptions({
+        duration: 100, // in milliseconds (ms), default 400, 
+        slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4 
+        iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1 
+        androiddelay: -1, // same as above but for Android, default -1 
+        winphonedelay: -1, // same as above but for Windows Phone, default -1, 
+        fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android) 
+        fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android) 
+        triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option 
+        backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back 
+    });
 
   $stateProvider
 
@@ -75,6 +96,16 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
+
+    .state('app.splash', {
+      url: '/splash',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/splash.html',
+          controller: 'SplashCtrl'
+        }
+      }
+    })
 
   .state('app.search', {
     url: '/search/:platilloId',
@@ -97,7 +128,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.masinfo', {
-      url: '/platillos/:platilloId',
+      url: '/masinfo/:platilloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/masinfo.html',
@@ -149,7 +180,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       url: '/friends',
       views: {
         'menuContent': {
-          templateUrl: 'templates/friends.html'
+          templateUrl: 'templates/friends.html',
+          controller: 'FriendsCtrl'
         }
       }
     })
@@ -163,9 +195,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/platillos/0');
+  $urlRouterProvider.otherwise('/app/splash');
   $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
-  $ionicConfigProvider.views.maxCache(0);
   // $compileProvider.imgSrcSanitizationWhitelist('img/');
 });
 
@@ -177,3 +208,86 @@ app.config(function($sceDelegateProvider) {
     'http://images.contentful.com/**'
   ]);
 });
+
+function initPushwoosh() {
+    var pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
+ 
+    if(platform === 'iOS')
+    {
+        //set push notification callback before we initialize the plugin
+      document.addEventListener('push-notification', function(event) {
+                                  //get the notification payload
+                                  var notification = event.notification;
+   
+                                  //display alert to the user for example
+                                  alert(notification.aps.alert);
+                                 
+                                  //clear the app badge
+                                  pushNotification.setApplicationIconBadgeNumber(0);
+                              });
+
+      //initialize the plugin
+      pushNotification.onDeviceReady({pw_appid:"P77614-4AB60"});
+
+      //register for pushes
+      pushNotification.registerDevice(
+          function(status) {
+              var deviceToken = status['deviceToken'];
+              console.warn('registerDevice: ' + deviceToken);
+          },
+          function(status) {
+              console.warn('failed to register : ' + JSON.stringify(status));
+              alert(JSON.stringify(['failed to register ', status]));
+          }
+      );
+       
+      //reset badges on app start
+      pushNotification.setApplicationIconBadgeNumber(0);
+    }
+    else if(platform === 'Android')
+    {
+      //set push notifications handler
+      document.addEventListener('push-notification', function(event) {
+          var title = event.notification.title;
+          var userData = event.notification.userdata;
+                                   
+          if(typeof(userData) != "undefined") {
+              console.warn('user data: ' + JSON.stringify(userData));
+          }
+                                       
+          alert(title);
+      });
+      //initialize Pushwoosh with projectid: "GOOGLE_PROJECT_NUMBER", pw_appid : "PUSHWOOSH_APP_ID". This will trigger all pending push notifications on start.
+      pushNotification.onDeviceReady({ projectid: "572544632214", pw_appid : "P77614-4AB60" });
+
+      //register for pushes
+      pushNotification.registerDevice(
+          function(status) {
+              var pushToken = status;
+              console.warn('push token: ' + pushToken);
+          },
+          function(status) {
+              console.warn(JSON.stringify(['failed to register ', status]));
+          }
+      );
+    }
+}
+
+document.addEventListener('deviceready', function () {
+    // cordova.plugins.notification.local is now available
+    platform = device.platform;
+
+    // initPushwoosh();
+}, false);
+
+ionic.Platform.ready(function(){
+    var currentPlatform = ionic.Platform.platform();
+    if(currentPlatform === 'macintel')
+    {
+      window.localStorage.setItem("isMac", true);
+    }
+    else
+    {
+      window.localStorage.setItem("isMac", false);
+    }
+  });

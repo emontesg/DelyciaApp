@@ -1,34 +1,47 @@
 <ion-view view-title="">
+	<ion-nav-bar class="bar-clear">
+	  <ion-nav-back-button>
+	  </ion-nav-back-button>
+
+	  <ion-nav-buttons side="left">
+	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+	    </button>
+	  </ion-nav-buttons>
+
+	  <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+	</ion-nav-bar>
   <ion-content id="platilloContent" class="no-header" scroll="false">
 	<ion-slides  options="options" slider="data.slider">
-		<ion-slide-page ng-repeat="platillo in platillos">
+		<ion-slide-page ng-repeat="platillo in platillos track by $index">
 			<div class="menu-image">
 				<div class="menu-image-info fade" ng-show="infoEnable">
 					<div class="menu-image-title">{{platillo.title}}</div>
 					<div class="menu-image-restaurant">{{platillo.restaurant}}</div>
 				</div>
-				<img class="img-responsive" ng-src="{{getTrustedResourceUrl(platillo.src)}}" />
+				<img class="img-responsive" ng-src="{{platillo.src}}" ng-click="onImageClick()"/>
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
-					<div class="menu-image-rating">
-						<div class="rating-hearts">
+					<div ng-class="hasReview ? 'menu-image-rating' : 'menu-image-rating no-review'">
+						<div class="rating-hearts" ng-show="hasReview">
 							<div class="ion-ios-heart active"></div>
 							<div class="ion-ios-heart active"></div>
 							<div class="ion-ios-heart active"></div>
 							<div class="ion-ios-heart active"></div>
 							<div class="ion-ios-heart"></div>
 						</div>
+						<div class="no-rating" ng-show="!hasReview">
+							<div class="broken-heart"></div>
+							<div class="no-review-message">A&Uacute;N SIN REVIEWS</div>
+						</div>
 					</div>
-					<div class="menu-image-kms">
-						<div class="ion-navigate"></div>
+					<div ng-class="hasReview ? 'menu-image-kms' : 'menu-image-kms no-review'">
+						<div class="ion-navigate distance-icon"></div>
 						{{platillo.distance}}
 					</div>
-					<div class="menu-image-status">{{platillo.status}}</div>
-					<div class="menu-image-price">&#162;{{platillo.price}}</div>
+					<div ng-class="hasReview ? 'menu-image-status' : 'menu-image-status no-review'">{{platillo.status}}</div>
+					<div ng-class="hasReview ? 'menu-image-price' : 'menu-image-price no-review'">&#162;{{platillo.price}}</div>
 				</div>
-				<div class="masinfo-button active" ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-show="infoEnable"></div>
-				<div class="search-button active" ui-sref="app.search({platilloId: {{platillo.id}}})" ng-show="infoEnable"></div>
-				<div class="masinfo-button" ng-show="!infoEnable"></div>
-				<div class="search-button" ng-show="!infoEnable"></div>
+				<div  native-transitions ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
+				<div ui-sref="app.search({platilloId: {{platillo.id}}})" ng-class="showSearchButton ? infoEnable ? 'search-button active' : 'search-button' : 'search-button hide'"></div>
 			</div>
 		</ion-slide-page>
 	</ion-slides>

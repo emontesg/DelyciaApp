@@ -1,12 +1,23 @@
 <ion-view view-title="Buscar">
+  <ion-nav-bar class="bar-light">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+  </ion-nav-bar>
   <ion-content class="no-header" scroll="false">
   	<img class="image-background" src="{{currentPlatillo.src}}" />
   	<div class="semitransparent-black-background"></div>
   	<div class="search-container">
-  		<div ng-repeat="search in searchType">
-  			<div class="search-type" ng-click="onTypeClick($index)">{{search.type}}</div>
+  		<div ng-repeat="search in searchType track by $index">
+  			<div class="search-type" ng-click="onTypeClick($index)">{{::search.type}}</div>
   			<div class="search-options collapse" ng-show="search.enable" ng-hide="!search.enable">
-  				<ion-checkbox ng-model="option.checked" ng-click="onOptionClick(search.type, $index)" ng-repeat="option in search.options">{{option.option}}</ion-checkbox>
+  				<ion-checkbox ng-model="option.checked" ng-click="onOptionClick(search.type, $index)" ng-repeat="option in search.options track by $index">{{::option.option}}</ion-checkbox>
   			</div>
   		</div>
   		<div class="search-button2" ng-click="onSearchClick()">BUSCAR</div>

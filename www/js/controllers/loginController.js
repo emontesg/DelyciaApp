@@ -1,5 +1,5 @@
-function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook) {
-  
+function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, RequestService) {
+
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -9,6 +9,10 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook) {
 
   // Form data for the login modal
   $scope.loginData = {};
+
+  $scope.islogged = window.localStorage.getItem("idUser") !== null;
+
+  $scope.isMac = window.localStorage.getItem("isMac");
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -21,6 +25,17 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook) {
   $scope.closeLogin = function() {
     $scope.modal.hide();
   };
+  $scope.logout = function() {
+    facebookConnectPlugin.logout(function(success){
+      window.localStorage.clear();
+      window.localStorage.setItem("isMac", $scope.isMac);
+      $scope.islogged = false;
+      alert("logOut");
+      $scope.closeLogin();
+    }, function (failure){
+
+    });
+  };
 
   // Open the login modal
   $scope.login = function() {
@@ -29,23 +44,33 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook) {
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
     $cordovaFacebook.login(["public_profile", "email", "user_friends"])
-    .then(function(success) {
-      // { id: "634565435",
-      //   lastName: "bob"
-      //   ...
-      // }
-    }, function (error) {
-      // error
-    });
+   .then(function(success) {
+     if (success.authResponse) {
+       facebookConnectPlugin.api('/me?fields=id,email,name,last_name,picture', null,
+           function(response) {
+             window.localStorage.setItem("idUser", response.id);
+             console.log(response);
+             $scope.islogged = true;
+             var picture= response.picture;
+             var pic = picture.data.url;
+   
+             var obj = {
+                id : response.id,
+                name : response.name,
+                last_name : response.last_name,
+                email : response.email,
+                pic : pic
+            };
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+            RequestService.loginUser(obj);
+            $scope.closeLogin();
+           });
+
+          }
+   }, function (error) {
+
+   });
   };
 }
-module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', LoginController];
+module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook','RequestService', LoginController];

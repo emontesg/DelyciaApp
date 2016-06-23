@@ -1,17 +1,29 @@
 <ion-view view-title="Más info">
+  <ion-nav-bar class="bar-light">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+  </ion-nav-bar>
+
   <ion-content class="no-header" scroll="false">
-  	<img src="{{currentPlatillo.src}}" />
+  	<img ng-src="{{currentPlatillo.src}}" />
   	<div class="semitransparent-black-background"></div>
   	<div class="masinfo-menu">
   		<div class="line" ui-sref="app.restaurant({platilloId: {{platilloId}}})">
   			<div class="masinfo-menu-item">VER M&Aacute;S SOBRE</div>
   			<div class="masinfo-menu-subitem">{{currentPlatillo.restaurant}}</div>
   		</div>
-  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})">
+  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})" ng-show="islogged">
   			<div class="masinfo-menu-item">SALVAR PLATO</div>
   			<div class="masinfo-menu-subitem">A TUS FAVORITOS</div>
   		</div>
-  		<div class="line" ui-sref="app.share({platilloId: {{currentPlatillo.id}}})">
+  		<div class="line" ui-sref="app.share({platilloId: {{currentPlatillo.id}}})" ng-show="islogged">
   			<div class="masinfo-menu-item">COMPARTIR</div>
   			<div class="masinfo-menu-subitem">CON AMIGOS</div>
   		</div>

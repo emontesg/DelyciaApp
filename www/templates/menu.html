@@ -1,16 +1,6 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content drag-content="false">
-    <ion-nav-bar class="bar-clear">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-
-      <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-        </button>
-      </ion-nav-buttons>
-
-      <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
-    </ion-nav-bar>
+    
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
@@ -21,18 +11,19 @@
     <ion-content>
       <ion-list>
         <ion-item menu-close ng-click="login()">
-          Login
+          <div ng-show="!islogged">Login</div>
+          <div ng-show="islogged">Logout</div>
         </ion-item>
-        <ion-item menu-close href="#/app/platillos/0">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.platillos({type: 0})">
           Platillos
         </ion-item>
-        <ion-item menu-close href="#/app/favorites/0">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.favorites({platilloId: -1})" ng-show="islogged">
           Favoritos
         </ion-item>
-        <ion-item menu-close href="#/app/friends">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.friends()" ng-show="islogged">
           Amigos
         </ion-item>
-        <ion-item menu-close href="#/app/configurations">
+        <ion-item menu-close class="delycia-menu-item" ui-sref="app.configurations()" ng-show="islogged">
           Configuraciones
         </ion-item>
       </ion-list>

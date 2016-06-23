@@ -1,4 +1,16 @@
 <ion-view view-title="">
+  <ion-nav-bar class="bar-light">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+  </ion-nav-bar>
+  
   <ion-content class="no-header" scroll="false">
   	<div class="black-background"></div>
     <div class="restaurant-container">
@@ -7,8 +19,8 @@
         <div class="restaurant-header-title">{{currentPlatillo.restaurant}}</div>
         <div class="restaurant-header-footer">
           <div class="restaurant-status">{{currentPlatillo.status}} (9PM)</div>
-          <div class="restaurant-distance" ng-click="loadMap()"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
-          <div class="restaurant-call">Llamar</div>
+          <div ng-click="loadMap()" ng-class="mapShow ? 'restaurant-distance active' : 'restaurant-distance'"><div class="ion-navigate"></div>{{currentPlatillo.distance}}</div>
+          <a href="tel: {{number}}" class="restaurant-call">Llamar</a>
         </div>
       </div>
       <ion-scroll class="restaurant-scroll">
@@ -21,7 +33,7 @@
             <div class="restaurant-time-info"><div class="header">HORARIO</div><div></div class="info"></div>
           </div>
           <div class="restaurant-platillos-container" ng-show="!mapShow">
-            <div ng-repeat="dish in restaurantDishes" class="restaurant-thumbnail"><img ng-src="{{dish.src}}"></div>
+            <div ng-repeat="dish in restaurantDishes" class="restaurant-thumbnail" ng-click="onDishClick($index)"><img ng-src="{{dish.src}}"></div>
           </div>
           </div>
       </ion-scroll>

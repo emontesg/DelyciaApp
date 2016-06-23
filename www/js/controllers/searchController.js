@@ -1,4 +1,4 @@
-function SearchController($scope, $stateParams, contentfulService, $sce, $location) {
+function SearchController($scope, $stateParams, contentfulService, $sce, $location, $ionicLoading) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	var checkedDistance = -1;
@@ -179,6 +179,12 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 		var length = foodTypeLength > ocassionLength ? foodTypeLength : ocassionLength;
 		var foundDishes = [];
 
+		if(length === 0 && maxDistance < 0 && maxPrice < 0)
+		{
+			$scope.message = 'Por favor seleccionar criterios de búsqueda';
+			return;
+		}
+
 		for(var i = 0, l = dishes.length; i < l; i++)
 		{
 			if(dishes[i].fields.precio > maxPrice || dishes[i].fields.precio < minPrice)
@@ -241,4 +247,4 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 	}
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$location', SearchController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$location', '$ionicLoading', SearchController];

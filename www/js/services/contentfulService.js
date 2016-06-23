@@ -1,14 +1,20 @@
 var contentful = require('contentful'); 
 
-
-function ContentfulService($rootScope, $sce, RequestService){
+function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 	var self = this;
 	var platos = [];
-	var user = localStorage.getItem('userLogged');
+	var user = localStorage.getItem('idUser');
 	self.dishes = [];
 	self.mainDishes = [];
 	self.total = 0;
 	self.userFavorites = [];
+
+	var waitingLoadDishes = [];
+	var waitingLoadImages = [];
+
+
+	var moment = require('moment');
+	moment().format();
 
 	var client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
@@ -27,32 +33,86 @@ function ContentfulService($rootScope, $sce, RequestService){
 			var dishes = [];
 			var index = 0;
 			var items = entries.items;
+			var images = [];
+
+			var waitingDishesGroup = [];
+			var waitingImagesGroup = [];
+			var count = 0;
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
+				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
-				var imgLink= 'http:' +items[i].fields.foto.fields.file.url;
-
-				dishes.push({id:index++, 
-							src:$sce.getTrustedResourceUrl(imgLink), 
+				if(i < 4)
+				{
+					self.mainDishes.push({id:index++, 
+							src:imgLink, 
 							title:items[i].fields.nombre, 
 							restaurant:items[i].fields.restaurante.fields.nombre, 
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: getState(items[i])
-						});
+							status: getState(items[i]),
+							idContentful:items[i].sys.id
+						}); 
+
+					images.push(imgLink);
+				}
+				else if(count < 4 && i !== l-1)
+				{
+					waitingDishesGroup.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: getState(items[i]),
+							idContentful:items[i].sys.id});
+				
+					waitingImagesGroup.push(imgLink);
+					count++;
+				}
+				else
+				{
+					waitingDishesGroup.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:1, 
+							distance: '5 kms', 
+							status: getState(items[i]),
+							idContentful:items[i].sys.id});
+				
+					waitingImagesGroup.push(imgLink);
+					waitingLoadImages.push(waitingImagesGroup);
+					waitingLoadDishes.push(waitingDishesGroup);
+					waitingDishesGroup = [];
+					waitingImagesGroup = [];
+					count = 0;
+				}
 			}
 
-			self.dishes = platos;
-			self.mainDishes = dishes;
+			self.dishes = entries;
 			self.total = entries.total;
-
-			$rootScope.$broadcast('ready',dishes);
 			self.getAllFavorites();
+
+			// $ImageCacheFactory.Cache(images);
+			preloaderService.preloadImages(images).then(firstLoadResolve,
+                    function handleReject( imageLocation ) {
+                        // Loading failed on at least one image.
+                        console.error( "Image Failed", imageLocation );
+                        console.info( "Preload Failure" );
+                        $rootScope.$broadcast('error');
+                    },
+                    function handleNotify( event ) {
+                        // $scope.percentLoaded = event.percent;
+                        console.info( "Percent loaded:", event.percent );
+                    }
+                );
 		});
 
-	self.getDishJson = function(index)
-	{
+	self.getDishJson = function(index){
 		var dish = self.dishes.items[index];
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
@@ -138,7 +198,7 @@ function ContentfulService($rootScope, $sce, RequestService){
 			break;
 		}
 
-		return restaurantSchedule
+		return restaurantSchedule;
 		
 	}
 
@@ -146,22 +206,22 @@ function ContentfulService($rootScope, $sce, RequestService){
 		var exist = false;
 		RequestService.getAllFavorites(user).then(function (response){
             var favoritesList = response.data;
-            	if(favoritesList != null){
+            	if(favoritesList !== null){
             		for (var i = 0; i< favoritesList.length; i++){
-            			for(var j = 0; j < self.dishes.items.length; j++){
-            				if(favoritesList[i].idPlatillo === self.dishes.items[j].sys.id){
-            					if(self.userFavorites != null){
+            			for(var j = 0; j < self.mainDishes.length; j++){
+            				if(favoritesList[i].idPlato === self.mainDishes[j].idContentful){
+            					if(self.userFavorites !== null){
             						for (var x = 0; x < self.userFavorites.length; x++) {
-            							if(favoritesList[i].idPlatillo === self.userFavorites[x].sys.id){
+            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){
             								exist = true;
             								x = self.userFavorites.length;
             							}
             						}
             						if(exist === false){
-            							self.userFavorites.push(self.dishes.items[j]);
+            							self.userFavorites.push(self.mainDishes[j]);
             						}
             					}else{
-            						self.userFavorites.push(self.dishes.items[j]);
+            						self.userFavorites.push(self.mainDishes[j]);
             					}
              				}
             			}
@@ -171,7 +231,40 @@ function ContentfulService($rootScope, $sce, RequestService){
         });
     };
 
+	function firstLoadResolve(imageLocations)
+	{
+        console.info( "Preload Successful" );
+        $rootScope.$broadcast('ready',self.mainDishes);
+        loadMoreImages();
+	}
+
+	function loadMoreImages()
+	{
+		if(waitingLoadImages.length > 0)
+		{
+			preloaderService.preloadImages(waitingLoadImages[0]).then(loadResolve,
+                    function handleReject( imageLocation ) {
+                        console.error( "Image Failed", imageLocation );
+                    },
+                    function handleNotify( event ) {
+                    }
+                );
+		}
+	}
+
+	function loadResolve(imageLocations)
+	{
+		var dishes = waitingLoadDishes[0];
+		for(var i = 0, l = dishes.length; i < l; i++)
+		{
+			self.mainDishes.push(dishes[i]);
+		}
+		waitingLoadDishes.splice(0, 1);
+		waitingLoadImages.splice(0, 1);
+		loadMoreImages();
+	}
+	
 	return self;
 }
 
-module.exports = ['$rootScope', '$sce', 'RequestService',ContentfulService];
+module.exports = ['$rootScope', '$sce', 'RequestService', 'PreloaderService', ContentfulService];

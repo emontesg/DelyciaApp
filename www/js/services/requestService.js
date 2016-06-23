@@ -7,12 +7,12 @@ var RequestService = function($http, $location, $rootScope){
 
     self.myPublicFunction = function()
     {
-        myPrivateFunction();  
+        myPrivateFunction();
     };
-    
+
     function myPrivateFunction()
     {
-        
+
     }
 
     var serviceFunctions = {
@@ -24,7 +24,7 @@ var RequestService = function($http, $location, $rootScope){
 
         addFavorite : function(obj){
             var route = url + backEnd + 'addFavorite';
-            data = {   
+            data = {
                 idPlatillo : obj.idPlatillo,
                 idUsuario : obj.idUsuario
                 };
@@ -33,27 +33,86 @@ var RequestService = function($http, $location, $rootScope){
                 return $http.post(route, data).then(function(response){});
             }
         },
+        loginUser : function(obj){
+            var route = url + backEnd + 'loginUser';
+            data = {
+                id : obj.id,
+                name : obj.name,
+                last_name : obj.last_name,
+                email: obj.email,
+                pic: obj.pic
+                };
+                console.log(data);
+                return $http.post(route, data);
+
+        },
 
         getAllFavorites : function(idUsuario){
             var route = url + backEnd + 'getAllFavorites';
-            //$rootScope.allData = [];
             data = {
                 idUsuario : idUsuario
             };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
 
-            // if (data) {
-            //     $http.post(route, data).then(function(response){
-            //         $rootScope.allData = response.data;
-            //         console.log($rootScope.allData);
-            //     });
-            // }else{
-            //     console.log("no estoy entrando");
-            // }
-            // console.log($rootScope.allData);
+        removeFavorite : function(obj){
+            var route = url + backEnd + 'removeFavorite';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                idUsuario : obj.idUsuario
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
+        getAllReviews : function(idPlatillo){
+            var route = url + backEnd + 'getAllReviews';
+            data = {
+                idPlatillo : idPlatillo
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
+        addReview : function (obj){
+            var route = url + backEnd + 'addReview';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                rating : obj.rating,
+                comentario : obj.comentario,
+                idUsuario : obj.idUsuario,
+                visible : obj.visible
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
+        getCantReviews : function(idPlatillo){
+            var route = url + backEnd + 'getCantReviews';
+            data = {
+                idPlatillo : idPlatillo
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
+        getUserReview : function(obj){
+            var route = url + backEnd + 'getUserReview';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                idUsuario : obj.idUsuario
+            };
             if (data) {
                 return $http.post(route, data);
             }
         }
+
 
     };
 

@@ -16,8 +16,10 @@
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.4",
     "jquery": "^2.2.3",
+    "moment": "^2.13.0",
     "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1"
+    "passport-facebook": "^2.1.1",
+    "replace": "^0.3.0"
   },
   "devDependencies": {
     "angular-animate": "^1.5.5",
@@ -29,6 +31,7 @@
     "gulp-jshint": "^2.0.1",
     "gulp-preprocess": "^2.0.0",
     "gulp-util": "^2.2.14",
+    "ionic-native-transitions": "^1.0.0-rc11",
     "jshint": "^2.9.2",
     "ng-cordova": "^0.1.26-alpha",
     "shelljs": "^0.3.0",
@@ -40,7 +43,28 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-compat",
+    {
+      "locator": "https://github.com/Rohfosho/CordovaCallNumberPlugin.git",
+      "id": "mx.ferreyra.callnumber"
+    },
+    {
+      "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git",
+      "id": "cordova-plugin-inappbrowser"
+    },
+    "cordova-plugin-crosswalk-webview",
+    {
+      "id": "cordova-plugin-facebook4",
+      "locator": "cordova-plugin-facebook4",
+      "variables": {
+        "APP_ID": "1186835011381116",
+        "APP_NAME": "DelyciaApp"
+      }
+    },
+    "cordova-plugin-app-event",
+    "pushwoosh-cordova-plugin"
   ],
   "cordovaPlatforms": [
     "ios",

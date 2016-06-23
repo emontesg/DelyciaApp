@@ -1,4 +1,4 @@
-function RestaurantController($scope, $stateParams, contentfulService, $sce, $cordovaGeolocation) {
+function RestaurantController($scope, $stateParams, contentfulService, $sce, $cordovaGeolocation, $location, $window) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	$scope.mapShow = false;
@@ -8,6 +8,8 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 	var center = null;
 	var restaurant = null;
 
+	$scope.number = '';
+
 	if(contentfulService.dishes.length !== 0)
 	{
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
@@ -15,6 +17,8 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 		var dishes = contentfulService.dishes.items;
 
 		restaurant = dishes[$scope.currentPlatillo.id].fields.restaurante;
+		$scope.number = restaurant.fields.telefono;
+
 		$scope.restaurantDishes = [];
 
 		var restaurantContentfulId = restaurant.sys.id;
@@ -30,13 +34,20 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 					title: dishes[i].fields.nombre,
 					price:dishes[i].fields.precio, 
 					rating:1, 
-					distance: '5 kms', 
+					distance: '5 kms',
+					status: 'ABIERTO' 
 				});
 			}
 		}
 	}
 
 	var options = {timeout: 10000, enableHighAccuracy: true};
+
+	$scope.onDishClick = function(index)
+	{
+		contentfulService.searchDishes = $scope.restaurantDishes;
+		$location.path('/app/platillos/' + (index + 2));
+	};
 
 	$scope.loadMap = function()
 	{
@@ -104,6 +115,14 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 	{
 		$scope.map.panTo(center);
 	}
+
+	function onSuccess(result){
+	  console.log("Success:"+result);
+	}
+	 
+	function onError(result) {
+	  console.log("Error:"+result);
+	}
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$cordovaGeolocation', RestaurantController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$cordovaGeolocation', '$location', '$window', RestaurantController];

@@ -1,6 +1,41 @@
 <ion-view view-title="Amigos">
+  <ion-nav-bar class="bar-light">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
+  </ion-nav-bar>
+
   <ion-content class="no-header" scroll="false">
   	<div class="black-background"></div>
-
+  		<div style="margin-top:13vw;">
+  			<ion-scroll class="favorites-scroll">
+  			<ion-list can-swipe="true" show-delete="false">
+  				<div class="item item-divider black">Mis amigos de Delycia</div>
+  				<ion-item-sliding ng-repeat="friend in testFriends">
+  					<ion-item class="item-avatar">
+  						<img ng-src="{{friend.photo}}">
+  						<div>{{friend.name}}</div>
+  						<ion-option-button class="button-light icon ion-ios-trash" ng-click="onRemoveClick($index)"></ion-option-button>
+  					</ion-item>
+  				</ion-item-sliding>
+  			</ion-list>
+  			<ion-list can-swipe="true" show-delete="false">
+  				<div class="item item-divider black">Amigos no agregados</div>
+  				<ion-item-sliding ng-repeat="friend in testNoFriends">
+  					<ion-item class="item-avatar">
+  						<img ng-src="{{friend.photo}}">
+  						<div>{{friend.name}}</div>
+  						<ion-option-button class="button-light icon ion-person-add" ng-click="onAddClick($index)"></ion-option-button>
+  					</ion-item>
+  				</ion-item-sliding>
+  			</ion-list>
+  			<ion-scroll>
+  		</div>
   </ion-content>
 </ion-view>

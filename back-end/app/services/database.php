@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $database_host = 'localhost';
 $database_name = 'db_delycia';
