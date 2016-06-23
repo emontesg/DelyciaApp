@@ -10,36 +10,24 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 
 	$scope.number = '';
 
-	if(contentfulService.dishes.length !== 0)
+	if(contentfulService.mainDishes.length === 0)
+	{
+		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
+
+	}
+	else
 	{
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
 
-		var dishes = contentfulService.dishes.items;
-
-		restaurant = dishes[$scope.currentPlatillo.id].fields.restaurante;
-		$scope.number = restaurant.fields.telefono;
-
-		$scope.restaurantDishes = [];
-
-		var restaurantContentfulId = restaurant.sys.id;
-
-		for(var i = 0, l = dishes.length; i < l; i++)
-		{
-			if(dishes[i].fields.restaurante.sys.id === restaurantContentfulId)
-			{
-				var imgLink= 'http:' +dishes[i].fields.foto.fields.file.url;
-				$scope.restaurantDishes.push({
-					id: i,
-					src: $sce.getTrustedResourceUrl(imgLink),
-					title: dishes[i].fields.nombre,
-					price:dishes[i].fields.precio, 
-					rating:1, 
-					distance: '5 kms',
-					status: 'ABIERTO' 
-				});
-			}
-		}
+		loadRestaurant();
 	}
+	
+
+	$scope.$on('ready',function(data,items){
+		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+
+		loadRestaurant();
+	});
 
 	var options = {timeout: 10000, enableHighAccuracy: true};
 
@@ -51,9 +39,9 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 
 	$scope.loadMap = function()
 	{
-		$scope.mapShow = !$scope.mapShow;
-		if($scope.mapShow)
+		if(!$scope.mapShow)
 		{
+			$scope.mapShow = true;
 			if($scope.map === null)
 			{
 				load();
@@ -64,6 +52,56 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 			}
 		}
 	};
+
+	$scope.showDishes = function()
+	{
+		$scope.mapShow = false;
+	};
+
+	function loadRestaurant()
+	{
+		if(contentfulService.dishes.length !== 0)
+		{
+			$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+
+			var dishes = contentfulService.dishes.items;
+
+			restaurant = dishes[$scope.currentPlatillo.id].fields.restaurante;
+			$scope.number = restaurant.fields.telefono;
+
+			var photoCount = restaurant.fields.fotos.length;
+			if(photoCount > 1)
+			{
+				var index = Math.floor((Math.random() * photoCount) + 1);
+				$scope.restaurantImage = $sce.getTrustedResourceUrl('http:' +restaurant.fields.fotos[index-1].fields.file.url);
+			}
+			else
+			{
+				$scope.restaurantImage = $sce.getTrustedResourceUrl('http:' +restaurant.fields.fotos[0].fields.file.url);
+			}
+
+			$scope.restaurantDishes = [];
+
+			var restaurantContentfulId = restaurant.sys.id;
+
+			for(var i = 0, l = dishes.length; i < l; i++)
+			{
+				if(dishes[i].fields.restaurante.sys.id === restaurantContentfulId)
+				{
+					var imgLink= 'http:' +dishes[i].fields.foto.fields.file.url;
+					$scope.restaurantDishes.push({
+						id: i,
+						src: $sce.getTrustedResourceUrl(imgLink),
+						title: dishes[i].fields.nombre,
+						price:dishes[i].fields.precio, 
+						rating:1, 
+						distance: '5 kms',
+						status: 'ABIERTO' 
+					});
+				}
+			}
+		}
+	}
 
 	function load()
 	{
