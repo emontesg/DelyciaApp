@@ -22,6 +22,13 @@ function NotificationService($rootScope){
 		}, scope);
 	};
 
+	self.updateNotification = function(id, dishName, date)
+	{
+		cordova.plugins.notification.local.cancel(id, function (id, dishName, date) {
+    		self.createNotification(id, dishName, date);
+		}, scope);
+	}
+
 	return self;
 }
 

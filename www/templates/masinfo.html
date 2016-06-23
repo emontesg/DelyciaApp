@@ -11,24 +11,24 @@
     <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content class="no-header" scroll="false">
+  <ion-content scroll="false">
   	<img ng-src="{{currentPlatillo.src}}" />
-  	<div class="semitransparent-black-background"></div>
+  	<div class="semitransparent-violet-background"></div>
   	<div class="masinfo-menu">
-  		<div class="line" ui-sref="app.restaurant({platilloId: {{platilloId}}})">
-  			<div class="masinfo-menu-item">VER M&Aacute;S SOBRE</div>
-  			<div class="masinfo-menu-subitem">{{currentPlatillo.restaurant}}</div>
+  		<div class="line two" ui-sref="app.restaurant({platilloId: {{platilloId}}})">
+        <div class="ion-ios-information-outline icon"></div>
+  			<div class="masinfo-menu-item">Ver m&aacute;s sobre {{currentPlatillo.restaurant}}</div>
   		</div>
   		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})">
-  			<div class="masinfo-menu-item">SALVAR PLATO</div>
-  			<div class="masinfo-menu-subitem">A TUS FAVORITOS</div>
+        <div class="ion-android-star icon"></div>
+  			<div class="masinfo-menu-item">Agregar favorito</div>
   		</div>
-  		<div class="line" ui-sref="app.share({platilloId: {{currentPlatillo.id}}})">
-  			<div class="masinfo-menu-item">COMPARTIR</div>
-  			<div class="masinfo-menu-subitem">CON AMIGOS</div>
+  		<div class="line">
+        <div class="ion-share icon"></div>
+  			<div class="masinfo-menu-item">Compartir</div>
   		</div>
-  		<div class="line"><div class="masinfo-menu-item">C&Oacute;MO LLEGAR</div></div>
-  		<div><div class="masinfo-menu-item" ui-sref="app.reviews({platilloId: {{currentPlatillo.id}}})">REVIEWS</div></div>
+  		<div class="line"><div class="ion-map icon"></div><div class="masinfo-menu-item">C&oacute;mo llegar</div></div>
+  		<div><div class="ion-heart icon"></div><div class="masinfo-menu-item" ui-sref="app.reviews({platilloId: {{currentPlatillo.id}}})">Reviews</div></div>
   	</div>
   </ion-content>
 </ion-view>
