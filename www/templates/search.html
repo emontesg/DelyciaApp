@@ -10,18 +10,32 @@
 
     <ion-nav-buttons side="right"><img src="img/main-dely-logo.png" class="delycia-logo"></ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="no-header" scroll="false">
-  	<img class="image-background" src="{{currentPlatillo.src}}" />
-  	<div class="semitransparent-black-background"></div>
-  	<div class="search-container">
-  		<div ng-repeat="search in searchType track by $index">
-  			<div class="search-type" ng-click="onTypeClick($index)">{{::search.type}}</div>
-  			<div class="search-options collapse" ng-show="search.enable" ng-hide="!search.enable">
-  				<ion-checkbox ng-model="option.checked" ng-click="onOptionClick(search.type, $index)" ng-repeat="option in search.options track by $index">{{::option.option}}</ion-checkbox>
-  			</div>
-  		</div>
-  		<div class="search-button2" ng-click="onSearchClick()">BUSCAR</div>
-      <div class="search-message">{{message}}</div>
-  	</div>
+  <ion-content scroll="false">
+    <img class="image-background" src="{{currentPlatillo.src}}" />
+    <div class="semitransparent-red-background"></div>
+    <ion-slides options="options" slider="data.slider">
+      <ion-slide-page>
+      	<div class="search-main-container">
+      		<div ng-repeat="search in searchType track by $index" ng-class="search.enableCount > 0 ? $index == 3 ? 'search-type checked' : 'search-type line checked' : $index == 3 ? 'search-type' : 'search-type line'" ng-click="onTypeClick($index)"><div class="{{::search.class}} icon"></div>{{::search.type}}</div>
+      		<div class="search-button2" ng-click="onSearchClick()"><div class="ion-ios-checkmark-outline"></div>Buscar</div>
+          <div class="reset-button" ng-click="onResetClick()"><div class="ion-ios-close-outline"></div>Reset</div>
+          <!-- <div class="search-message">{{message}}</div> -->
+      	</div>
+      </ion-slide-page>
+      <ion-slide-page ng-repeat="search in searchType track by $index">
+        <div class="search-container">
+          <div class="search-header">
+            <div class="ion-chevron-left" ng-click="onTypeClick(-1)"></div>
+            <div class="search-title">{{::search.type}}</div>
+            <div class="ion-chevron-right"></div>
+          </div>
+          <ion-scroll class="search-scroll">
+            <div class="search-options">
+              <ion-checkbox ng-model="option.checked" ng-click="onOptionClick(search.type, $index)" ng-repeat="option in search.options track by $index" ng-class="option.checked ? 'search-option checked' : 'search-option'">{{::option.option}}</ion-checkbox>
+            </div>
+          </ion-scroll>
+        </div>
+      </ion-slide-page>
+    </ion-slides>
   </ion-content>
 </ion-view>

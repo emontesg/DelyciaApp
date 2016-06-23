@@ -101,6 +101,9 @@
   <plugin name="de.appplant.cordova.plugin.local-notification" />
   <plugin name="pushwoosh-pgb-plugin" source="npm" />
   <plugin name="cordova-plugin-device" source="npm" />
+  <plugin name="cordova-plugin-customurlscheme" source="npm">
+    <param name="URL_SCHEME" value="delycia" />
+  </plugin>
   <plugin name="cordova-plugin-whitelist" version="1.2.2" source="npm" />
   <access origin="*"/>
   <access origin="tel:*" launch-external="yes"/>
