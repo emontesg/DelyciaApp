@@ -73,11 +73,11 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 			if(photoCount > 1)
 			{
 				var index = Math.floor((Math.random() * photoCount) + 1);
-				$scope.restaurantImage = $sce.getTrustedResourceUrl(restaurant.fields.fotos[index-1].fields.file.url);
+				$scope.restaurantImage = $sce.getTrustedResourceUrl('http:' +restaurant.fields.fotos[index-1].fields.file.url);
 			}
 			else
 			{
-				$scope.restaurantImage = $sce.getTrustedResourceUrl(restaurant.fields.fotos[0].fields.file.url);
+				$scope.restaurantImage = $sce.getTrustedResourceUrl('http:' +restaurant.fields.fotos[0].fields.file.url);
 			}
 
 			$scope.restaurantDishes = [];
