@@ -133,7 +133,7 @@ li {
     margin-left: 5vw;
     font-weight: 300;
     font-size: 3vw;
-    line-height: 3vw;
+    line-height: 4vw;
 }
 
 .menu-image-rating .rating-hearts,
@@ -226,6 +226,11 @@ li {
     text-align: center;
     border-right: solid 1px #ddd;
     padding: 2% 0;
+}
+
+.menu-image-status.closed
+{
+    color: red;
 }
 
 .menu-image-price
@@ -749,21 +754,29 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     height:70vw;
 }
 
+.restaurant-location-info
+{
+    margin-top: 10vw !important;
+}
+
 .restaurant-location-info,.restaurant-time-info
 {
     margin: 4vw 7vw 0 7vw;
+    display: flex;
 }
 
-.restaurant-location-info .header,
-.restaurant-time-info .header
+.restaurant-location-info .ion-ios-location,
+.restaurant-time-info .ion-android-time
 {
-    font-weight: 500;
+    margin-right: 3vw;
+    color: #666;
 }
 
 .restaurant-location-info .info,
 .restaurant-time-info .info
 {
     font-weight: 300;
+    max-width: 80vw;
 }
 
 /*.restaurant-time-info
