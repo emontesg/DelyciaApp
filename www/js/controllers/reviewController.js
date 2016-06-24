@@ -1,6 +1,6 @@
 var DelyciaConstants = require('./../delyciaConstants');
 
-function ReviewController($scope, $stateParams, contentfulService, RequestService, $rootScope) {
+function ReviewController($scope, $stateParams, contentfulService, RequestService, $rootScope, $cordovaToast) {
 	$scope.platilloId = $stateParams.platilloId;
     $scope.islogged = window.localStorage.getItem("idUser") !== null;
     $scope.isMac = window.localStorage.getItem("isMac");
@@ -166,9 +166,22 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	{
 		if(!$scope.makeRating)
 		{
-			$scope.makeRating = true;
+			if($scope.islogged)
+			{
+				$scope.makeRating = true;
+				$scope.getUserRating();
+			}
+			else
+			{
+				$cordovaToast
+		      .show('Por favor iniciar sesión primero', 'long', 'bottom')
+		      .then(function(success) {
+		        // success
+		      }, function (error) {
+		        // error
+		      });
+			}
 		}
-		$scope.getUserRating();
 	};
 
 	$scope.onReturnButtonClick = function()
@@ -210,4 +223,4 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', '$rootScope', ReviewController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', '$rootScope', '$cordovaToast', ReviewController];

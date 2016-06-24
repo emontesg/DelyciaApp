@@ -75,6 +75,11 @@ li {
     position: absolute;
 } 
 
+.menu1-button-deactive
+{
+    color: #888;
+}
+
 .menu-image-info
 {
     float: left;
@@ -325,6 +330,11 @@ li {
     left: 20vw;
     color: white;
     width: 60%;
+}
+
+.masinfo-menu .deactivated
+{
+    color: #999;
 }
 
 .masinfo-menu-item
