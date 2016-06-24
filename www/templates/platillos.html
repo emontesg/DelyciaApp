@@ -20,7 +20,7 @@
 				</div>
 				<img class="img-responsive" ng-src="{{platillo.src}}" ng-click="onImageClick()"/>
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
-					<div ng-class="hasReview ? 'menu-image-rating' : 'menu-image-rating no-review'">
+					<div ng-class="hasReview ? 'menu-image-rating' : 'menu-image-rating no-review'" ui-sref="app.reviews({platilloId: {{platillo.id}}})">
 						<div class="rating-hearts" ng-show="hasReview">
 							<div class="ion-ios-heart active"></div>
 							<div class="ion-ios-heart active"></div>
@@ -28,17 +28,18 @@
 							<div class="ion-ios-heart active"></div>
 							<div class="ion-ios-heart"></div>
 						</div>
+						<div class="menu-reviews-count" ng-show="hasReview">(5 reviews)</div>
 						<div class="no-rating" ng-show="!hasReview">
 							<div class="broken-heart"></div>
 							<div class="no-review-message">A&Uacute;N SIN REVIEWS</div>
 						</div>
 					</div>
-					<div ng-class="hasReview ? 'menu-image-kms' : 'menu-image-kms no-review'">
+					<div class="menu-image-kms">
 						<div class="ion-navigate distance-icon"></div>
 						{{platillo.distance}}
 					</div>
-					<div ng-class="hasReview ? 'menu-image-status' : 'menu-image-status no-review'">{{platillo.status}}</div>
-					<div ng-class="hasReview ? 'menu-image-price' : 'menu-image-price no-review'">&#162;{{platillo.price}}</div>
+					<div class="menu-image-status">{{platillo.status}}</div>
+					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
 				<div  native-transitions ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
 				<div ui-sref="app.search({platilloId: {{platillo.id}}})" ng-class="showSearchButton ? infoEnable ? 'search-button active' : 'search-button' : 'search-button hide'"></div>
