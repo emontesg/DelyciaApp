@@ -33,6 +33,8 @@ var RequestService = function($http, $location, $rootScope){
                 return $http.post(route, data).then(function(response){});
             }
         },
+
+        
         loginUser : function(obj){
             var route = url + backEnd + 'loginUser';
             data = {
@@ -111,7 +113,35 @@ var RequestService = function($http, $location, $rootScope){
             if (data) {
                 return $http.post(route, data);
             }
-        }
+        },
+
+        setReminder : function(obj){
+            var route = url + backEnd + 'setReminder';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                reminder : obj.reminder
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
+        getAverageRatings: function(){
+            var route = url + backEnd + 'getAverageRatings';
+            return $http.get(route);
+        },
+
+        addAverageRating : function (obj){
+            var route = url + backEnd + 'addAverageRating';
+            data = {
+                idPlatillo : obj.idPlatillo,
+                promedio : obj.promedio
+            };
+            if (data) {
+                return $http.post(route, data);
+            }
+        },
+
 
 
     };

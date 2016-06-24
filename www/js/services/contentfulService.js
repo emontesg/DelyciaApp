@@ -8,9 +8,11 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 	self.mainDishes = [];
 	self.total = 0;
 	self.userFavorites = [];
-
+	var allReviews = [];
 	var waitingLoadDishes = [];
 	var waitingLoadImages = [];
+	self.promedioRating = 0;
+	var ratingList = {};
 
 
 	var moment = require('moment');
@@ -23,12 +25,12 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 		accessToken: 'e1e84ff039e7a97a5dd97ba4104682f57f10ca912016f42d000bf22cd4f0ceee'
 	});
 	//640*1136
-
-	client.getEntries({
+	function getEntry(){
+			client.getEntries({
 			'content_type':'plato'
 		})
 		.then(function(entries){
-			//console.log(entries);
+
 			platos = entries;
 			var dishes = [];
 			var index = 0;
@@ -40,6 +42,10 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 			var count = 0;
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
+				var ratingValue = 0;
+				if(ratingList[items[i].sys.id] !== undefined){
+					ratingValue = ratingList[items[i].sys.id];
+				}
 				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
 				if(i < 4)
@@ -49,7 +55,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 							title:items[i].fields.nombre, 
 							restaurant:items[i].fields.restaurante.fields.nombre, 
 							price:items[i].fields.precio, 
-							rating:1, 
+							rating:ratingValue, 
 							distance: '5 kms', 
 							status: getState(items[i]),
 							idContentful:items[i].sys.id
@@ -64,7 +70,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 							title:items[i].fields.nombre, 
 							restaurant:items[i].fields.restaurante.fields.nombre, 
 							price:items[i].fields.precio, 
-							rating:1, 
+							rating:ratingValue, 
 							distance: '5 kms', 
 							status: getState(items[i]),
 							idContentful:items[i].sys.id});
@@ -79,7 +85,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 							title:items[i].fields.nombre, 
 							restaurant:items[i].fields.restaurante.fields.nombre, 
 							price:items[i].fields.precio, 
-							rating:1, 
+							rating:ratingValue, 
 							distance: '5 kms', 
 							status: getState(items[i]),
 							idContentful:items[i].sys.id});
@@ -108,9 +114,11 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
                     function handleNotify( event ) {
                         // $scope.percentLoaded = event.percent;
                         console.info( "Percent loaded:", event.percent );
-                    }
+                        }
+                    
                 );
 		});
+	}	
 
 	self.getDishJson = function(index){
 		var dish = self.dishes.items[index];
@@ -263,7 +271,35 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 		waitingLoadImages.splice(0, 1);
 		loadMoreImages();
 	}
+
+	self.updateRating = function(id, rating){
+		if(self.mainDishes !== null){
+			for(var i = 0; i < self.mainDishes.length; i++){
+				if(id === self.mainDishes[i].idContentful){
+					self.mainDishes[i].rating = rating;
+					i = self.mainDishes.length;
+				}
+			}
+		}
+
+	}
+
+	self.loadList = function(){
+		RequestService.getAverageRatings().then(function (response){  
+			if(response.data !== null){
+				for(i = 0; i < response.data.length; i ++){
+					ratingList[response.data[i].idPlato] = response.data[i].promedio;
+				}
+				console.log(ratingList);
+				getEntry();
+			}      
+
+		}, function (reject){
+        });
+	};
 	
+	self.loadList();
+
 	return self;
 }
 

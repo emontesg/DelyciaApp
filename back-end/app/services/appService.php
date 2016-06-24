@@ -52,17 +52,32 @@ class AppService {
 
 
 
-    public function addToFavorites($idPlatillo, $idUsuario, $fechaHora){
+    public function addToFavorites($idPlatillo, $idUsuario, $fechaHora, $recordatorio){
         $result = [];
-        $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha) VALUES (:idPlatillo, :idUsuario, :fechaHora)";
+        $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha, $recordatorio) VALUES (:idPlatillo, :idUsuario, :fechaHora, :recordatorio)";
         $add_params = [
                         ":idPlatillo" =>$idPlatillo,
                         ":idUsuario" =>$idUsuario,
-                        ":fechaHora" =>$fechaHora
+                        ":fechaHora" =>$fechaHora,
+                        ":recordatorio" =>$recordatorio
                     ];
         $result = $this->storage->query($add_favorites_query, $add_params);
         return $result;
     }
+
+
+    public function setReminder($idPlatillo, $reminder){
+        $result = [];
+        $update_query = "UPDATE tfavoritos SET recordatorio = :reminder  WHERE idPlato = :idPlatillo";
+        $update_params = [
+                        ":idPlatillo" =>$idPlatillo,
+                        ":reminder" =>$reminder
+                    ];
+        $result = $this->storage->query($update_query, $update_params);
+        return $result;
+    }
+
+
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
 //En esta parte llegan los parámetros enviados desde el controllador de php.
@@ -161,6 +176,47 @@ class AppService {
         return $result;
     }
 
+    public function addAverageRating($idPlatillo, $promedio){
+        $validation_result = [];
+        $validation_query = "SELECT * FROM tpromedio WHERE idPlato = :idPlatillo";
+        $validation_params = [
+                        ":idPlatillo" =>$idPlatillo
+                        ];
+        $validation_result = $this->storage->query($validation_query, $validation_params);
+
+        $result = [];
+        $add_params = [
+                        ":idPlatillo" =>$idPlatillo,
+                        ":promedio" =>$promedio 
+                    ];
+        if (count($validation_result['data']) > 0) {
+            $update_query = "UPDATE tpromedio SET promedio = :promedio WHERE idPlato = :idPlatillo";
+            $result = $this->storage->query($update_query, $add_params);
+            return $result;
+        } else {
+            $add_query = "INSERT INTO tpromedio(idPlato,promedio) VALUES (:idPlatillo, :promedio)";
+            $result = $this->storage->query($add_query, $add_params);
+            return $result;
+        }
+        return $result;
+    }
+
+    public function getAverageRatings(){
+        $result = [];
+        $get_all_query = "SELECT * FROM tpromedio";
+        $getAll_params = [];
+
+        $result = $this->storage->query($get_all_query, $getAll_params);
+
+        if (count($result['data'] > 0)) {
+            return $result['data'];
+        } else {
+            $result['message'] = "You haven't add ratings yet.";
+            $result['error'] = true;
+        }
+        return $result;
+    }
+
     public function getAllFavorites($idUsuario){
         $result = [];
         $get_all_query = "SELECT * FROM tfavoritos WHERE idUsuario = :idUsuario";
@@ -191,4 +247,32 @@ class AppService {
         return $result;
 
     }
+
+    // public function addReminder($idUsuario, $idPlatillo, $fechaHora){
+    //     $validation_result = [];
+    //     $validation_query = "SELECT * FROM trecordatorios WHERE idUsuario = :idUsuario AND idPlato = :idPlatillo";
+    //     $validation_params = [
+    //                     ":idPlatillo" =>$idPlatillo,
+    //                     ":idUsuario" =>$idUsuario
+    //                 ];
+    //     $validation_result = $this->storage->query($validation_query, $validation_params);
+        
+    //     $result = [];
+    //     $add_params = [
+    //                     ":idPlatillo" =>$idPlatillo,
+    //                     ":idUsuario" =>$idUsuario,
+    //                     ":fechaHora" =>$fechaHora
+    //                 ];
+
+    //     if(count($validation_result['data']) > 0){
+    //         //si ya existe el review del usuario
+    //         $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible, fecha =:fechaHora
+    //         WHERE idUsuario = :idUsuario and idPlato = :idPlato";
+    //         $result = $this->storage->query($update_review, $review_params);
+    //     }else{
+    //         $add_reminder_query = "INSERT INTO trecordatorios(idUsuario, idPlato, fecha) VALUES (:idUsuario,:idPlatillo,:fecha)";
+    //         $result = $this->storage->query($add_reminder_query, $add_params);
+    //     }
+    //     return $result;
+    // }
 }

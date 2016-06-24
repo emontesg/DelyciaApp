@@ -6,7 +6,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.isMac = window.localStorage.getItem("isMac");
 	$scope.realId = contentfulService.dishes.items[$scope.platilloId].sys.id;
 	$scope.allReviews = [];
-	$scope.promedio = 0;
+	$rootScope.promedio = 0;
 	$scope.numPromedio = 0;
 	$scope.cantReviews = 0;
 	$scope.userReview = [];
@@ -58,7 +58,13 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
             		$scope.allReviews.push(response.data[i]);
             	}
 				$scope.calculateAverageRating();
-				$scope.promedio = $scope.calculateAverageRating(); 
+				$rootScope.promedio = $scope.calculateAverageRating(); 
+				var ratingObj = {
+					idPlatillo : $scope.realId,
+					promedio : $rootScope.promedio
+				};
+				RequestService.addAverageRating(ratingObj);
+				contentfulService.updateRating($scope.realId,$rootScope.promedio);
 			}
 			
             }, function (reject){
@@ -69,6 +75,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.getCantReviews = function(){
 		RequestService.getCantReviews($scope.realId).then(function (response){
 			$scope.cantReviews = response.data;
+			console.log($scope.cantReviews);
             }, function (reject){
         });
     };
@@ -85,6 +92,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
         if(obj !== null){
           	RequestService.addReview(obj).then(function (response){
 				$scope.getAllReviews();
+				$scope.getCantReviews();
             }, function (reject){
         });
 
@@ -106,7 +114,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		notRounded = suma / cant;
     		promedio = Math.floor(notRounded);
     		$scope.numPromedio = notRounded.toFixed(1);
-    		console.log($scope.numPromedio);
     	}
     	return promedio;
     };
