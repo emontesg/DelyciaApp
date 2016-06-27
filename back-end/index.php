@@ -172,6 +172,36 @@ $app->post(
         $result = $appController->getUserReviews($request);
         return $response->withJson($result);
     }
+); 
+
+$app->post(
+    '/app/addAverageRating',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+
+        $result = $appController->addAverageRating($request);
+        return $response->withJson($result);
+    }
+);
+
+$app->post(
+    '/app/setReminder',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+
+        $result = $appController->setReminder($request);
+        return $response->withJson($result);
+    }
+);
+
+$app->get(
+    '/app/getAverageRatings',
+    function ($request, $response) {
+        $appController = new App\Controllers\AppController();
+
+        $result = $appController->getAverageRatings($request);
+        return $response->withJson($result);
+    }
 );
 
 

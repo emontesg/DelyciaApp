@@ -1,9 +1,10 @@
-function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, RequestService) {
+function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, RequestService, $rootScope) {
 
 	var type = parseInt($stateParams.type);
 
 	$scope.showSearchButton = type === 0 ? true : false;
 	$scope.hasReview = false;
+	$scope.hearts = [0,1,2,3,4];
 
 	if(contentfulService.mainDishes.length === 0)
 	{
@@ -17,7 +18,7 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	{
 		$scope.platillos = contentfulService.searchDishes;
 	}
-
+	
 	$scope.dishes = [];
 
 	var initialSlide = type >= 2 ? type-2 : 0;
@@ -39,6 +40,18 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 
 	});
 
+	$scope.getHeartClass = function(index, rating)
+	{
+		if(index < parseInt(rating))
+		{
+			return 'ion-ios-heart active';
+		}
+		else
+		{
+			return 'ion-ios-heart';
+		}
+	};
+
 	$scope.infoEnable = true;
 
 
@@ -46,7 +59,10 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	{
 		$scope.infoEnable = !$scope.infoEnable;
 	}
+	
+
+	
 
 }
 
-module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService', 'RequestService', PlatillosController];
+module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService', 'RequestService','$rootScope', PlatillosController];

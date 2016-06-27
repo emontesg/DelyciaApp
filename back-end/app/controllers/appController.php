@@ -76,9 +76,43 @@ class AppController {
         }
         //Server's date
         $fechaHora = date("Y-m-d");
+        $recordatorio = 0;
 
-        if (isset($idPlatillo, $idUsuario, $fechaHora)) {
-            $result = $this->AppService->addToFavorites($idPlatillo, $idUsuario, $fechaHora);
+        if (isset($idPlatillo, $idUsuario, $fechaHora, $recordatorio)) {
+            $result = $this->AppService->addToFavorites($idPlatillo, $idUsuario, $fechaHora, $recordatorio);
+            return $result;
+        } else {
+            $result['error'] = true;
+            $result['message'] = 'You must send all the information required';
+        }
+        return $result;
+    }
+
+    public function setReminder($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if (array_key_exists("idPlatillo", $data)) {
+            $idPlatillo = $data["idPlatillo"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idPlatillo data field is missing."
+            ];
+            return $result;
+        }
+
+        if (array_key_exists("reminder", $data)) {
+            $reminder = $data["reminder"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The reminder data field is missing."
+            ];
+            return $result;
+        }
+        if (isset($idPlatillo, $reminder)) {
+            $result = $this->AppService->setReminder($idPlatillo, $reminder);
             return $result;
         } else {
             $result['error'] = true;
@@ -402,6 +436,45 @@ class AppController {
                 'message' => "We couldn't find the requested reviews."
             ];
         }
+        return $result;
+    }
+
+    public function addAverageRating($request){
+        $result = [];
+        $data = $request->getParsedBody();
+
+        if (array_key_exists("idPlatillo", $data)) {
+            $idPlatillo = $data["idPlatillo"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The idPlatillo data field is missing."
+            ];
+            return $result;
+        }
+
+        if (array_key_exists("promedio", $data)) {
+            $promedio = $data["promedio"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The promedio data field is missing."
+            ];
+            return $result;
+        }
+
+        if (isset($idPlatillo, $promedio)) {
+            $result = $this->AppService->addAverageRating($idPlatillo, $promedio);
+            return $result;
+        } else {
+            $result['error'] = true;
+            $result['message'] = 'You must send all the information required';
+        }
+
+    }
+
+    public function getAverageRatings(){
+        $result = $this->AppService->getAverageRatings();
         return $result;
     }
 

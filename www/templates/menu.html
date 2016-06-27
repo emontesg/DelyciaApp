@@ -14,16 +14,16 @@
           <div ng-show="!islogged">Login</div>
           <div ng-show="islogged">Logout</div>
         </ion-item>
-        <ion-item menu-close class="delycia-menu-item" ui-sref="app.platillos({type: 0})">
+        <ion-item menu-close class="delycia-menu-item" ng-href="#/app/platillos/0">
           Platillos
         </ion-item>
-        <ion-item menu-close class="delycia-menu-item" ui-sref="app.favorites({platilloId: -1})" ng-show="islogged">
+        <ion-item menu-close ng-class="islogged ? 'delycia-menu-item' : 'delycia-menu-item menu1-button-deactive'" ng-href="{{islogged ? '#/app/favorites/-1' : ''}}" ng-click="showNotLoggedMessage()">
           Favoritos
         </ion-item>
 <!--         <ion-item menu-close class="delycia-menu-item" ui-sref="app.friends()" ng-show="islogged">
           Amigos
         </ion-item> -->
-        <ion-item menu-close class="delycia-menu-item" ui-sref="app.configurations()" ng-show="islogged">
+        <ion-item menu-close ng-class="islogged ? 'delycia-menu-item' : 'delycia-menu-item menu1-button-deactive'" href="{{islogged ? '#/app/configurations' : ''}}" ng-click="showNotLoggedMessage()">
           Configuraciones
         </ion-item>
       </ion-list>

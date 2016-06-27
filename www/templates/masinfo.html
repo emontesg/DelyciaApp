@@ -19,11 +19,11 @@
         <div class="ion-ios-information-outline icon"></div>
   			<div class="masinfo-menu-item">Ver m&aacute;s sobre {{currentPlatillo.restaurant}}</div>
   		</div>
-  		<div class="line" ui-sref="app.favorites({platilloId: {{currentPlatillo.id}}})" ng-show="islogged">
+  		<div ng-click="goToLocation('/app/favorites/{{currentPlatillo.id}}')" ng-class="islogged ? 'line' : 'line deactivated'">
         <div class="ion-android-star icon"></div>
   			<div class="masinfo-menu-item">Agregar favorito</div>
   		</div>
-  		<div class="line" ng-show="islogged">
+  		<div ng-click="share()" ng-class="islogged ? 'line' : 'line deactivated'">
         <div class="ion-share icon"></div>
   			<div class="masinfo-menu-item">Compartir</div>
   		</div>
