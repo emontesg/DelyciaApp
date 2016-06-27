@@ -1,6 +1,6 @@
 var contentful = require('contentful'); 
 
-function ContentfulService($rootScope, $sce, RequestService, preloaderService){
+function ContentfulService($rootScope, $sce, RequestService, preloaderService, $cordovaGeolocation){
 	var self = this;
 	var platos = [];
 	var user = localStorage.getItem('idUser');
@@ -14,6 +14,8 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 	self.promedioRating = 0;
 	var ratingList = {};
 	self.bdFavList = {};
+	var userlocation = [];
+
 
 	var moment = require('moment');
 	moment().format();
@@ -30,93 +32,107 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 			'content_type':'plato'
 		})
 		.then(function(entries){
+			var posOptions = {timeout: 10000, enableHighAccuracy: false};
 
-			platos = entries;
-			var dishes = [];
-			var index = 0;
-			var items = entries.items;
-			var images = [];
+			$cordovaGeolocation
+			    .getCurrentPosition(posOptions)
+			    .then(function (position) {
+			      	userlocation.lat = position.coords.latitude;
+			      	userlocation.long = position.coords.longitude;
 
-			var waitingDishesGroup = [];
-			var waitingImagesGroup = [];
-			var count = 0;
-			for(var i = 0, l = items.length; i < l; i++)
-			{	
-				var ratingValue = 0;
-				if(ratingList[items[i].sys.id] !== undefined){
-					ratingValue = ratingList[items[i].sys.id];
-				}
-				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
+			      	////////////////////////////////////////////////////////////////////
+					platos = entries;
+					var dishes = [];
+					var index = 0;
+					var items = entries.items;
+					var images = [];
 
-				if(i < 4)
-				{
-					self.mainDishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: '5 kms', 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id
-						}); 
+					var waitingDishesGroup = [];
+					var waitingImagesGroup = [];
+					var count = 0;
+					for(var i = 0, l = items.length; i < l; i++)
+					{	
+						var ratingValue = 0;
+						if(ratingList[items[i].sys.id] !== undefined){
+							ratingValue = ratingList[items[i].sys.id];
+						}
+						var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
-					images.push(imgLink);
-				}
-				else if(count < 4 && i !== l-1)
-				{
-					waitingDishesGroup.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: '5 kms', 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id});
-				
-					waitingImagesGroup.push(imgLink);
-					count++;
-				}
-				else
-				{
-					waitingDishesGroup.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: '5 kms', 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id});
-				
-					waitingImagesGroup.push(imgLink);
-					waitingLoadImages.push(waitingImagesGroup);
-					waitingLoadDishes.push(waitingDishesGroup);
-					waitingDishesGroup = [];
-					waitingImagesGroup = [];
-					count = 0;
-				}
-			}
+						if(i < 4)
+						{
+							self.mainDishes.push({id:index++, 
+									src:imgLink, 
+									title:items[i].fields.nombre, 
+									restaurant:items[i].fields.restaurante.fields.nombre, 
+									price:items[i].fields.precio, 
+									rating:ratingValue, 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									status: getState(items[i]),
+									idContentful:items[i].sys.id
+								}); 
 
-			self.dishes = entries;
-			self.total = entries.total;
-			self.getAllFavorites();
+							images.push(imgLink);
+						}
+						else if(count < 4 && i !== l-1)
+						{
+							waitingDishesGroup.push({id:index++, 
+									src:imgLink, 
+									title:items[i].fields.nombre, 
+									restaurant:items[i].fields.restaurante.fields.nombre, 
+									price:items[i].fields.precio, 
+									rating:ratingValue, 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									status: getState(items[i]),
+									idContentful:items[i].sys.id});
+						
+							waitingImagesGroup.push(imgLink);
+							count++;
+						}
+						else
+						{
+							waitingDishesGroup.push({id:index++, 
+									src:imgLink, 
+									title:items[i].fields.nombre, 
+									restaurant:items[i].fields.restaurante.fields.nombre, 
+									price:items[i].fields.precio, 
+									rating:ratingValue, 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									status: getState(items[i]),
+									idContentful:items[i].sys.id});
+						
+							waitingImagesGroup.push(imgLink);
+							waitingLoadImages.push(waitingImagesGroup);
+							waitingLoadDishes.push(waitingDishesGroup);
+							waitingDishesGroup = [];
+							waitingImagesGroup = [];
+							count = 0;
+						}
+					}
 
-			// $ImageCacheFactory.Cache(images);
-			preloaderService.preloadImages(images).then(firstLoadResolve,
-                    function handleReject( imageLocation ) {
-                        // Loading failed on at least one image.
-                        console.error( "Image Failed", imageLocation );
-                        console.info( "Preload Failure" );
-                        $rootScope.$broadcast('error');
-                    },
-                    function handleNotify( event ) {
-                        // $scope.percentLoaded = event.percent;
-                        console.info( "Percent loaded:", event.percent );
-                        }
-                    
-                );
+					self.dishes = entries;
+					self.total = entries.total;
+					self.getAllFavorites();
+
+					// $ImageCacheFactory.Cache(images);
+					preloaderService.preloadImages(images).then(firstLoadResolve,
+		                    function handleReject( imageLocation ) {
+		                        // Loading failed on at least one image.
+		                        console.error( "Image Failed", imageLocation );
+		                        console.info( "Preload Failure" );
+		                        $rootScope.$broadcast('error');
+		                    },
+		                    function handleNotify( event ) {
+		                        // $scope.percentLoaded = event.percent;
+		                        console.info( "Percent loaded:", event.percent );
+		                        }
+		                    
+		                );			      	
+
+			    }, function(err) {
+	      // error
+	    });
+
+			
 		});
 	}	
 
@@ -125,7 +141,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
-			rating:1, distance: '5 kms', status: 'ABIERTO'};
+			rating:1, distance: '5 km', status: 'ABIERTO'};
 	};
 
 	function getState(item){
@@ -303,7 +319,25 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 	
 	self.loadList();
 
+	function calculateDistance(lat1, lon1, lat2, lon2) {
+	  var R = 6371; // km
+	  var dLat = (lat2 - lat1).toRad();
+	  var dLon = (lon2 - lon1).toRad(); 
+	  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+	          Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+	          Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+	  var d = R * c;
+	  return d;
+	}
+
+	Number.prototype.toRad = function() {
+	  return this * Math.PI / 180;
+	}
+	
+
+
 	return self;
 }
 
-module.exports = ['$rootScope', '$sce', 'RequestService', 'PreloaderService', ContentfulService];
+module.exports = ['$rootScope', '$sce', 'RequestService', 'PreloaderService', '$cordovaGeolocation', ContentfulService];

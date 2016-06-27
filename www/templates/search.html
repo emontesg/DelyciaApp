@@ -17,8 +17,8 @@
       <ion-slide-page>
       	<div class="search-main-container">
       		<div ng-repeat="search in searchType track by $index" ng-class="search.enableCount > 0 ? $index == 3 ? 'search-type checked' : 'search-type line checked' : $index == 3 ? 'search-type' : 'search-type line'" ng-click="onTypeClick($index)"><div class="{{::search.class}} icon"></div>{{::search.type}}</div>
-      		<div class="search-button2" ng-click="onSearchClick()"><div class="ion-ios-checkmark-outline"></div>Buscar</div>
-          <div class="reset-button" ng-click="onResetClick()"><div class="ion-ios-close-outline"></div>Reset</div>
+      		<div class="search-button2" ng-click="onSearchClick()" ng-show="!disableButtons"><div class="ion-ios-checkmark-outline"></div>Buscar</div>
+          <div class="reset-button" ng-click="onResetClick()" ng-show="!disableButtons"><div class="ion-ios-close-outline"></div>Reset</div>
           <!-- <div class="search-message">{{message}}</div> -->
       	</div>
       </ion-slide-page>

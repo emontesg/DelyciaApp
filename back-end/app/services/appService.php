@@ -65,18 +65,94 @@ class AppService {
         return $result;
     }
 
-
-    public function setReminder($idPlatillo, $reminder){
+    public function addCriteria($TipoComida, $idUsuario){
         $result = [];
-        $update_query = "UPDATE tfavoritos SET recordatorio = :reminder  WHERE idPlato = :idPlatillo";
-        $update_params = [
-                        ":idPlatillo" =>$idPlatillo,
-                        ":reminder" =>$reminder
-                    ];
-        $result = $this->storage->query($update_query, $update_params);
+        $add_criteria_query = 'INSERT INTO tcriterios (TipoComida, idUsuario) VALUES (:TipoComida,:idUsuario)';
+        $criteria_params = [
+                            ':TipoComida'=> $TipoComida,
+                            ':idUsuario' => $idUsuario
+                            ];
+        $result = $this->storage->query($add_criteria_query,$criteria_params);
         return $result;
     }
 
+    public function getCriteriaByUserId($idUsuario){
+        $result = [];
+        $get_criteria_by_user_query = 'SELECT * FROM tcriterios WHERE idUsuario = :idUsuario';
+        $criteria_params = [':idUsuario' => $idUsuario];
+        $result = $this->storage->query($get_criteria_by_user_query,$criteria_params);
+        return $result;
+    }
+
+    public function deleteCriteriaById($idCriterio){
+        $result = [];
+        $delete_criteria_query = 'DELETE FROM tcriterios WHERE idCriterio = :idCriterio';
+        $delete_params = [':idCriterio' => $idCriterio];
+        $result = $this->storage->query($delete_criteria_query,$delete_params);
+        return $result;   
+    }
+
+    public function addCriteriaArray($idUsuario, $listaCriterios){
+        $result = [];
+        $test_query = 'INSERT INTO tcriterios (TipoComida, idUsuario) VALUES (:TipoComida,:idUsuario)';
+
+        for ($i=0; $i < count($listaCriterios); $i++) { 
+            $test_params = [
+                            ':TipoComida' =>$listaCriterios[$i]['TipoComida'],
+                            ':idUsuario' => $idUsuario
+                            ];
+            $result = $this->storage->query($test_query, $test_params);
+            
+        }
+
+        //$result['noobs everywhere'] = $idUsuario;
+        
+        return $result;
+
+    }
+    public function deleteCriteriaArray($listaIds){
+        $result = [];
+        $delete_query = 'DELETE FROM tcriterios WHERE idCriterio = :idCriterio';
+        for ($i=0; $i < count($listaIds); $i++) {         
+            $delete_params = [':idCriterio' => $listaIds[$i]];  
+            $result = $this->storage->query($delete_query,$delete_params);
+        }
+
+        return $result;
+    }
+
+    public function addFriend($idUsuario,$idAmigo){
+        $result = [];
+        $add_friend_query = 'INSERT INTO tamigos (idUsuario, idAmigo, contInv) VALUES (:idUsuario, :idAmigo, 0)';
+        $add_friend_params = [':idUsuario' => $idUsuario,
+                                ':idAmigo'=> $idAmigo
+                                ];
+        $result = $this->storage->query($add_friend_query,$add_friend_params);
+
+        return $result;
+
+    }
+
+    public function getFriendsByUserId($idUsuario){
+        $result = [];
+        $get_friends_query = 'SELECT * FROM tusuarios WHERE idUsuario IN (SELECT idAmigo FROM tamigos WHERE idUsuario = :idUsuario)';
+
+        $get_friends_params = [':idUsuario' => $idUsuario];
+
+        $result = $this->storage->query($get_friends_query,$get_friends_params);
+
+        return $result;
+    }
+
+    public function deleteFriend($idUsuario, $idAmigo){
+        $result = [];
+        $delete_friend_query = 'DELETE FROM tamigos WHERE idUsuario = :idUsuario AND idAmigo = :idAmigo';
+        $delete_friend_params = [":idUsuario" => $idUsuario, ':idAmigo' => $idAmigo];
+
+        $result = $this->storage->query($delete_friend_query,$delete_friend_params);
+
+        return $result;
+    }
 
 //-------------------------BACK-END---------------------------------------------
 //Paso 3
@@ -247,6 +323,19 @@ class AppService {
         return $result;
 
     }
+
+    public function setReminder($idPlatillo, $reminder){
+        $result = [];
+        $update_query = "UPDATE tfavoritos SET recordatorio = :reminder  WHERE idPlato = :idPlatillo";
+        $update_params = [
+                        ":idPlatillo" =>$idPlatillo,
+                        ":reminder" =>$reminder
+                    ];
+        $result = $this->storage->query($update_query, $update_params);
+        return $result;
+    }
+
+
 
     // public function addReminder($idUsuario, $idPlatillo, $fechaHora){
     //     $validation_result = [];
