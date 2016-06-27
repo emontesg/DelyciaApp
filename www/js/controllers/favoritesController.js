@@ -30,6 +30,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 				}
 			}
 
+
 			if(exist === false){
 				RequestService.addFavorite(obj);
 				$scope.myFavoritesList.push(ContentfulService.mainDishes[$scope.platilloId]);
@@ -56,5 +57,24 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 			}
 		}
 	};
+
+	var options = {
+    date: new Date(),
+    mode: 'datetime'
+	};
+
+	function onSuccess(date) {
+	    alert('Selected date: ' + date);
+	}
+
+	function onError(error) { // Android only
+	    alert('Error: ' + error);
+	}
+
+	$scope.showDatePicker = function()
+	{
+		options.date = new Date();
+		datePicker.show(options, onSuccess, onError);
+	}
 }
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', FavoritesController];

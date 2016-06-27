@@ -22,98 +22,146 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 
 	$scope.searchType = [
 		{
-			type: 'Comida',
-			options: [{option:'Carne'}, {option:'Pastas'}, {option:'Postres'}, {option:'Ensaladas'}, {option:'Hamburguesas'}, 
-					  {option:'Sopas'}, {option:'Sushi'}, {option:'Cocteles'}, {option:'Alitas'}, {option:'Pollo'}, 
-					  {option:'Cremas'}, {option:'Tacos'}],
-			enable: false
+			type: 'Tipos de Comida',
+			class: 'ion-android-restaurant',
+			options: [{option:'Carne'}, {option:'Pescado'}, {option:'Pollo'}, {option:'Mariscos'}, {option:'Sopas'}, 
+					  {option:'Cremas'}, {option:'Ensaladas'}, {option:'Pastas'}, {option:'Criolla'}, {option:'Postres'}, 
+					  {option:'Vegetariano'}, {option:'Hamburguesas'}, {option:'Sandwich'}, {option:'Pan & reposteria'}, 
+					  {option:'Desayuno'}, {option:'Pizza'}, {option:'Cerveza'}, {option:'Sushi'}, {option:'Vino'}, 
+					  {option:'Otros'}],
+			enableCount: 0
 		},
 		{
-			type: 'Ocasión',
-			options: [{option:'Desayuno'}, {option:'Almuerzo'}, {option:'Cema'}, {option:'Cafe'}, {option:'Romantica'}, 
+			type: 'Por ocasión',
+			class: 'ion-coffee',
+			options: [{option:'Desayuno'}, {option:'Almuerzo'}, {option:'Cena'}, {option:'Cafe'}, {option:'Romantica'}, 
 					  {option:'Familiar'}],
-			enable: false
+			enableCount: 0
 		},
 		{
 			type: 'Distancia',
+			class: 'ion-map',
 			options: [{option:'1 KM', maxDistance:1}, {option:'2 KMS', maxDistance:2}, {option:'3 KMS', maxDistance:3}, 
 					  {option:'5 KMS', maxDistance:5}, {option:'10 KMS', maxDistance:10}],
-			enable: false
+			enableCount: 0
 		},
 		{
 			type: 'Precio',
+			class: 'ion-cash',
 			options: [{option:'Menor de 3000', minPrice:0, maxPrice:3000}, 
 					  {option:'Menor de 5000', minPrice:0, maxPrice:5000}, 
 					  {option:'Menor de 8000', minPrice:0, maxPrice:8000},
 					  {option:'Menor de 10000', minPrice:0, maxPrice:10000},
 					  {option:'Mayor de 10000', minPrice:10000, maxPrice:100000}],
-			enable: false
+			enableCount: 0
 		}
 	];
 
+	$scope.options = {
+	  loop: false,
+	  pager: false,
+	  speed: 500,
+	}
+
+	$scope.$on("$ionicSlides.sliderInitialized", function(event, data){
+	  // data.slider is the instance of Swiper
+	  $scope.slider = data.slider;
+	});
+
 	$scope.onTypeClick = function(typeIndex)
 	{
-		for(var i = 0, length = $scope.searchType.length; i < length; i++)
-		{
-			if(i === typeIndex)
-			{
-				$scope.searchType[i].enable = !$scope.searchType[i].enable;
-			}
-			else
-			{
-				$scope.searchType[i].enable = false;
-			}
-		}
+		$scope.slider.slideTo(typeIndex + 1, 500);
 	};
 
 	$scope.onOptionClick = function(type, index)
 	{
 		var options = [];
-		if(type === 'Distancia')
+		switch(type)
 		{
-			options = $scope.searchType[2].options;
-			for(var i = 0, l = options.length; i < l; i++)
-			{
-				if(i !== index)
+			case 'Tipos de Comida':
+				if($scope.searchType[0].options[index].checked)
 				{
-					options[i].checked = false;
+					$scope.searchType[0].enableCount++;
 				}
 				else
 				{
-					if(options[i].checked)
-					{
-						checkedDistance = index;
-					}
-					else
-					{
-						checkedDistance = -1;
-					}
+					$scope.searchType[0].enableCount--;
 				}
-			}
-		}
-		else if(type === 'Precio')
-		{
-			options = $scope.searchType[3].options;
-			for(var i = 0, l = options.length; i < l; i++)
-			{
-				if(i !== index)
+				break;
+			case 'Por ocasión':
+				if($scope.searchType[1].options[index].checked)
 				{
-					options[i].checked = false;
+					$scope.searchType[1].enableCount++;
 				}
 				else
 				{
-					if(options[i].checked)
+					$scope.searchType[1].enableCount--;
+				}
+				break;
+			case 'Distancia':
+				options = $scope.searchType[2].options;
+				for(var i = 0, l = options.length; i < l; i++)
+				{
+					if(i !== index)
 					{
-						checkedPrice = index;
+						options[i].checked = false;
 					}
 					else
 					{
-						checkedPrice = -1;
+						if(options[i].checked)
+						{
+							checkedDistance = index;
+							$scope.searchType[2].enableCount = 1;
+						}
+						else
+						{
+							checkedDistance = -1;
+							$scope.searchType[2].enableCount = 0;
+						}
 					}
 				}
-			}
+				break;
+			case 'Precio':
+				options = $scope.searchType[3].options;
+				for(var i = 0, l = options.length; i < l; i++)
+				{
+					if(i !== index)
+					{
+						options[i].checked = false;
+					}
+					else
+					{
+						if(options[i].checked)
+						{
+							checkedPrice = index;
+							$scope.searchType[3].enableCount = 1;
+						}
+						else
+						{
+							checkedPrice = -1;
+							$scope.searchType[3].enableCount = 0;
+						}
+					}
+				}
+				break;
 		}
 	};
+
+	$scope.onResetClick = function()
+	{
+		for(var i = 0, l = $scope.searchType.length; i < l; i++)
+		{
+			var options = $scope.searchType[i].options;
+			for(var j = 0, lj = options.length; j < lj; j++)
+			{
+				options[j].checked = false;
+			}
+			$scope.searchType[i].enableCount = 0;	
+		}
+
+		checkedDistance = -1;
+		checkedPrice = -1;
+	}
 
 	$scope.onSearchClick = function()
 	{
@@ -126,7 +174,7 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 		{
 			switch($scope.searchType[i].type)
 			{
-				case 'Comida':
+				case 'Tipos de Comida':
 					var foodOptions = $scope.searchType[i].options;
 					for(var j = 0, l = foodOptions.length; j < l; j++)
 					{
@@ -136,7 +184,7 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 						}
 					}
 					break;
-				case 'Ocasión':
+				case 'Por ocasión':
 					var ocassionOptions = $scope.searchType[i].options;
 					for(var j = 0, l = ocassionOptions.length; j < l; j++)
 					{

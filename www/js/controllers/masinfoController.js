@@ -1,4 +1,4 @@
-function MasinfoController($scope, $stateParams, contentfulService,RequestService) {
+function MasinfoController($scope, $stateParams, contentfulService,RequestService, $cordovaToast, $location) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	$scope.islogged = window.localStorage.getItem("idUser") !== null;
@@ -18,6 +18,55 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
 	});
 
+	$scope.goToLocation = function(location)
+	{
+		if($scope.islogged)
+		{
+			$location.path(location);
+		}
+		else
+		{
+			$cordovaToast
+	      .show('Por favor iniciar sesión primero', 'long', 'bottom')
+	      .then(function(success) {
+	        // success
+	      }, function (error) {
+	        // error
+	      });
+		}
+	}
+
+	$scope.share = function()
+	{
+		if($scope.islogged)
+		{
+			//share
+		}
+		else
+		{
+			$cordovaToast
+	      .show('Por favor iniciar sesión primero', 'long', 'bottom')
+	      .then(function(success) {
+	        // success
+	      }, function (error) {
+	        // error
+	      });
+		}
+	}
+
+  $scope.showNotLoggedMessage = function()
+  {
+    if(!$scope.islogged)
+    {
+      $cordovaToast
+      .show('Por favor loggearse primero', 'long', 'bottom')
+      .then(function(success) {
+        // success
+      }, function (error) {
+        // error
+      });
+    }
+  };
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', MasinfoController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', 'RequestService', '$cordovaToast', '$location', MasinfoController];

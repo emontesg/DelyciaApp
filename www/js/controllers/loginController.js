@@ -1,4 +1,4 @@
-function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, RequestService) {
+function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, RequestService, $cordovaToast) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -30,7 +30,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
       window.localStorage.clear();
       window.localStorage.setItem("isMac", $scope.isMac);
       $scope.islogged = false;
-      alert("logOut");
+      // alert("logOut");
       $scope.closeLogin();
     }, function (failure){
 
@@ -72,5 +72,19 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
 
    });
   };
+
+  $scope.showNotLoggedMessage = function()
+  {
+    if(!$scope.islogged)
+    {
+      $cordovaToast
+      .show('Por favor iniciar sesión primero', 'long', 'bottom')
+      .then(function(success) {
+        // success
+      }, function (error) {
+        // error
+      });
+    }
+  };
 }
-module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook','RequestService', LoginController];
+module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook','RequestService', '$cordovaToast', LoginController];
