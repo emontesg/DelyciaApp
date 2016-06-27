@@ -5,10 +5,24 @@
   </ion-side-menu-content>
 
   <ion-side-menu side="left">
-    <ion-header-bar class="bar-stable">
+  <div class="delyciamenu-header">
+    <div class="delyciamenu-portrait"><div class="delyciamenu-thumbnail"><img src="{{photo}}"/></div></div>
+    <div class="delyciamenu-name">{{name}}</div>
+  </div>
+
+  <div class="delyciamenu-container">
+    <div class="delyciamenu-menuitem" menu-close ng-click="login()"><div class="icon ion-social-facebook"></div>Ingresar con Facebook</div>
+    <div class="delyciamenu-menuitem" ng-click="closeMenu()"><div class="icon ion-person"></div>Tus Datos</div>
+    <div class="delyciamenu-menuitem" ng-click="closeMenu()" ui-sref="app.favorites({platilloId: 0})"><div class="icon ion-star"></div>Tus favoritos</div>
+    <div class="delyciamenu-menuitem" ng-click="closeMenu()" ui-sref="app.configurations()"><div class="icon ion-gear-b"></div>Preferencias</div>
+    <div class="delyciamenu-menuitem" ng-click="closeMenu()"><div class="icon ion-coffee"></div>Sobre delycia</div>
+    <div class="delyciamenu-menuitem" ng-click="closeMenu()"><div class="icon ion-coffee"></div>Tu opinión</div>
+    <div class="delyciamenu-menuitem" ng-click="closeMenu()"><div class="icon ion-log-out"></div>Logout</div>
+  </div>
+<!--     <ion-header-bar class="bar-stable">
       <h1 class="title">Delycia</h1>
-    </ion-header-bar>
-    <ion-content>
+    </ion-header-bar> -->
+<!--     <ion-content>
       <ion-list>
         <ion-item menu-close ng-click="login()">
           Login
@@ -19,13 +33,10 @@
         <ion-item menu-close class="delycia-menu-item" ui-sref="app.favorites({platilloId: 0})">
           Favoritos
         </ion-item>
-<!--         <ion-item menu-close class="delycia-menu-item" ui-sref="app.friends()">
-          Amigos
-        </ion-item> -->
         <ion-item menu-close class="delycia-menu-item" ui-sref="app.configurations()">
           Configuraciones
         </ion-item>
       </ion-list>
-    </ion-content>
+    </ion-content> -->
   </ion-side-menu>
 </ion-side-menus>

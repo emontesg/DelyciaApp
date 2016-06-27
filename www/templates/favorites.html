@@ -14,6 +14,11 @@
   <ion-content scroll="false">
   	<div class="favorite-background"></div>
     <div class="favorites-content">
+<!--       <div>
+        <img class="favorites_empty_image" src="img/platoTriste.png"/>
+        <div class="favorites_empty_title">¡Oh Nooo!</div>
+        <div class="favorites_empty_message">A&uacute;n no tienes favoritos</div>
+      </div> -->
       <ion-scroll class="favorites-scroll">
         <ion-list can-swipe="true" show-delete="false">
           <ion-item-sliding ng-repeat="platillo in platillos">
@@ -24,8 +29,6 @@
                 <div class="favorite-restaurant">{{platillo.restaurant}}</div>
                 <div class="favorite-footer">
                   <div class="favorite-distance"><div class="ion-navigate"></div>{{platillo.distance}}</div>
-    <!--               <div class="favorite-icon"><div class="ion-ios-stopwatch-outline"></div></div>
-                  <div class="favorite-icon"><div class="ion-share"></div></div> -->
                 </div>
                 <div class="favorite-arrow"><div class="ion-ios-arrow-forward"></div></div>
               </div>

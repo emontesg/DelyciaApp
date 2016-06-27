@@ -68,7 +68,7 @@ app.factory('NotificationService', notificationService);
 ////////////////////
 
 app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|http):\/\//);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome-extension|http):\/\//);
     // $compileProvider.imgSrcSanitizationWhitelist('http://images.contentful.com/');
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|chrome-extension|http):/);
 

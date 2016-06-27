@@ -75,6 +75,76 @@ li {
     position: absolute;
 } 
 
+.delyciamenu-header
+{
+    background-color: #912785;
+    color: white;
+    height: 40vw;
+}
+
+.delyciamenu-menuitem
+{
+    display: flex;
+    font-size: 4.7vw;
+    margin: 10vw 0 10vw 7vw;
+    font-weight: 300;
+    line-height: 5vw;
+}
+
+.delyciamenu-menuitem .icon
+{
+    margin-right: 2vw;
+}
+
+.delyciamenu-menuitem .icon.ion-social-facebook
+{
+    margin-right: 3.5vw;
+}
+
+.delyciamenu-header
+{
+    position: relative;
+}
+
+.delyciamenu-portrait
+{
+    position: absolute;
+    bottom: -5vw;
+    left: 5vw;
+}
+
+.delyciamenu-thumbnail
+{
+    width: 20vw;
+    height: 20vw;
+    border-radius: 25vw;
+    overflow:hidden;
+    position: relative;
+}
+
+.delyciamenu-thumbnail img
+{
+    position: absolute;
+    width: 23vw;
+    height: 23vw;
+    top: -1vw;
+    left: -1.2vw;
+}
+
+.delyciamenu-name
+{
+    position: absolute;
+    bottom: 2vw;
+    left: 28vw;
+    font-size: 5vw;
+    line-height: 6vw;
+}
+
+.delyciamenu-container
+{
+    padding-top: 5vw;
+}
+
 .menu-image-info
 {
     float: left;
@@ -416,6 +486,34 @@ li {
 .favorites-content
 {
     position: relative;
+}
+
+.favorites_empty_image
+{
+    width: 70vw;
+    height: 70vw;
+    margin-left: 15vw;
+    margin-top: 10vw;
+}
+
+.favorites_empty_title
+{
+    margin-top: 3vw;
+    color: white;
+    font-weight: 600;
+    font-size: 6.5vw;
+    line-height: 7vw;
+    text-align: center;
+}
+
+.favorites_empty_message
+{
+    color: white;
+    font-weight: 300;
+    font-size: 6.5vw;
+    line-height: 7vw;
+    text-align: center;
+    margin-top: 3vw;
 }
 
 .favorites-scroll

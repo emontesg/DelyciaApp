@@ -1,4 +1,4 @@
-function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordovaOauth) {
+function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordovaOauth, $ionicSideMenuDelegate, $ionicHistory, $sce) {
   
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -45,5 +45,16 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, $cordo
      // error
    });
   };
+
+  $scope.closeMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+    $ionicHistory.nextViewOptions({
+        disableAnimate: true
+    });
+  }
+
+  //-- menu
+  $scope.photo = 'img/portrait_placeholder.png';
+  $scope.name = 'Invitado';
 }
-module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', '$cordovaOauth', LoginController];
+module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook', '$cordovaOauth', '$ionicSideMenuDelegate', '$ionicHistory', '$sce', LoginController];
