@@ -75,7 +75,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.getCantReviews = function(){
 		RequestService.getCantReviews($scope.realId).then(function (response){
 			$scope.cantReviews = response.data;
-			console.log($scope.cantReviews);
             }, function (reject){
         });
     };
