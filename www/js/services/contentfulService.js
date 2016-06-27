@@ -13,6 +13,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	var waitingLoadImages = [];
 	self.promedioRating = 0;
 	var ratingList = {};
+	var userlocation = [];
 
 
 	var moment = require('moment');
@@ -35,102 +36,102 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			$cordovaGeolocation
 			    .getCurrentPosition(posOptions)
 			    .then(function (position) {
-			      	var lat  = position.coords.latitude;
-			      	var long = position.coords.longitude;
-			      	console.log(entries.items[0].fields.restaurante.fields.ubicacion);
+			      	userlocation.lat = position.coords.latitude;
+			      	userlocation.long = position.coords.longitude;
 
-			      	console.log(calculateDistance(lat,long,entries.items[0].fields.restaurante.fields.ubicacion.lat,entries.items[0].fields.restaurante.fields.ubicacion.lon));
+			      	////////////////////////////////////////////////////////////////////
+					platos = entries;
+					var dishes = [];
+					var index = 0;
+					var items = entries.items;
+					var images = [];
+
+					var waitingDishesGroup = [];
+					var waitingImagesGroup = [];
+					var count = 0;
+					for(var i = 0, l = items.length; i < l; i++)
+					{	
+						var ratingValue = 0;
+						if(ratingList[items[i].sys.id] !== undefined){
+							ratingValue = ratingList[items[i].sys.id];
+						}
+						var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
+
+						if(i < 4)
+						{
+							self.mainDishes.push({id:index++, 
+									src:imgLink, 
+									title:items[i].fields.nombre, 
+									restaurant:items[i].fields.restaurante.fields.nombre, 
+									price:items[i].fields.precio, 
+									rating:ratingValue, 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									status: getState(items[i]),
+									idContentful:items[i].sys.id
+								}); 
+
+							images.push(imgLink);
+						}
+						else if(count < 4 && i !== l-1)
+						{
+							waitingDishesGroup.push({id:index++, 
+									src:imgLink, 
+									title:items[i].fields.nombre, 
+									restaurant:items[i].fields.restaurante.fields.nombre, 
+									price:items[i].fields.precio, 
+									rating:ratingValue, 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									status: getState(items[i]),
+									idContentful:items[i].sys.id});
+						
+							waitingImagesGroup.push(imgLink);
+							count++;
+						}
+						else
+						{
+							waitingDishesGroup.push({id:index++, 
+									src:imgLink, 
+									title:items[i].fields.nombre, 
+									restaurant:items[i].fields.restaurante.fields.nombre, 
+									price:items[i].fields.precio, 
+									rating:ratingValue, 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									status: getState(items[i]),
+									idContentful:items[i].sys.id});
+						
+							waitingImagesGroup.push(imgLink);
+							waitingLoadImages.push(waitingImagesGroup);
+							waitingLoadDishes.push(waitingDishesGroup);
+							waitingDishesGroup = [];
+							waitingImagesGroup = [];
+							count = 0;
+						}
+					}
+
+					self.dishes = entries;
+					self.total = entries.total;
+					self.getAllFavorites();
+
+					// $ImageCacheFactory.Cache(images);
+					preloaderService.preloadImages(images).then(firstLoadResolve,
+		                    function handleReject( imageLocation ) {
+		                        // Loading failed on at least one image.
+		                        console.error( "Image Failed", imageLocation );
+		                        console.info( "Preload Failure" );
+		                        $rootScope.$broadcast('error');
+		                    },
+		                    function handleNotify( event ) {
+		                        // $scope.percentLoaded = event.percent;
+		                        console.info( "Percent loaded:", event.percent );
+		                        }
+		                    
+		                );			      	
 
 			    }, function(err) {
 	      // error
 	    });
 
-			platos = entries;
-			var dishes = [];
-			var index = 0;
-			var items = entries.items;
-			var images = [];
-
-			var waitingDishesGroup = [];
-			var waitingImagesGroup = [];
-			var count = 0;
-			for(var i = 0, l = items.length; i < l; i++)
-			{	
-				var ratingValue = 0;
-				if(ratingList[items[i].sys.id] !== undefined){
-					ratingValue = ratingList[items[i].sys.id];
-				}
-				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
-
-				if(i < 4)
-				{
-					self.mainDishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: '5 kms', 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id
-						}); 
-
-					images.push(imgLink);
-				}
-				else if(count < 4 && i !== l-1)
-				{
-					waitingDishesGroup.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: '5 kms', 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id});
-				
-					waitingImagesGroup.push(imgLink);
-					count++;
-				}
-				else
-				{
-					waitingDishesGroup.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: '5 kms', 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id});
-				
-					waitingImagesGroup.push(imgLink);
-					waitingLoadImages.push(waitingImagesGroup);
-					waitingLoadDishes.push(waitingDishesGroup);
-					waitingDishesGroup = [];
-					waitingImagesGroup = [];
-					count = 0;
-				}
-			}
-
-			self.dishes = entries;
-			self.total = entries.total;
-			self.getAllFavorites();
-
-			// $ImageCacheFactory.Cache(images);
-			preloaderService.preloadImages(images).then(firstLoadResolve,
-                    function handleReject( imageLocation ) {
-                        // Loading failed on at least one image.
-                        console.error( "Image Failed", imageLocation );
-                        console.info( "Preload Failure" );
-                        $rootScope.$broadcast('error');
-                    },
-                    function handleNotify( event ) {
-                        // $scope.percentLoaded = event.percent;
-                        console.info( "Percent loaded:", event.percent );
-                        }
-                    
-                );
+			
 		});
 	}	
 
@@ -139,7 +140,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
-			rating:1, distance: '5 kms', status: 'ABIERTO'};
+			rating:1, distance: '5 km', status: 'ABIERTO'};
 	};
 
 	function getState(item){
