@@ -4,6 +4,8 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 	var checkedDistance = -1;
 	var checkedPrice = -1;
 
+	$scope.disableButtons = true;
+
 	$scope.message = '';
 
 	if(contentfulService.mainDishes.length === 0)
@@ -145,6 +147,18 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 				}
 				break;
 		}
+
+		if($scope.searchType[0].enableCount <= 0 &&
+			$scope.searchType[1].enableCount <= 0 &&
+			$scope.searchType[2].enableCount <= 0 &&
+			$scope.searchType[3].enableCount <= 0)
+		{
+			$scope.disableButtons = true;
+		}
+		else
+		{
+			$scope.disableButtons = false;
+		}
 	};
 
 	$scope.onResetClick = function()
@@ -161,6 +175,7 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 
 		checkedDistance = -1;
 		checkedPrice = -1;
+		$scope.disableButtons = true;
 	}
 
 	$scope.onSearchClick = function()
