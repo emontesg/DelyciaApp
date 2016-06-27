@@ -93,6 +93,7 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 						id: i,
 						src: $sce.getTrustedResourceUrl(imgLink),
 						title: dishes[i].fields.nombre,
+						restaurant:dishes[i].fields.restaurante.fields.nombre,
 						price:dishes[i].fields.precio, 
 						rating:1, 
 						distance: '5 kms',
