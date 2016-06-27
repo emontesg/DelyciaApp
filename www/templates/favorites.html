@@ -24,10 +24,11 @@
                 <div class="favorite-restaurant">{{platillo.restaurant}}</div>
                 <div class="favorite-footer">
                   <div class="favorite-distance"><div class="ion-navigate"></div>{{platillo.distance}}</div>
+                  <div class="ion-ios-stopwatch-outline" ng-show = "isNotified(platillo.idContentful)"></div>
                 </div>
                 <div class="favorite-arrow"><div class="ion-ios-arrow-forward"></div></div>
               </div>
-              <ion-option-button class="button-light favorite-slide-button remember" ng-click="showDatePicker()"><div class="icon1 ion-ios-stopwatch-outline"></div><div class="text">Recordar</div></ion-option-button>
+              <ion-option-button class="button-light favorite-slide-button remember" ng-click="showDatePicker(platillo.idContentful)"><div class="icon1 ion-ios-stopwatch-outline"></div><div class="text">Recordar</div></ion-option-button>
               <ion-option-button class="button-light favorite-slide-button share" ng-click=""><div class="icon1 ion-share"></div><div class="text">Compartir</div></ion-option-button>
               <ion-option-button class="button-light favorite-slide-button remove" ng-click="removeFavorites(platillo.idContentful)"><div class="icon1 ion-close"></div><div class="text">Eliminar</div></ion-option-button>
             </ion-item>

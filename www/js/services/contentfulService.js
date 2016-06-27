@@ -13,7 +13,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 	var waitingLoadImages = [];
 	self.promedioRating = 0;
 	var ratingList = {};
-
+	self.bdFavList = {};
 
 	var moment = require('moment');
 	moment().format();
@@ -220,16 +220,20 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
             				if(favoritesList[i].idPlato === self.mainDishes[j].idContentful){
             					if(self.userFavorites !== null){
             						for (var x = 0; x < self.userFavorites.length; x++) {
-            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){
+            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){ 
             								exist = true;
             								x = self.userFavorites.length;
             							}
             						}
             						if(exist === false){
             							self.userFavorites.push(self.mainDishes[j]);
+            							console.log(self.mainDishes[j]);
+            							self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
             						}
             					}else{
             						self.userFavorites.push(self.mainDishes[j]);
+            						console.log(self.mainDishes[j]);
+            						self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
             					}
              				}
             			}

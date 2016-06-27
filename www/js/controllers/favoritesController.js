@@ -1,6 +1,6 @@
 var DelyciaConstants = require('./../delyciaConstants');
 
-function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope) {
+function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope, NotificationService) {
 	
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.platillos = DelyciaConstants.PLATILLOS;
@@ -9,7 +9,9 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.myFavoritesList = ContentfulService.userFavorites;
 	$scope.user = window.localStorage.getItem('idUser');
 	ContentfulService.getAllFavorites();
-	
+	var bdList = ContentfulService.bdFavList;
+	var notficationId = 0;
+
 	$scope.addToFavorites = function(){
 		ContentfulService.getAllFavorites();
 		if($scope.platilloId != -1){
@@ -29,7 +31,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 					}
 				}
 			}
-
 
 			if(exist === false){
 				RequestService.addFavorite(obj);
@@ -53,6 +54,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 					RequestService.removeFavorite(obj).then(function (response){
 					}, function (reject){
         			});
+        			NotificationService.cancelNotification(bdList[pidPlatillo].id);
 				}
 			}
 		}
@@ -65,16 +67,40 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 
 	function onSuccess(date) {
 	    alert('Selected date: ' + date);
+	   	var id = bdList[notficationId].id;
+	    var name = bdList[notficationId].title;
+	   	var obj = {
+	    	    idPlatillo : notficationId,
+                reminder : 1
+	    };
+	    if(bdList[notficationId].reminder == 0){
+	    	NotificationService.createNotification(id,name,date);
+	    	RequestService.setReminder(obj);
+	    	bdList[notficationId].reminder = 1;
+
+	    }else{
+	    	NotificationService.updateNotification(id,name,date);
+	    }
 	}
 
 	function onError(error) { // Android only
 	    alert('Error: ' + error);
 	}
 
-	$scope.showDatePicker = function()
+	$scope.showDatePicker = function(idPlatillo)
 	{
 		options.date = new Date();
 		datePicker.show(options, onSuccess, onError);
+		notficationId = idPlatillo;
+
+	}
+
+	$scope.isNotified = function(id){
+		var result = false;
+		if(bdList[id].reminder == 1){
+			result = true;
+		}
+		return result;
 	}
 }
-module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', FavoritesController];
+module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', 'NotificationService', FavoritesController];

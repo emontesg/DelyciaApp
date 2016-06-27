@@ -19,14 +19,14 @@ function NotificationService($rootScope){
 	{
 		cordova.plugins.notification.local.cancel(id, function () {
     	// Notification was cancelled
-		}, scope);
+		}, $rootScope);
 	};
 
 	self.updateNotification = function(id, dishName, date)
 	{
 		cordova.plugins.notification.local.cancel(id, function (id, dishName, date) {
     		self.createNotification(id, dishName, date);
-		}, scope);
+		}, $rootScope);
 	}
 
 	return self;
