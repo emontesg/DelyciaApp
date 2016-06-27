@@ -290,9 +290,8 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService){
 				for(i = 0; i < response.data.length; i ++){
 					ratingList[response.data[i].idPlato] = response.data[i].promedio;
 				}
-				console.log(ratingList);
-				getEntry();
-			}      
+			}  
+			getEntry();    
 
 		}, function (reject){
         });

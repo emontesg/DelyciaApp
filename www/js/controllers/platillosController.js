@@ -20,7 +20,6 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	}
 	
 	$scope.dishes = [];
-	console.log(contentfulService.mainDishes);
 
 	var initialSlide = type >= 2 ? type-2 : 0;
 

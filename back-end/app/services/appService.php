@@ -54,7 +54,7 @@ class AppService {
 
     public function addToFavorites($idPlatillo, $idUsuario, $fechaHora, $recordatorio){
         $result = [];
-        $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha, $recordatorio) VALUES (:idPlatillo, :idUsuario, :fechaHora, :recordatorio)";
+        $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha, recordatorio) VALUES (:idPlatillo, :idUsuario, :fechaHora, :recordatorio)";
         $add_params = [
                         ":idPlatillo" =>$idPlatillo,
                         ":idUsuario" =>$idUsuario,
