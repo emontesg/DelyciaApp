@@ -23,7 +23,7 @@
         <div class="ion-android-star icon"></div>
   			<div class="masinfo-menu-item">Agregar favorito</div>
   		</div>
-  		<div ng-click="share()" ng-class="islogged ? 'line' : 'line deactivated'">
+  		<div ng-click="share('/app/share/{{currentPlatillo.id}}')" ng-class="islogged ? 'line' : 'line deactivated'">
         <div class="ion-share icon"></div>
   			<div class="masinfo-menu-item">Compartir</div>
   		</div>

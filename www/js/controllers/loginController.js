@@ -1,5 +1,4 @@
-function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, RequestService, $cordovaToast) {
-
+function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, RequestService, $cordovaToast, $ionicSideMenuDelegate, $ionicHistory, $sce) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -31,10 +30,11 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
       window.localStorage.setItem("isMac", $scope.isMac);
       $scope.islogged = false;
       // alert("logOut");
-      $scope.closeLogin();
+      // $scope.closeLogin();
     }, function (failure){
 
     });
+    $scope.closeMenu();
   };
 
   // Open the login modal
@@ -64,7 +64,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
             };
 
             RequestService.loginUser(obj);
-            $scope.closeLogin();
+            // $scope.closeLogin();
            });
 
           }
@@ -86,5 +86,17 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
       });
     }
   };
+
+  $scope.closeMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+    $ionicHistory.nextViewOptions({
+        disableAnimate: true
+    });
+  };
+
+  //-- menu
+  $scope.photo = 'img/portrait_placeholder.png';
+  $scope.name = 'Invitado';
 }
-module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook','RequestService', '$cordovaToast', LoginController];
+
+module.exports = ['$scope', '$ionicModal', '$timeout', '$cordovaFacebook','RequestService', '$cordovaToast', '$ionicSideMenuDelegate', '$ionicHistory', '$sce', LoginController];

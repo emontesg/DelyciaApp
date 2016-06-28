@@ -42,16 +42,16 @@ li {
 
 .delycia-logo
 {
-    width: 12vw;
-    height: 5vw;
-    margin-top: 2vw;
-    margin-right: 2vw;
+    width: 55px;
+    height: 25px;
+    margin-top: 8px;
+    margin-right: 8px;
 }
 
 .bar .header-item
 {
     font-weight: 300;
-    font-size: 6vw;
+    font-size: 26px;
 }
 
 .no-header
@@ -78,6 +78,76 @@ li {
 .menu1-button-deactive
 {
     color: #888;
+}
+
+.delyciamenu-header
+{
+    background-color: #912785;
+    color: white;
+    height: 160px;
+}
+
+.delyciamenu-menuitem
+{
+    display: flex;
+    font-size: 18px;
+    margin: 40px 0 40px 28px;
+    font-weight: 300;
+    line-height: 18px;
+}
+
+.delyciamenu-menuitem .icon
+{
+    margin-right: 8px;
+}
+
+.delyciamenu-menuitem .icon.ion-social-facebook
+{
+    margin-right: 14px;
+}
+
+.delyciamenu-header
+{
+    position: relative;
+}
+
+.delyciamenu-portrait
+{
+    position: absolute;
+    bottom: -20px;
+    left: 20px;
+}
+
+.delyciamenu-thumbnail
+{
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    overflow:hidden;
+    position: relative;
+}
+
+.delyciamenu-thumbnail img
+{
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    top: -4px;
+    left: -5px;
+}
+
+.delyciamenu-name
+{
+    position: absolute;
+    bottom: 10px;
+    left: 112px;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.delyciamenu-container
+{
+    padding-top: 20px;
 }
 
 .menu-image-info
@@ -426,6 +496,34 @@ li {
 .favorites-content
 {
     position: relative;
+}
+
+.favorites_empty_image
+{
+    width: 70vw;
+    height: 70vw;
+    margin-left: 15vw;
+    margin-top: 10vw;
+}
+
+.favorites_empty_title
+{
+    margin-top: 3vw;
+    color: white;
+    font-weight: 600;
+    font-size: 6.5vw;
+    line-height: 7vw;
+    text-align: center;
+}
+
+.favorites_empty_message
+{
+    color: white;
+    font-weight: 300;
+    font-size: 6.5vw;
+    line-height: 7vw;
+    text-align: center;
+    margin-top: 3vw;
 }
 
 .favorites-scroll
@@ -1408,6 +1506,43 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
     position:absolute;
     top: 0;
     left: 0;
+}
+
+.share-message
+{
+    font-size: 5vw;
+    font-weight: 300;
+    line-height: 6vw;
+    margin: 9vw 8.5vw 0 8.5vw;
+    text-align: center;
+}
+
+.share-image
+{
+    width: 70vw;
+    margin-left: 15vw;
+}
+
+.share-button
+{
+    background-color: #FF653E;
+    color: white;
+    font-size: 4vw;
+    position: absolute;
+    left: 32vw;
+    padding: 3.5vw 6vw;
+    display: flex;
+}
+
+.share-bar
+{
+    background-color: #912785 !important;
+    border: none !important;
+}
+
+.share-button .ion-ios-checkmark-outline
+{
+    margin-right: 1vw;
 }
 
 .fade.ng-hide {
