@@ -54,7 +54,11 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 					RequestService.removeFavorite(obj).then(function (response){
 					}, function (reject){
         			});
-        			NotificationService.cancelNotification(bdList[pidPlatillo].id);
+        			if(bdList[pidPlatillo] != undefined){
+        				if(bdList[pidPlatillo].reminder == 1){
+        					NotificationService.cancelNotification(bdList[pidPlatillo].id);
+        				}
+        			}
 				}
 			}
 		}
@@ -96,9 +100,9 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	}
 
 	$scope.isNotified = function(id){
+		//ContentfulService.getAllFavorites();
 		var result = false;
-		//console.log(bdList[id].reminder);
-		if(bdList[id].reminder != undefined){
+		if(bdList[id] != undefined){
 			if(bdList[id].reminder == 1){
 			result = true;
 			}

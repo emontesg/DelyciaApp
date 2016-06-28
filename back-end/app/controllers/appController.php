@@ -521,10 +521,11 @@ class AppController {
         if (isset($idUsuario)) {
             $result = $this->AppService->getAllFavorites($idUsuario);
         } else {
-            $result = [
-                'error' => true,
-                'message' => "We couldn't find the requested favorites."
-            ];
+            // $result = [
+            //     'error' => true,
+            //     'message' => "We couldn't find the requested favorites."
+            // ];
+            $result = null;
         }
         return $result;
     }
