@@ -103,11 +103,14 @@
   <plugin name="cordova-plugin-device" source="npm" />
   <plugin name="cordova-plugin-datepicker" source="npm" />
   <plugin name="cordova-plugin-x-toast" source="npm" />
+  <plugin name="cordova-plugin-inappbrowser" source="npm" />
   <plugin name="cordova-plugin-whitelist" version="1.2.2" source="npm" />
   <access origin="*"/>
   <access origin="tel:*" launch-external="yes"/>
+  <access origin="geo:*" launch-external="yes" />
   <access origin="*.pushwoosh.com" />
   <allow-intent href="tel:*" />
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
+  <allow-intent href="geo://*" />
 </widget>

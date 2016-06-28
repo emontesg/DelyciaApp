@@ -17,6 +17,15 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 		$scope.platillos = contentfulService.searchDishes;
 	}
 
+	if(ionic.Platform.isIOS())
+	{
+		$scope.isIOS = true;
+	}
+	else
+	{
+		$scope.isIOS = false;
+	}
+
 	$scope.dishes = [];
 
 	var initialSlide = type >= 2 ? type-2 : 0;

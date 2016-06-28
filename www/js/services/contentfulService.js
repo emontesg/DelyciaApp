@@ -46,7 +46,9 @@ function ContentfulService($rootScope, $sce, preloaderService){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: 'ABIERTO'});
+							status: 'ABIERTO',
+							lat: items[i].fields.restaurante.fields.ubicacion.lat,
+							lon: items[i].fields.restaurante.fields.ubicacion.lon});
 				
 					images.push(imgLink);
 				}
@@ -59,7 +61,9 @@ function ContentfulService($rootScope, $sce, preloaderService){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: 'ABIERTO'});
+							status: 'ABIERTO',
+							lat: items[i].fields.restaurante.fields.ubicacion.lat,
+							lon: items[i].fields.restaurante.fields.ubicacion.lon});
 				
 					waitingImagesGroup.push(imgLink);
 					count++;
@@ -73,7 +77,9 @@ function ContentfulService($rootScope, $sce, preloaderService){
 							price:items[i].fields.precio, 
 							rating:1, 
 							distance: '5 kms', 
-							status: 'ABIERTO'});
+							status: 'ABIERTO',
+							lat: items[i].fields.restaurante.fields.ubicacion.lat,
+							lon: items[i].fields.restaurante.fields.ubicacion.lon});
 				
 					waitingImagesGroup.push(imgLink);
 					waitingLoadImages.push(waitingImagesGroup);
@@ -108,7 +114,8 @@ function ContentfulService($rootScope, $sce, preloaderService){
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
-			rating:1, distance: '5 kms', status: 'ABIERTO'};
+			rating:1, distance: '5 kms', status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
+			lon: dish.fields.restaurante.fields.ubicacion.lon};
 	};
 
 	function firstLoadResolve(imageLocations)

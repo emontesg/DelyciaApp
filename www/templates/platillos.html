@@ -36,7 +36,8 @@
 					</div>
 					<div class="menu-image-kms">
 						<div class="ion-navigate distance-icon"></div>
-						{{platillo.distance}}
+						<a ng-show="isIOS" href="maps://?q={{platillo.lat}}, {{platillo.lon}}" class="menu-distance-button">{{platillo.distance}}</a>
+						<a ng-show="!isIOS" href="geo://0,0?q={{platillo.lat}}, {{platillo.lon}}" class="menu-distance-button">{{platillo.distance}}</a>
 					</div>
 					<div class="menu-image-status">{{platillo.status}}</div>
 					<div class="menu-image-price">&#162;{{platillo.price}}</div>
