@@ -34,11 +34,11 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		.then(function(entries){
 			var posOptions = {timeout: 10000, enableHighAccuracy: false};
 
-			$cordovaGeolocation
-			    .getCurrentPosition(posOptions)
-			    .then(function (position) {
-			      	userlocation.lat = position.coords.latitude;
-			      	userlocation.long = position.coords.longitude;
+			//$cordovaGeolocation
+			    //.getCurrentPosition(posOptions)
+			    //.then(function (position) {
+			      	//userlocation.lat = position.coords.latitude;
+			      	//userlocation.long = position.coords.longitude;
 
 			      	////////////////////////////////////////////////////////////////////
 					platos = entries;
@@ -66,7 +66,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									restaurant:items[i].fields.restaurante.fields.nombre, 
 									price:items[i].fields.precio, 
 									rating:ratingValue, 
-									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									distance:0, //Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
 									idContentful:items[i].sys.id
 								}); 
@@ -81,7 +81,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									restaurant:items[i].fields.restaurante.fields.nombre, 
 									price:items[i].fields.precio, 
 									rating:ratingValue, 
-									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
 									idContentful:items[i].sys.id});
 						
@@ -96,7 +96,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									restaurant:items[i].fields.restaurante.fields.nombre, 
 									price:items[i].fields.precio, 
 									rating:ratingValue, 
-									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
 									idContentful:items[i].sys.id});
 						
@@ -128,9 +128,9 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		                    
 		                );			      	
 
-			    }, function(err) {
+			    //}, function(err) {
 	      // error
-	    });
+	    //});
 
 			
 		});
@@ -310,11 +310,13 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				for(i = 0; i < response.data.length; i ++){
 					ratingList[response.data[i].idPlato] = response.data[i].promedio;
 				}
+				getEntry();
 			}  
-			getEntry();    
+		   
 
 		}, function (reject){
-        });
+			getEntry();
+        }); 
 	};
 	
 	self.loadList();

@@ -283,10 +283,11 @@ class AppService {
         $getAll_params = [];
 
         $result = $this->storage->query($get_all_query, $getAll_params);
-
-        if (count($result['data'] > 0)) {
+   
+        if (count($result['data']) > 0) {
             return $result['data'];
-        } else {
+        } else if(){
+
             $result['message'] = "You haven't add ratings yet.";
             $result['error'] = true;
         }
