@@ -98,7 +98,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.isNotified = function(id){
 		var result = false;
 		//console.log(bdList[id].reminder);
-		if(bdList[id].reminder !== undefined){
+		if(bdList[id].reminder != undefined){
 			if(bdList[id].reminder == 1){
 			result = true;
 			}
