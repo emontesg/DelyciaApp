@@ -13,7 +13,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	var waitingLoadImages = [];
 	self.promedioRating = 0;
 	var ratingList = {};
-	self.bdFavList = {};
 	var userlocation = [];
 
 
@@ -28,18 +27,19 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	});
 	//640*1136
 	function getEntry(){
+		console.log("hola");
 			client.getEntries({
 			'content_type':'plato'
 		})
 		.then(function(entries){
 			var posOptions = {timeout: 10000, enableHighAccuracy: false};
 
-			//$cordovaGeolocation
-			    //.getCurrentPosition(posOptions)
-			    //.then(function (position) {
-			      	//userlocation.lat = position.coords.latitude;
-			      	//userlocation.long = position.coords.longitude;
-
+			$cordovaGeolocation
+			    .getCurrentPosition(posOptions)
+			    .then(function (position) {
+			      	userlocation.lat = position.coords.latitude;
+			      	userlocation.long = position.coords.longitude;
+			      	console.log("gg");
 			      	////////////////////////////////////////////////////////////////////
 					platos = entries;
 					var dishes = [];
@@ -66,7 +66,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									restaurant:items[i].fields.restaurante.fields.nombre, 
 									price:items[i].fields.precio, 
 									rating:ratingValue, 
-									distance:0, //Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
 									idContentful:items[i].sys.id
 								}); 
@@ -81,7 +81,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									restaurant:items[i].fields.restaurante.fields.nombre, 
 									price:items[i].fields.precio, 
 									rating:ratingValue, 
-									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
 									idContentful:items[i].sys.id});
 						
@@ -96,7 +96,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									restaurant:items[i].fields.restaurante.fields.nombre, 
 									price:items[i].fields.precio, 
 									rating:ratingValue, 
-									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
+									distance: Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
 									idContentful:items[i].sys.id});
 						
@@ -128,9 +128,9 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		                    
 		                );			      	
 
-			    //}, function(err) {
-	      // error
-	    //});
+			  //   }, function(err) {
+	    //   // error
+	    // });
 
 			
 		});
@@ -236,20 +236,16 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
             				if(favoritesList[i].idPlato === self.mainDishes[j].idContentful){
             					if(self.userFavorites !== null){
             						for (var x = 0; x < self.userFavorites.length; x++) {
-            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){ 
+            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){
             								exist = true;
             								x = self.userFavorites.length;
             							}
             						}
             						if(exist === false){
             							self.userFavorites.push(self.mainDishes[j]);
-            							console.log(self.mainDishes[j]);
-            							self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
             						}
             					}else{
             						self.userFavorites.push(self.mainDishes[j]);
-            						console.log(self.mainDishes[j]);
-            						self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
             					}
              				}
             			}
@@ -310,13 +306,11 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				for(i = 0; i < response.data.length; i ++){
 					ratingList[response.data[i].idPlato] = response.data[i].promedio;
 				}
-				getEntry();
 			}  
-		   
+			getEntry();    
 
 		}, function (reject){
-			getEntry();
-        }); 
+        });
 	};
 	
 	self.loadList();
