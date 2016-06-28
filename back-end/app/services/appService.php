@@ -242,7 +242,7 @@ class AppService {
                         ];
         $result = $this->storage->query($get_query, $getAll_params);
 
-        if (count($result['data'] > 0)) {
+        if (count($result['data']) > 0) {
             $resultado = count($result['data']);
             return $resultado;
         } else {

@@ -27,7 +27,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	});
 	//640*1136
 	function getEntry(){
-		console.log("hola");
 			client.getEntries({
 			'content_type':'plato'
 		})
@@ -39,7 +38,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			    .then(function (position) {
 			      	userlocation.lat = position.coords.latitude;
 			      	userlocation.long = position.coords.longitude;
-			      	console.log("gg");
+
 			      	////////////////////////////////////////////////////////////////////
 					platos = entries;
 					var dishes = [];
@@ -128,13 +127,13 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		                    
 		                );			      	
 
-			  //   }, function(err) {
-	    //   // error
-	    // });
+			    }, function(err) {
+	      // error
+	    });
 
 			
 		});
-	}	
+	};	
 
 	self.getDishJson = function(index){
 		var dish = self.dishes.items[index];
