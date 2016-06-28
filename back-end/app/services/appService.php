@@ -20,7 +20,7 @@ class AppService {
 
         $result = $this->storage->query($get_all_query, $params);
 
-        if (count($result['data'] > 0)) {
+        if (count($result['data']) > 0) {
             return $result['data'];
         } else {
             $result['message'] = "We don't have any users at this moment.";
@@ -205,11 +205,11 @@ class AppService {
 
         $result = $this->storage->query($get_all_query, $getAll_params);
 
-        if (count($result['data'] > 0)) {
+        if (count($result['data'])> 0) {
             return $result['data'];
         } else {
-            $result['message'] = "No reviews added yet.";
-            $result['error'] = true;
+            $result= null;
+            //$result['error'] = true;
         }
         return $result;
     }
@@ -223,7 +223,7 @@ class AppService {
                         ];
         $result = $this->storage->query($get_query, $get_params);
 
-        if (count($result['data'] > 0)) {
+        if (count($result['data']) > 0) {
             $resultado = $result['data'];
             return $resultado;
         } else {
@@ -245,11 +245,8 @@ class AppService {
         if (count($result['data']) > 0) {
             $resultado = count($result['data']);
             return $resultado;
-        } else {
-            $result['message'] = "No reviews added yet.";
-            $result['error'] = true;
-        }
-        return $result;
+        } 
+        return $resultado;
     }
 
     public function addAverageRating($idPlatillo, $promedio){

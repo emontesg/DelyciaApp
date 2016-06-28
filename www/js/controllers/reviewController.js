@@ -49,6 +49,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	};
 
 	$scope.getAllReviews = function(){
+
 		$scope.allReviews = [];
 		RequestService.getAllReviews($scope.realId).then(function (response){
 			if( response.data !== null){
@@ -65,6 +66,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 				};
 				RequestService.addAverageRating(ratingObj);
 				contentfulService.updateRating($scope.realId,$rootScope.promedio);
+				console.log($scope.allReviews);
 			}
 			
             }, function (reject){
