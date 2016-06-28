@@ -603,6 +603,12 @@ li {
     line-height: 3vw;
 }
 
+.favorite-remember-icon
+{
+    color: white;
+    margin-top: 1vw;
+}
+
 .favorite-footer
 {
     position: relative;
