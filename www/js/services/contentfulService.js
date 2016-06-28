@@ -14,6 +14,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	self.promedioRating = 0;
 	var ratingList = {};
 	var userlocation = [];
+	self.bdFavList = {};
 
 
 	var moment = require('moment');
@@ -242,9 +243,11 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
             						}
             						if(exist === false){
             							self.userFavorites.push(self.mainDishes[j]);
+            							self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
             						}
             					}else{
             						self.userFavorites.push(self.mainDishes[j]);
+            						self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
             					}
              				}
             			}
