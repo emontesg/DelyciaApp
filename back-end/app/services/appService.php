@@ -227,8 +227,9 @@ class AppService {
             $resultado = $result['data'];
             return $resultado;
         } else {
-            $result['message'] = "No reviews added yet.";
-            $result['error'] = true;
+            // $result['message'] = "No reviews added yet.";
+            // $result['error'] = true;
+            $result = null;
         }
         return $result;
     }

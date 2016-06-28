@@ -312,6 +312,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			getEntry();    
 
 		}, function (reject){
+			getEntry(); 
         });
 	};
 	

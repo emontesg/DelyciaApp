@@ -509,6 +509,7 @@ class AppController {
                 'error' => true,
                 'message' => "We couldn't find the requested review."
             ];
+            $result = [];
         }
         return $result;
     }

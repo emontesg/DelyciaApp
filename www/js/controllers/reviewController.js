@@ -66,7 +66,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 				};
 				RequestService.addAverageRating(ratingObj);
 				contentfulService.updateRating($scope.realId,$rootScope.promedio);
-				console.log($scope.allReviews);
 			}
 			
             }, function (reject){
