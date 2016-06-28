@@ -36,11 +36,12 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 		}
 	}
 
-	$scope.share = function()
+	$scope.share = function(location)
 	{
 		if($scope.islogged)
 		{
 			//share
+			$location.path(location);
 		}
 		else
 		{
