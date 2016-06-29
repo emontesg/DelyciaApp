@@ -329,6 +329,12 @@ li {
     position: relative;
 }
 
+.menu-distance-button
+{
+    color: black;
+    text-decoration: none;
+}
+
 .swiper-pagination 
 {
     display: none !important;
@@ -431,6 +437,8 @@ li {
     font-weight: 300;
     letter-spacing: -1px;
     line-height: 8vw;
+    color: white;
+    text-decoration: none;
 }
 
 .masinfo-menu-subitem

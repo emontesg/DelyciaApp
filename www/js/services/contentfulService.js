@@ -69,7 +69,9 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									rating:ratingValue, 
 									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
-									idContentful:items[i].sys.id
+									idContentful:items[i].sys.id,
+									lat: items[i].fields.restaurante.fields.ubicacion.lat,
+									lon: items[i].fields.restaurante.fields.ubicacion.lon
 								}); 
 
 							images.push(imgLink);
@@ -84,7 +86,10 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									rating:ratingValue, 
 									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
-									idContentful:items[i].sys.id});
+									idContentful:items[i].sys.id,
+									lat: items[i].fields.restaurante.fields.ubicacion.lat,
+									lon: items[i].fields.restaurante.fields.ubicacion.lon
+								});
 						
 							waitingImagesGroup.push(imgLink);
 							count++;
@@ -99,7 +104,10 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 									rating:ratingValue, 
 									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
 									status: getState(items[i]),
-									idContentful:items[i].sys.id});
+									idContentful:items[i].sys.id,
+									lat: items[i].fields.restaurante.fields.ubicacion.lat,
+									lon: items[i].fields.restaurante.fields.ubicacion.lon
+								});
 						
 							waitingImagesGroup.push(imgLink);
 							waitingLoadImages.push(waitingImagesGroup);
@@ -142,7 +150,8 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
-			rating:1, distance: '5 km', status: 'ABIERTO'};
+			rating:1, distance: '5 kms', status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
+			lon: dish.fields.restaurante.fields.ubicacion.lon};
 	};
 
 	function getState(item){

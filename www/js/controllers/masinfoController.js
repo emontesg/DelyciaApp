@@ -11,11 +11,29 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 	else
 	{
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+
+		if(ionic.Platform.isIOS())
+		{
+			$scope.mapUrl = 'maps://?q='+$scope.currentPlatillo.lat+', '+$scope.currentPlatillo.lon;
+		}
+		else
+		{
+			$scope.mapUrl = 'geo://0,0?q='+$scope.currentPlatillo.lat+', '+$scope.currentPlatillo.lon;
+		}
 	}
 	
 
 	$scope.$on('ready',function(data,items){
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+
+		if(ionic.Platform.isIOS())
+		{
+			$scope.mapUrl = 'maps://?q='+$scope.currentPlatillo.lat+', '+$scope.currentPlatillo.lon;
+		}
+		else
+		{
+			$scope.mapUrl = 'geo://0,0?q='+$scope.currentPlatillo.lat+', '+$scope.currentPlatillo.lon;
+		}
 	});
 
 	$scope.goToLocation = function(location)
