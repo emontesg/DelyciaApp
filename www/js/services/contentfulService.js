@@ -13,6 +13,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	var waitingLoadImages = [];
 	self.promedioRating = 0;
 	var ratingList = {};
+	var distanceList = {};
 	var userlocation = [];
 	self.bdFavList = {};
 	self.rawFavList = [];
@@ -33,115 +34,105 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			'content_type':'plato'
 		})
 		.then(function(entries){
-			var posOptions = {timeout: 10000, enableHighAccuracy: false};
+			platos = entries;
+			var dishes = [];
+			var index = 0;
+			var items = entries.items;
+			var images = [];
 
-			// $cordovaGeolocation
-			//     .getCurrentPosition(posOptions)
-			//     .then(function (position) {
-			//       	userlocation.lat = position.coords.latitude;
-			//       	userlocation.long = position.coords.longitude;
+			var waitingDishesGroup = [];
+			var waitingImagesGroup = [];
+			var count = 0;
+			for(var i = 0, l = items.length; i < l; i++)
+			{	
+				var ratingValue = 0;
+				if(ratingList[items[i].sys.id] !== undefined){
+					ratingValue = ratingList[items[i].sys.id];
+				}
+				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
-			      	////////////////////////////////////////////////////////////////////
-					platos = entries;
-					var dishes = [];
-					var index = 0;
-					var items = entries.items;
-					var images = [];
+				var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon));
+				var distanceString = userlocation == null ? 'N/A' : distance +' kms';
 
-					var waitingDishesGroup = [];
-					var waitingImagesGroup = [];
-					var count = 0;
-					for(var i = 0, l = items.length; i < l; i++)
-					{	
-						var ratingValue = 0;
-						if(ratingList[items[i].sys.id] !== undefined){
-							ratingValue = ratingList[items[i].sys.id];
-						}
-						var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
+				distanceList[i] = distance;
 
-						if(i < 4)
-						{
-							self.mainDishes.push({id:index++, 
-									src:imgLink, 
-									title:items[i].fields.nombre, 
-									restaurant:items[i].fields.restaurante.fields.nombre, 
-									price:items[i].fields.precio, 
-									rating:ratingValue, 
-									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
-									status: getState(items[i]),
-									idContentful:items[i].sys.id,
-									lat: items[i].fields.restaurante.fields.ubicacion.lat,
-									lon: items[i].fields.restaurante.fields.ubicacion.lon
-								}); 
+				if(i < 4)
+				{
+					self.mainDishes.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:ratingValue, 
+							distance: distanceString, 
+							status: getState(items[i]),
+							idContentful:items[i].sys.id,
+							lat: items[i].fields.restaurante.fields.ubicacion.lat,
+							lon: items[i].fields.restaurante.fields.ubicacion.lon
+						}); 
 
-							images.push(imgLink);
-						}
-						else if(count < 4 && i !== l-1)
-						{
-							waitingDishesGroup.push({id:index++, 
-									src:imgLink, 
-									title:items[i].fields.nombre, 
-									restaurant:items[i].fields.restaurante.fields.nombre, 
-									price:items[i].fields.precio, 
-									rating:ratingValue, 
-									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
-									status: getState(items[i]),
-									idContentful:items[i].sys.id,
-									lat: items[i].fields.restaurante.fields.ubicacion.lat,
-									lon: items[i].fields.restaurante.fields.ubicacion.lon
-								});
-						
-							waitingImagesGroup.push(imgLink);
-							count++;
-						}
-						else
-						{
-							waitingDishesGroup.push({id:index++, 
-									src:imgLink, 
-									title:items[i].fields.nombre, 
-									restaurant:items[i].fields.restaurante.fields.nombre, 
-									price:items[i].fields.precio, 
-									rating:ratingValue, 
-									distance: 0,//Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon))+' kms', 
-									status: getState(items[i]),
-									idContentful:items[i].sys.id,
-									lat: items[i].fields.restaurante.fields.ubicacion.lat,
-									lon: items[i].fields.restaurante.fields.ubicacion.lon
-								});
-						
-							waitingImagesGroup.push(imgLink);
-							waitingLoadImages.push(waitingImagesGroup);
-							waitingLoadDishes.push(waitingDishesGroup);
-							waitingDishesGroup = [];
-							waitingImagesGroup = [];
-							count = 0;
-						}
-					}
+					images.push(imgLink);
+				}
+				else if(count < 4 && i !== l-1)
+				{
+					waitingDishesGroup.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:ratingValue, 
+							distance: distanceString, 
+							status: getState(items[i]),
+							idContentful:items[i].sys.id,
+							lat: items[i].fields.restaurante.fields.ubicacion.lat,
+							lon: items[i].fields.restaurante.fields.ubicacion.lon
+						});
+				
+					waitingImagesGroup.push(imgLink);
+					count++;
+				}
+				else
+				{
+					waitingDishesGroup.push({id:index++, 
+							src:imgLink, 
+							title:items[i].fields.nombre, 
+							restaurant:items[i].fields.restaurante.fields.nombre, 
+							price:items[i].fields.precio, 
+							rating:ratingValue, 
+							distance: distanceString, 
+							status: getState(items[i]),
+							idContentful:items[i].sys.id,
+							lat: items[i].fields.restaurante.fields.ubicacion.lat,
+							lon: items[i].fields.restaurante.fields.ubicacion.lon
+						});
+				
+					waitingImagesGroup.push(imgLink);
+					waitingLoadImages.push(waitingImagesGroup);
+					waitingLoadDishes.push(waitingDishesGroup);
+					waitingDishesGroup = [];
+					waitingImagesGroup = [];
+					count = 0;
+				}
+			}
 
-					self.dishes = entries;
-					self.total = entries.total;
-					self.getAllFavorites();
+			self.dishes = entries;
+			self.total = entries.total;
+			self.getAllFavorites();
 
-					// $ImageCacheFactory.Cache(images);
-					preloaderService.preloadImages(images).then(firstLoadResolve,
-		                    function handleReject( imageLocation ) {
-		                        // Loading failed on at least one image.
-		                        console.error( "Image Failed", imageLocation );
-		                        console.info( "Preload Failure" );
-		                        $rootScope.$broadcast('error');
-		                    },
-		                    function handleNotify( event ) {
-		                        // $scope.percentLoaded = event.percent;
-		                        console.info( "Percent loaded:", event.percent );
-		                        }
-		                    
-		                );			      	
-
-			  //   }, function(err) {
-	    //   // error
-	    // });
-
-			
+			// $ImageCacheFactory.Cache(images);
+			preloaderService.preloadImages(images).then(firstLoadResolve,
+                    function handleReject( imageLocation ) {
+                        // Loading failed on at least one image.
+                        console.error( "Image Failed", imageLocation );
+                        console.info( "Preload Failure" );
+                        $rootScope.$broadcast('error');
+                    },
+                    function handleNotify( event ) {
+                        // $scope.percentLoaded = event.percent;
+                        console.info( "Percent loaded:", event.percent );
+                        }
+                    
+                );
 		});
 	};	
 
@@ -322,10 +313,10 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 					ratingList[response.data[i].idPlato] = response.data[i].promedio;
 				}
 			}  
-			getEntry();    
+			getCurrentPosition();    
 
 		}, function (reject){
-			getEntry(); 
+			getCurrentPosition(); 
         });
 	};
 	
@@ -345,6 +336,22 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 
 	Number.prototype.toRad = function() {
 	  return this * Math.PI / 180;
+	}
+
+	function getCurrentPosition()
+	{
+		var posOptions = {timeout: 10000, enableHighAccuracy: false};
+
+		$cordovaGeolocation
+		    .getCurrentPosition(posOptions)
+		    .then(function (position) {
+		      	userlocation.lat = position.coords.latitude;
+		      	userlocation.long = position.coords.longitude;
+		      	getEntry();
+			}, function(err) {
+				userlocation = null;
+		      	getEntry();
+		    });
 	}
 	
 	// self.addBDFavorite = function(id){
