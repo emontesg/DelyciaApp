@@ -51,10 +51,13 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				}
 				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
-				var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon));
+				var distance = userlocation == null ? -1 : Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon));
 				var distanceString = userlocation == null ? 'N/A' : distance +' kms';
 
-				distanceList[i] = distance;
+				if(userlocation !== null)
+				{
+					distanceList[i] = distance;
+				}
 
 				if(i < 4)
 				{
