@@ -20,7 +20,7 @@
       </div>
       <div class="restaurant-buttons">
         <div ng-class="!mapShow ? 'restaurant-button active' : 'restaurant-button'" ng-click="showDishes()">Platos</div>
-        <div ng-class="mapShow ? 'restaurant-button active' : 'restaurant-button'" ng-click="loadMap()">4.1kms</div>
+        <div ng-class="mapShow ? 'restaurant-button active' : 'restaurant-button'" ng-click="loadMap()">{{currentPlatillo.distance}}</div>
         <a href="tel: {{number}}" class="restaurant-button">Llamar</a>
       </div>
         <div class="white-background">

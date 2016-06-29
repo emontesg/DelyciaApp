@@ -89,16 +89,7 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 				if(dishes[i].fields.restaurante.sys.id === restaurantContentfulId)
 				{
 					var imgLink= 'http:' +dishes[i].fields.foto.fields.file.url;
-					$scope.restaurantDishes.push({
-						id: i,
-						src: $sce.getTrustedResourceUrl(imgLink),
-						title: dishes[i].fields.nombre,
-						restaurant:dishes[i].fields.restaurante.fields.nombre,
-						price:dishes[i].fields.precio, 
-						rating:1, 
-						distance: '5 kms',
-						status: 'ABIERTO' 
-					});
+					$scope.restaurantDishes.push(contentfulService.getDishJson(i));
 				}
 			}
 		}

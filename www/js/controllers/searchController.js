@@ -284,16 +284,7 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 			if(foodTypeAccepted && ocassionAccepted)
 			{
 				var imgLink= 'http:' +dishes[i].fields.foto.fields.file.url;
-				foundDishes.push({
-					id: i,
-					src: $sce.getTrustedResourceUrl(imgLink),
-					title: dishes[i].fields.nombre,
-					price:dishes[i].fields.precio, 
-					restaurant:dishes[i].fields.restaurante.fields.nombre, 
-					rating:1, 
-					distance: '5 kms', 
-					status: 'ABIERTO'
-				});
+				foundDishes.push(contentfulService.getDishJson(i));
 			}
 		}
 

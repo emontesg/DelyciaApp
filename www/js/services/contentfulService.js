@@ -34,6 +34,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			'content_type':'plato'
 		})
 		.then(function(entries){
+			self.dishes = entries;
 			platos = entries;
 			var dishes = [];
 			var index = 0;
@@ -45,70 +46,28 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			var count = 0;
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
-				var ratingValue = 0;
-				if(ratingList[items[i].sys.id] !== undefined){
-					ratingValue = ratingList[items[i].sys.id];
-				}
 				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
-
-				var distance = userlocation == null ? -1 : Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon));
-				var distanceString = userlocation == null ? 'N/A' : distance +' kms';
 
 				if(userlocation !== null)
 				{
+					var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon));
 					distanceList[i] = distance;
 				}
 
 				if(i < 4)
 				{
-					self.mainDishes.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: distanceString, 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id,
-							lat: items[i].fields.restaurante.fields.ubicacion.lat,
-							lon: items[i].fields.restaurante.fields.ubicacion.lon
-						}); 
-
+					self.mainDishes.push(self.getDishJson(i)); 
 					images.push(imgLink);
 				}
 				else if(count < 4 && i !== l-1)
 				{
-					waitingDishesGroup.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: distanceString, 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id,
-							lat: items[i].fields.restaurante.fields.ubicacion.lat,
-							lon: items[i].fields.restaurante.fields.ubicacion.lon
-						});
-				
+					waitingDishesGroup.push(self.getDishJson(i));
 					waitingImagesGroup.push(imgLink);
 					count++;
 				}
 				else
 				{
-					waitingDishesGroup.push({id:index++, 
-							src:imgLink, 
-							title:items[i].fields.nombre, 
-							restaurant:items[i].fields.restaurante.fields.nombre, 
-							price:items[i].fields.precio, 
-							rating:ratingValue, 
-							distance: distanceString, 
-							status: getState(items[i]),
-							idContentful:items[i].sys.id,
-							lat: items[i].fields.restaurante.fields.ubicacion.lat,
-							lon: items[i].fields.restaurante.fields.ubicacion.lon
-						});
-				
+					waitingDishesGroup.push(self.getDishJson(i));
 					waitingImagesGroup.push(imgLink);
 					waitingLoadImages.push(waitingImagesGroup);
 					waitingLoadDishes.push(waitingDishesGroup);
@@ -118,7 +77,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				}
 			}
 
-			self.dishes = entries;
 			self.total = entries.total;
 			self.getAllFavorites();
 
@@ -126,13 +84,13 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			preloaderService.preloadImages(images).then(firstLoadResolve,
                     function handleReject( imageLocation ) {
                         // Loading failed on at least one image.
-                        console.error( "Image Failed", imageLocation );
-                        console.info( "Preload Failure" );
+                        // console.error( "Image Failed", imageLocation );
+                        // console.info( "Preload Failure" );
                         $rootScope.$broadcast('error');
                     },
                     function handleNotify( event ) {
                         // $scope.percentLoaded = event.percent;
-                        console.info( "Percent loaded:", event.percent );
+                        // console.info( "Percent loaded:", event.percent );
                         }
                     
                 );
@@ -142,10 +100,16 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	self.getDishJson = function(index){
 		var dish = self.dishes.items[index];
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
+		var ratingValue = 0;
+		if(ratingList[index] !== undefined){
+			ratingValue = ratingList[index];
+		}
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
-			rating:1, distance: '5 kms', status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
-			lon: dish.fields.restaurante.fields.ubicacion.lon};
+			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[index] + ' kms', 
+			status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
+			lon: dish.fields.restaurante.fields.ubicacion.lon,
+			idContentful:dish.sys.id};
 	};
 
 	function getState(item){
