@@ -266,16 +266,22 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	Number.prototype.toRad = function() {
 	  return this * Math.PI / 180;
 	}
-	
-	// self.addBDFavorite = function(id){
-	// 	if(self.bdFavList[id] == undefined){
-	// 		self.rawFavList
-	// 		self.bdFavList[self.mainDishes[j].idContentful] = { 
-	// 			id: favoritesList[i].idFavorito, 
-	// 			title: self.mainDishes[j].title, 
-	// 			reminder:favoritesList[i].recordatorio};
-	// 	}
-	// }
+
+	function getCurrentPosition()
+	{
+		var posOptions = {timeout: 10000, enableHighAccuracy: false};
+
+		$cordovaGeolocation
+		    .getCurrentPosition(posOptions)
+		    .then(function (position) {
+		      	userlocation.lat = position.coords.latitude;
+		      	userlocation.long = position.coords.longitude;
+		      	getEntry();
+			}, function(err) {
+				userlocation = null;
+		      	getEntry();
+		    });
+	}
 
 
 	return self;

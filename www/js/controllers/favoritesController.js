@@ -24,7 +24,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 			RequestService.addFavorite(obj).then(function (response){            
 				var list = {};
 				var empty = false;
-				if(response != undefined){
+				if(response.data != undefined){
 					for(var i = 0; i < response.data.length; i++){
 						list[response.data[i].idPlato]=
 						{
@@ -36,6 +36,8 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 					}
 					isEmpty = $scope.existInContentful(list);
 
+				}else{
+					$scope.getAllFavorites();
 				}
 			}, function (reject){ });
 	};
