@@ -30,7 +30,7 @@ var RequestService = function($http, $location, $rootScope){
                 };
 
             if (data) {
-                return $http.post(route, data).then(function(response){});
+                return $http.post(route, data);
             }
         },
 

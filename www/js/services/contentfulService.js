@@ -7,7 +7,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	self.dishes = [];
 	self.mainDishes = [];
 	self.total = 0;
-	self.userFavorites = [];
 	var allReviews = [];
 	var waitingLoadDishes = [];
 	var waitingLoadImages = [];
@@ -15,10 +14,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	var ratingList = {};
 	var distanceList = {};
 	var userlocation = [];
-	self.bdFavList = {};
-	self.rawFavList = [];
-
-
 	var moment = require('moment');
 	moment().format();
 
@@ -77,8 +72,9 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				}
 			}
 
-			self.total = entries.total;
-			self.getAllFavorites();
+					self.dishes = entries;
+					self.total = entries.total;
+				
 
 			// $ImageCacheFactory.Cache(images);
 			preloaderService.preloadImages(images).then(firstLoadResolve,
@@ -194,40 +190,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		
 	}
 
-
-	self.getAllFavorites = function(){
-		var exist = false;
-		RequestService.getAllFavorites(user).then(function (response){
-            var favoritesList = response.data;
-            	if(favoritesList !== null){
-            		for (var i = 0; i< favoritesList.length; i++){
-            			for(var j = 0; j < self.mainDishes.length; j++){
-            				if(favoritesList[i].idPlato === self.mainDishes[j].idContentful){
-            					if(self.userFavorites !== null){
-            						for (var x = 0; x < self.userFavorites.length; x++) {
-            							if(favoritesList[i].idPlato === self.userFavorites[x].idContentful){ 
-            								exist = true;
-            								x = self.userFavorites.length;
-            							}
-            						}
-            						if(exist === false){
-            							self.userFavorites.push(self.mainDishes[j]);
-            							self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
-            							//self.rawFavList.push(favoritesList[i]);
-            						}
-            					}else{
-            						self.userFavorites.push(self.mainDishes[j]);
-            						self.bdFavList[self.mainDishes[j].idContentful] = { id: favoritesList[i].idFavorito, title: self.mainDishes[j].title, reminder:favoritesList[i].recordatorio};
-            						//self.rawFavList.push(favoritesList[i]);
-            					}
-             				}
-            			}
-            		}
-            	}
-            }, function (reject){
-        });
-    };
-
 	function firstLoadResolve(imageLocations)
 	{
         console.info( "Preload Successful" );
@@ -303,22 +265,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 
 	Number.prototype.toRad = function() {
 	  return this * Math.PI / 180;
-	}
-
-	function getCurrentPosition()
-	{
-		var posOptions = {timeout: 10000, enableHighAccuracy: false};
-
-		$cordovaGeolocation
-		    .getCurrentPosition(posOptions)
-		    .then(function (position) {
-		      	userlocation.lat = position.coords.latitude;
-		      	userlocation.long = position.coords.longitude;
-		      	getEntry();
-			}, function(err) {
-				userlocation = null;
-		      	getEntry();
-		    });
 	}
 	
 	// self.addBDFavorite = function(id){
