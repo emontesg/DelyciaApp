@@ -44,33 +44,33 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    $cordovaFacebook.login(["public_profile", "email", "user_friends"])
-   .then(function(success) {
-     if (success.authResponse) {
-       facebookConnectPlugin.api('/me?fields=id,email,name,last_name,picture', null,
-           function(response) {
-             window.localStorage.setItem("idUser", response.id);
-             console.log(response);
-             $scope.islogged = true;
-             var picture= response.picture;
-             var pic = picture.data.url;
+   //  $cordovaFacebook.login(["public_profile", "email", "user_friends"])
+   // .then(function(success) {
+   //   if (success.authResponse) {
+   //     facebookConnectPlugin.api('/me?fields=id,email,name,last_name,picture', null,
+   //         function(response) {
+             window.localStorage.setItem("idUser", 10205010024129730);
+   //           console.log(response);
+   //           $scope.islogged = true;
+   //           var picture= response.picture;
+   //           var pic = picture.data.url;
    
-             var obj = {
-                id : response.id,
-                name : response.name,
-                last_name : response.last_name,
-                email : response.email,
-                pic : pic
-            };
+   //           var obj = {
+   //              id : response.id,
+   //              name : response.name,
+   //              last_name : response.last_name,
+   //              email : response.email,
+   //              pic : pic
+   //          };
 
-            RequestService.loginUser(obj);
-            // $scope.closeLogin();
-           });
+   //          RequestService.loginUser(obj);
+   //          // $scope.closeLogin();
+   //         });
 
-          }
-   }, function (error) {
+   //        }
+   // }, function (error) {
 
-   });
+   // });
   };
 
   $scope.showNotLoggedMessage = function()

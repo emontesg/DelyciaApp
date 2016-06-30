@@ -53,15 +53,39 @@ class AppService {
 
 
     public function addToFavorites($idPlatillo, $idUsuario, $fechaHora, $recordatorio){
+        $validation_result = [];
+        $validation_query = "SELECT * from TFavoritos WHERE idPlato = :idPlatillo";
+        $validation_params = [
+                              ":idPlatillo" =>$idPlatillo  
+                            ];
+        $validation_result = $this->storage->query($validation_query, $validation_params); 
+
         $result = [];
-        $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha, recordatorio) VALUES (:idPlatillo, :idUsuario, :fechaHora, :recordatorio)";
         $add_params = [
                         ":idPlatillo" =>$idPlatillo,
                         ":idUsuario" =>$idUsuario,
                         ":fechaHora" =>$fechaHora,
                         ":recordatorio" =>$recordatorio
                     ];
-        $result = $this->storage->query($add_favorites_query, $add_params);
+        $get_result = [];
+        $get_params = [":idUsuario" =>$idUsuario];
+
+        if(count($validation_result['data']) > 0){
+            $result = null;
+        }else{
+            $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha, recordatorio) VALUES (:idPlatillo, :idUsuario, :fechaHora, :recordatorio)";
+            $this->storage->query($add_favorites_query, $add_params);
+
+            $get_query = "SELECT * FROM TFavoritos WHERE idUsuario = :idUsuario";
+            $get_result = $this->storage->query($get_query, $get_params);
+            
+            if(count($get_result['data']) > 0){
+                $result =  $get_result['data'];
+            }else{
+                $result = null;
+            }
+
+        }
         return $result;
     }
 

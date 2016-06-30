@@ -4,7 +4,7 @@ function NotificationService($rootScope){
 
 	self.createNotification = function(id, dishName, date)
 	{
-		var message = 'Hey, acuerdese de ir por ' + dishName + 'hoy';
+		var message = 'Hey, acuerdese de ir por ' + dishName;
 	    
 		cordova.plugins.notification.local.schedule({
 			id: id,
@@ -24,9 +24,8 @@ function NotificationService($rootScope){
 
 	self.updateNotification = function(id, dishName, date)
 	{
-		cordova.plugins.notification.local.cancel(id, function (id, dishName, date) {
-    		self.createNotification(id, dishName, date);
-		}, $rootScope);
+		self.cancelNotification(id);
+		self.createNotification(id, dishName, date);
 	}
 
 	return self;
