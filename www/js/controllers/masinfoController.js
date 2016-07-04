@@ -58,21 +58,7 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 	{
 		if($scope.islogged)
 		{
-			var name = contentfulService.mainDishes[$scope.platilloId].title;
-      var rest = contentfulService.mainDishes[$scope.platilloId].restaurant;
-      var image = contentfulService.mainDishes[$scope.platilloId].src;
-      var url = "http://koko-test.com/testing/doc.html";
-      facebookConnectPlugin.showDialog({
-            method: "share",
-            href: "http://koko-test.com/testing/doc.html",
-            caption: rest,
-            description: name,
-            picture: image,
-        }, function (postId) {
-                  console.log(postId);
-            }, function(error){
-                 console.log(error);
-             });
+			
 			$location.path(location);
 		}
 		else

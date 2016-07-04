@@ -20,6 +20,7 @@ var searchController = require('./controllers/searchController');
 var reviewController = require('./controllers/reviewController');
 var friendsController = require('./controllers/friendsController');
 var splashController = require('./controllers/splashController');
+var shareController = require('./controllers/shareController');
 
 var contentfulService = require('./services/contentfulService');
 var requestService = require('./services/requestService');
@@ -55,6 +56,7 @@ app.controller('SearchCtrl', searchController);
 app.controller('ReviewCtrl', reviewController);
 app.controller('FriendsCtrl', friendsController);
 app.controller('SplashCtrl', splashController);
+app.controller('ShareCtrl', shareController);
 
 app.factory('ContentfulService',contentfulService);
 app.service('RequestService',requestService);
@@ -77,15 +79,15 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     $ionicConfigProvider.scrolling.jsScrolling(false);
 
     $ionicNativeTransitionsProvider.setDefaultOptions({
-        duration: 100, // in milliseconds (ms), default 400, 
-        slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4 
-        iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1 
-        androiddelay: -1, // same as above but for Android, default -1 
-        winphonedelay: -1, // same as above but for Windows Phone, default -1, 
-        fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android) 
-        fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android) 
-        triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option 
-        backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back 
+        duration: 100, // in milliseconds (ms), default 400,
+        slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4
+        iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1
+        androiddelay: -1, // same as above but for Android, default -1
+        winphonedelay: -1, // same as above but for Windows Phone, default -1,
+        fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+        fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+        triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option
+        backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back
     });
 
   $stateProvider
@@ -161,7 +163,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
       url: '/share/:platilloId',
       views: {
         'menuContent': {
-          templateUrl: 'templates/share.html'
+          templateUrl: 'templates/share.html',
+          controller: 'ShareCtrl'
         }
       }
     })
@@ -211,17 +214,17 @@ app.config(function($sceDelegateProvider) {
 
 function initPushwoosh() {
     var pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
- 
+
     if(platform === 'iOS')
     {
         //set push notification callback before we initialize the plugin
       document.addEventListener('push-notification', function(event) {
                                   //get the notification payload
                                   var notification = event.notification;
-   
+
                                   //display alert to the user for example
                                   alert(notification.aps.alert);
-                                 
+
                                   //clear the app badge
                                   pushNotification.setApplicationIconBadgeNumber(0);
                               });
@@ -240,7 +243,7 @@ function initPushwoosh() {
               alert(JSON.stringify(['failed to register ', status]));
           }
       );
-       
+
       //reset badges on app start
       pushNotification.setApplicationIconBadgeNumber(0);
     }
@@ -250,11 +253,11 @@ function initPushwoosh() {
       document.addEventListener('push-notification', function(event) {
           var title = event.notification.title;
           var userData = event.notification.userdata;
-                                   
+
           if(typeof(userData) != "undefined") {
               console.warn('user data: ' + JSON.stringify(userData));
           }
-                                       
+
           alert(title);
       });
       //initialize Pushwoosh with projectid: "GOOGLE_PROJECT_NUMBER", pw_appid : "PUSHWOOSH_APP_ID". This will trigger all pending push notifications on start.
