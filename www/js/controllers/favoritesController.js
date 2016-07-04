@@ -126,6 +126,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	}
 
 	$scope.isNotified = function(id){
+		//console.log(bdList);
 		var result = false;
 		if(bdList[id] != undefined){
 			if(bdList[id].reminder == 1){
@@ -165,7 +166,28 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	  	}
   	};
   	$scope.execute();
+	NotificationService.knowIsNotified();
 
+	$scope.updateNotification = function(id){
+		if($scope.myFavoritesList != undefined){
+			for(var i = 0; i < $scope.myFavoritesList.length; i ++){
+				if(bdList[$scope.myFavoritesList[i].idContentful].idFavorito == id){
+					console.log();
+					bdList[$scope.myFavoritesList[i].idContentful].reminder = 0;
+					var obj = {
+						idPlatillo : $scope.myFavoritesList[i].idContentful,
+						reminder : 0
+					};
+					RequestService.setReminder(obj);
+					i = $scope.myFavoritesList.length;
+				}
+			}
+		}
+	};
+
+	$scope.$on('updateState', function(event, args){
+		$scope.updateNotification(args.id);
+	});
 
 }
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', 'NotificationService', FavoritesController];

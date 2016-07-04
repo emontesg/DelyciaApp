@@ -76,7 +76,7 @@ class AppService {
             $add_favorites_query = "INSERT INTO TFavoritos (idPlato, idUsuario, fecha, recordatorio) VALUES (:idPlatillo, :idUsuario, :fechaHora, :recordatorio)";
             $this->storage->query($add_favorites_query, $add_params);
 
-            $get_query = "SELECT * FROM TFavoritos WHERE idUsuario = :idUsuario";
+            $get_query = "SELECT * FROM TFavoritos WHERE idUsuario = :idUsuario ORDER BY fecha DESC";
             $get_result = $this->storage->query($get_query, $get_params);
             
             if(count($get_result['data']) > 0){
@@ -317,7 +317,7 @@ class AppService {
 
     public function getAllFavorites($idUsuario){
         $result = [];
-        $get_all_query = "SELECT * FROM tfavoritos WHERE idUsuario = :idUsuario";
+        $get_all_query = "SELECT * FROM tfavoritos WHERE idUsuario = :idUsuario ORDER BY fecha DESC";
         $getAll_params = [
                         ":idUsuario" =>$idUsuario
                     ];
