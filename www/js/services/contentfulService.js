@@ -97,8 +97,9 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		var dish = self.dishes.items[index];
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		var ratingValue = 0;
-		if(ratingList[index] !== undefined){
-			ratingValue = ratingList[index];
+
+		if(ratingList[dish.sys.id] != undefined){
+			ratingValue = ratingList[dish.sys.id];
 		}
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 

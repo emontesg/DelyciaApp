@@ -26,7 +26,14 @@ function NotificationService($rootScope){
 	{
 		self.cancelNotification(id);
 		self.createNotification(id, dishName, date);
-	}
+	};
+
+	self.knowIsNotified = function(){
+		cordova.plugins.notification.local.on("trigger", function(notification) {
+	    	alert("triggered: " + notification.id);
+	    	$rootScope.$broadcast('updateState',{ id: notification.id});
+		});
+	};
 
 	return self;
 }

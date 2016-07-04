@@ -75,7 +75,7 @@ class AppController {
             return $result;
         }
         //Server's date
-        $fechaHora = date("Y-m-d");
+        $fechaHora = date("Y-m-d H:i:s");
         $recordatorio = 0;
 
         if (isset($idPlatillo, $idUsuario, $fechaHora, $recordatorio)) {
@@ -376,8 +376,10 @@ class AppController {
             ];
             return $result;
         }
+
+        
                 //Server's date
-        $fechaHora = date("Y-m-d");
+        $fechaHora = date("Y-m-d H:i:s");
 
         if (isset($idPlatillo, $rating, $comentario, $idUsuario, $visible, $fechaHora)) {
             $result = $this->AppService->addReview($idPlatillo, $rating, $comentario, $idUsuario, $visible, $fechaHora);
