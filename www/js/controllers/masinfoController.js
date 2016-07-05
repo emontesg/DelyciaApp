@@ -21,7 +21,7 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 			$scope.mapUrl = 'geo://0,0?q='+$scope.currentPlatillo.lat+', '+$scope.currentPlatillo.lon;
 		}
 	}
-	
+
 
 	$scope.$on('ready',function(data,items){
 		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
@@ -58,7 +58,7 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 	{
 		if($scope.islogged)
 		{
-			//share
+			
 			$location.path(location);
 		}
 		else
