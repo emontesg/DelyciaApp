@@ -266,15 +266,20 @@ class AppService {
                         ":idPlatillo" =>$idPlatillo
                         ];
         $result = $this->storage->query($get_query, $getAll_params);
-
         if (count($result['data']) > 0) {
             $resultado = count($result['data']);
+            // $insert_query ="UPDATE tpromedio SET cantReviews= :cant WHERE idPlato = :idPlatillo";
+            // $insert_params = [
+            //                 ":idPlatillo" =>$idPlatillo,
+            //                 ":cant" =>$resultado
+            //                 ];
+            // $this->storage->query($insert_query, $insert_params);
             return $resultado;
         } 
         return $resultado;
     }
 
-    public function addAverageRating($idPlatillo, $promedio){
+    public function addAverageRating($idPlatillo, $promedio,$cantReviews){
         $validation_result = [];
         $validation_query = "SELECT * FROM tpromedio WHERE idPlato = :idPlatillo";
         $validation_params = [
@@ -285,14 +290,15 @@ class AppService {
         $result = [];
         $add_params = [
                         ":idPlatillo" =>$idPlatillo,
-                        ":promedio" =>$promedio 
+                        ":promedio" =>$promedio,
+                        ":cantReviews" =>$cantReviews
                     ];
         if (count($validation_result['data']) > 0) {
-            $update_query = "UPDATE tpromedio SET promedio = :promedio WHERE idPlato = :idPlatillo";
+            $update_query = "UPDATE tpromedio SET promedio = :promedio, cantReviews = :cantReviews WHERE idPlato = :idPlatillo";
             $result = $this->storage->query($update_query, $add_params);
             return $result;
         } else {
-            $add_query = "INSERT INTO tpromedio(idPlato,promedio) VALUES (:idPlatillo, :promedio)";
+            $add_query = "INSERT INTO tpromedio(idPlato,promedio, cantReviews) VALUES (:idPlatillo, :promedio, :cantReviews)";
             $result = $this->storage->query($add_query, $add_params);
             return $result;
         }

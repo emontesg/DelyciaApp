@@ -3,7 +3,7 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	var type = parseInt($stateParams.type);
 
 	$scope.showSearchButton = type === 0 ? true : false;
-	$scope.hasReview = false;
+	$scope.hasReview = true;
 	$scope.hearts = [0,1,2,3,4];
 
 	if(contentfulService.mainDishes.length === 0)

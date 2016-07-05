@@ -62,10 +62,11 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 				$rootScope.promedio = $scope.calculateAverageRating(); 
 				var ratingObj = {
 					idPlatillo : $scope.realId,
-					promedio : $rootScope.promedio
+					promedio : $rootScope.promedio,
+					cantReviews: $scope.cantReviews
 				};
 				RequestService.addAverageRating(ratingObj);
-				contentfulService.updateRating($scope.realId,$rootScope.promedio);
+				$scope.getCantReviews(); 
 			}
 			
             }, function (reject){
@@ -76,6 +77,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     $scope.getCantReviews = function(){
 		RequestService.getCantReviews($scope.realId).then(function (response){
 			$scope.cantReviews = response.data;
+			contentfulService.updateRating($scope.realId,$rootScope.promedio, $scope.cantReviews);
             }, function (reject){
         });
     };
@@ -95,7 +97,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 				$scope.getCantReviews();
             }, function (reject){
         });
-
+		$scope.getCantReviews();
         }
     };
 

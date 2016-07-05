@@ -28,6 +28,7 @@
 							<div ng-class="getHeartClass(3, platillo.rating)"></div>
 							<div ng-class="getHeartClass(4, platillo.rating)"></div>
 						</div>
+						<div class="menu-reviews-count" ng-show="platillo.rating > 0">({{platillo.cantReviews}} reviews)</div>
 						<div class="no-rating" ng-show="platillo.rating == 0">
 							<div class="broken-heart"></div>
 							<div class="no-review-message">A&Uacute;N SIN REVIEWS</div>

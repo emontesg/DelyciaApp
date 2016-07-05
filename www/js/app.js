@@ -60,6 +60,8 @@ app.factory('ContentfulService',contentfulService);
 app.service('RequestService',requestService);
 app.factory('PreloaderService', preloaderService);
 app.factory('NotificationService', notificationService);
+
+
 ////////////////////WARNING
 // app.config(function($sceProvider) {
 //    // Completely disable SCE.  For demonstration purposes only!

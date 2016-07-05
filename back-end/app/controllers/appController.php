@@ -460,13 +460,23 @@ class AppController {
         }else {
             $result = [
                 "error" => true,
-                "message" => "The promedio data field is missing."
+                "message" => "The promedio field is missing."
             ];
             return $result;
         }
 
-        if (isset($idPlatillo, $promedio)) {
-            $result = $this->AppService->addAverageRating($idPlatillo, $promedio);
+        if (array_key_exists("cantReviews", $data)) {
+            $cantReviews = $data["cantReviews"];
+        }else {
+            $result = [
+                "error" => true,
+                "message" => "The cantReviews data field is missing."
+            ];
+            return $result;
+        }
+
+        if (isset($idPlatillo, $promedio, $cantReviews)) {
+            $result = $this->AppService->addAverageRating($idPlatillo, $promedio, $cantReviews);
             return $result;
         } else {
             $result['error'] = true;

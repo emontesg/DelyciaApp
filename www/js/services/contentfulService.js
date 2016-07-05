@@ -97,16 +97,20 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		var dish = self.dishes.items[index];
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		var ratingValue = 0;
+		var cantReviews = 0;
 
 		if(ratingList[dish.sys.id] != undefined){
-			ratingValue = ratingList[dish.sys.id];
+			ratingValue = ratingList[dish.sys.id].promedio;
+			cantReviews = ratingList[dish.sys.id].cantReviews;
 		}
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
 			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[index] + ' kms', 
 			status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
 			lon: dish.fields.restaurante.fields.ubicacion.lon,
-			idContentful:dish.sys.id};
+			idContentful:dish.sys.id,
+			cantReviews : cantReviews
+		};
 	};
 
 	function getState(item){
@@ -224,11 +228,12 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		loadMoreImages();
 	}
 
-	self.updateRating = function(id, rating){
+	self.updateRating = function(id, rating,cantReviews){
 		if(self.mainDishes !== null){
 			for(var i = 0; i < self.mainDishes.length; i++){
 				if(id === self.mainDishes[i].idContentful){
 					self.mainDishes[i].rating = rating;
+					self.mainDishes[i].cantReviews = cantReviews;
 					i = self.mainDishes.length;
 				}
 			}
@@ -240,7 +245,9 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		RequestService.getAverageRatings().then(function (response){  
 			if(response.data !== null){
 				for(i = 0; i < response.data.length; i ++){
-					ratingList[response.data[i].idPlato] = response.data[i].promedio;
+					ratingList[response.data[i].idPlato] = {
+					promedio: response.data[i].promedio, 
+					cantReviews: response.data[i].cantReviews};
 				}
 			}  
 			getCurrentPosition();    

@@ -135,7 +135,8 @@ var RequestService = function($http, $location, $rootScope){
             var route = url + backEnd + 'addAverageRating';
             data = {
                 idPlatillo : obj.idPlatillo,
-                promedio : obj.promedio
+                promedio : obj.promedio,
+                cantReviews : obj.cantReviews
             };
             if (data) {
                 return $http.post(route, data);
