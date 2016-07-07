@@ -10,7 +10,7 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 	}
 	else
 	{
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
 
 		if(ionic.Platform.isIOS())
 		{
@@ -24,7 +24,7 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 
 
 	$scope.$on('ready',function(data,items){
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
 
 		if(ionic.Platform.isIOS())
 		{

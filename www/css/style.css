@@ -437,8 +437,12 @@ li {
     font-weight: 300;
     letter-spacing: -1px;
     line-height: 8vw;
-    color: white;
     text-decoration: none;
+}
+
+a.masinfo-menu-item
+{
+    color: white;
 }
 
 .masinfo-menu-subitem
