@@ -17,16 +17,14 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 	}
 	else
 	{
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-
-		loadRestaurant();
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		contentfulService.getItemsByRestaurant($scope.currentPlatillo.restaurantId);
 	}
 	
 
 	$scope.$on('ready',function(data,items){
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-
-		loadRestaurant();
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		contentfulService.getItemsByRestaurant($scope.currentPlatillo.restaurantId);
 	});
 
 	var options = {timeout: 10000, enableHighAccuracy: true};
@@ -58,42 +56,12 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 		$scope.mapShow = false;
 	};
 
-	function loadRestaurant()
-	{
-		if(contentfulService.dishes.length !== 0)
-		{
-			$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-
-			var dishes = contentfulService.dishes.items;
-
-			restaurant = dishes[$scope.currentPlatillo.id].fields.restaurante;
-			$scope.number = restaurant.fields.telefono;
-
-			var photoCount = restaurant.fields.fotos.length;
-			if(photoCount > 1)
-			{
-				var index = Math.floor((Math.random() * photoCount) + 1);
-				$scope.restaurantImage = $sce.getTrustedResourceUrl('http:' +restaurant.fields.fotos[index-1].fields.file.url);
-			}
-			else
-			{
-				$scope.restaurantImage = $sce.getTrustedResourceUrl('http:' +restaurant.fields.fotos[0].fields.file.url);
-			}
-
-			$scope.restaurantDishes = [];
-
-			var restaurantContentfulId = restaurant.sys.id;
-
-			for(var i = 0, l = dishes.length; i < l; i++)
-			{
-				if(dishes[i].fields.restaurante.sys.id === restaurantContentfulId)
-				{
-					var imgLink= 'http:' +dishes[i].fields.foto.fields.file.url;
-					$scope.restaurantDishes.push(contentfulService.getDishJson(i));
-				}
-			}
-		}
-	}
+	$scope.$on('getItemsByRestaurantReady', function(data, items, image, rest) {
+		$scope.restaurantImage = image;
+		$scope.restaurantDishes = items;
+		restaurant = rest;
+		$scope.number = restaurant.fields.telefono;
+	});
 
 	function load()
 	{

@@ -13,7 +13,7 @@
   <ion-content id="platilloContent" class="no-header" scroll="false">
 	<ion-slides  options="options" slider="data.slider">
 		<ion-slide-page ng-repeat="platillo in platillos track by $index">
-			<div class="menu-image">
+			<div class="menu-image" ng-if="platillo.show">
 				<div class="menu-image-info fade" ng-show="infoEnable">
 					<div class="menu-image-title">{{platillo.title}}</div>
 					<div class="menu-image-restaurant">{{platillo.restaurant}}</div>

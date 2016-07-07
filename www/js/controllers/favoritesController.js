@@ -3,8 +3,6 @@ var DelyciaConstants = require('./../delyciaConstants');
 function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope, NotificationService) {
 
 	$scope.platilloId = $stateParams.platilloId;
-	$scope.platillos = DelyciaConstants.PLATILLOS;
-	$scope.currentPlatillo = $scope.platillos[$scope.platilloIndex];
 	$scope.realId = 0;
 	$scope.myFavoritesList = [];
 	$scope.user = window.localStorage.getItem('idUser');

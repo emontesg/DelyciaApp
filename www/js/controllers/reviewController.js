@@ -4,7 +4,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	$scope.platilloId = $stateParams.platilloId;
     $scope.islogged = window.localStorage.getItem("idUser") !== null;
     $scope.isMac = window.localStorage.getItem("isMac");
-	$scope.realId = contentfulService.dishes.items[$scope.platilloId].sys.id;
 	$scope.allReviews = [];
 	$rootScope.promedio = 0;
 	$scope.numPromedio = 0;
@@ -14,6 +13,23 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	var moment = require('moment');
 	moment().format();
 	$scope.user = window.localStorage.getItem('idUser');
+
+	if(contentfulService.mainDishes.length === 0)
+	{
+		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
+
+	}
+	else
+	{
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		$scope.realId = $scope.currentPlatillo.idContentful;
+	}
+	
+
+	$scope.$on('ready',function(data,items){
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		$scope.realId = $scope.currentPlatillo.idContentful;
+	});
 
 	$scope.hearts = [{id: 0, active: false},
 					 {id: 1, active: false},
@@ -201,22 +217,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 		$scope.makeRating = false;
 		$scope.addReview(comentario);
 	};
-
-
-	if(contentfulService.mainDishes.length === 0)
-	{
-		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
-
-	}
-	else
-	{
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-	}
-	
-
-	$scope.$on('ready',function(data,items){
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
-	});
 
 	$scope.getRealDate = function (pfecha){
 		moment.updateLocale('en', {

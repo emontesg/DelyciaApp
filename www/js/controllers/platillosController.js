@@ -1,6 +1,11 @@
-function PlatillosController($scope, $stateParams, $ionicGesture, contentfulService, RequestService, $rootScope) {
+var DelyciaConstants = require('../delyciaConstants');
+
+function PlatillosController($scope, $stateParams, contentfulService) {
 
 	var type = parseInt($stateParams.type);
+
+	var block2 = DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+	var block3 = DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT * 2;
 
 	$scope.showSearchButton = type === 0 ? true : false;
 	$scope.hasReview = false;
@@ -17,6 +22,7 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	else
 	{
 		$scope.platillos = contentfulService.searchDishes;
+		contentfulService.hideSearchItems(type-2);
 	}
 
 	if(ionic.Platform.isIOS())
@@ -33,7 +39,7 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 	var initialSlide = type >= 2 ? type-2 : 0;
 
     $scope.options = {
-	  loop: true,
+	  loop: false,
 	  pager: false,
 	  speed: 500,
 	  initialSlide: initialSlide
@@ -69,9 +75,58 @@ function PlatillosController($scope, $stateParams, $ionicGesture, contentfulServ
 		$scope.infoEnable = !$scope.infoEnable;
 	}
 	
-
-	
+	$scope.$on("$ionicSlides.slideChangeStart", function(event, data){
+	  var activeIndex = data.slider.activeIndex;
+	  if(activeIndex > data.slider.previousIndex)
+	  {
+	  	if(activeIndex === block2)
+	  	{
+	  		contentfulService.currentViewedPageIndex = 1; 
+	  		contentfulService.getNextPage(type);
+	  	}
+	  	else
+	  	{
+	  		var multiplo = activeIndex / DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+	  		if(Number.isInteger(multiplo))
+	  		{
+	  			contentfulService.currentViewedPageIndex = multiplo;
+	  			contentfulService.getNextPage(type);
+	  			contentfulService.hidePreviousPage(type);
+	  			$scope.$apply(function() {
+	  				if(type === 0)
+					{
+		  				$scope.platillos = contentfulService.mainDishes;
+		  			}
+		  			else
+		  			{
+		  				$scope.platillos = contentfulService.searchDishes;
+		  			}
+		  		});
+	  		}
+	  	}
+	  }
+	  else
+	  {
+	  	var multiplo2 = (activeIndex+1) / DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+	  	if(Number.isInteger(multiplo2))
+	  	{
+	  		contentfulService.currentViewedPageIndex = multiplo2-1;
+	  		contentfulService.getPreviousPage(type);
+	  		contentfulService.hideNextPage(type);
+	  		$scope.$apply(function() {
+	  			if(type === 0)
+				{
+	  				$scope.platillos = contentfulService.mainDishes;
+	  			}
+	  			else
+	  			{
+	  				$scope.platillos = contentfulService.searchDishes;
+	  			}
+	  		});
+	  	}
+	  }
+	});
 
 }
 
-module.exports = ['$scope', '$stateParams', '$ionicGesture','ContentfulService', 'RequestService','$rootScope', PlatillosController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', PlatillosController];
