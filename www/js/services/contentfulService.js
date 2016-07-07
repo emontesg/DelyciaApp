@@ -1,20 +1,26 @@
 var contentful = require('contentful'); 
+var DelyciaConstants = require('../delyciaConstants');
+var moment = require('moment');
 
 function ContentfulService($rootScope, $sce, RequestService, preloaderService, $cordovaGeolocation){
 	var self = this;
-	var platos = [];
 	var user = localStorage.getItem('idUser');
 	self.dishes = [];
 	self.mainDishes = [];
-	self.total = 0;
+	
 	var allReviews = [];
-	var waitingLoadDishes = [];
-	var waitingLoadImages = [];
 	self.promedioRating = 0;
 	var ratingList = {};
 	var distanceList = {};
 	var userlocation = [];
-	var moment = require('moment');
+	
+	var pagesArray = [];
+	var lastLoadedPageIndex = -1;
+	self.currentViewedPageIndex = 0;
+
+	self.searchDishes = [];
+	var searchPagesCount = 0;
+
 	moment().format();
 
 	var client = contentful.createClient({
@@ -23,94 +29,342 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		// This is the access token for this space. Normally you get both ID and the token in the Contentful web app
 		accessToken: 'e1e84ff039e7a97a5dd97ba4104682f57f10ca912016f42d000bf22cd4f0ceee'
 	});
-	//640*1136
-	function getEntry(){
-			client.getEntries({
-			'content_type':'plato'
+
+	function randomizePages()
+	{
+		client.getEntries({
+			'content_type':'plato',
+			'limit': 1
 		})
 		.then(function(entries){
-			self.dishes = entries;
-			platos = entries;
-			var dishes = [];
-			var index = 0;
+			var total = entries.total;
+			var pagesCount = Math.ceil(total / DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT);
+			for(var i = 0; i < pagesCount; i++)
+			{
+				pagesArray.push(i);
+			}
+			pagesArray = shuffleArray(pagesArray);
+			getPageItems(true, true);
+		});
+	}
+
+	function getPageItems(isNext, isFirstLoad)
+	{
+		var skip = 0;
+		if(isNext)
+		{
+			if(lastLoadedPageIndex < pagesArray.length-1)
+			{
+				lastLoadedPageIndex++;
+				skip = (pagesArray[lastLoadedPageIndex]) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			}
+			else
+				return;
+		}
+		else
+		{
+			if(lastLoadedPageIndex >= 0)
+			{
+				lastLoadedPageIndex--;
+				skip = (pagesArray[lastLoadedPageIndex]) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			}
+			else
+				return;
+		}
+		client.getEntries({
+			'content_type':'plato',
+			'limit': DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT,
+			'skip': skip
+		})
+		.then(function(entries){
 			var items = entries.items;
 			var images = [];
-
-			var waitingDishesGroup = [];
-			var waitingImagesGroup = [];
-			var count = 0;
+			self.dishes = entries;
 			for(var i = 0, l = items.length; i < l; i++)
 			{	
 				var imgLink= $sce.getTrustedResourceUrl('http:' +items[i].fields.foto.fields.file.url);
 
-				if(userlocation !== null)
-				{
-					var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,items[i].fields.restaurante.fields.ubicacion.lat,items[i].fields.restaurante.fields.ubicacion.lon));
-					distanceList[i] = distance;
-				}
+				self.mainDishes.push(self.getDishJson(self.mainDishes.length, items[i])); 
+				images.push(imgLink);
+			}
 
-				if(i < 4)
+			var first = lastLoadedPageIndex * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+
+			preloaderService.preloadImages(images).then(isFirstLoad ? finishFirstLoadCallback : finishLoadCallback ,
+                function handleReject( imageLocation ) {
+                    $rootScope.$broadcast('error');
+                },
+                function handleNotify( event ) {
+                }
+                
+            );
+		});
+	}
+
+	self.getContentfulItemById = function(id)
+	{
+		var entryId = self.mainDishes[id].idContentful;
+		client.getEntries({
+			'content_type':'plato',
+			'sys.id': entryId
+		})
+		.then(function(entries){
+			currentJson = self.getDishJson(id, entries.items[0]);
+			$rootScope.$broadcast('getItemByIdReady', currentJson);
+		});
+	};
+
+	self.getItemById = function(id)
+	{
+		return self.mainDishes[id];
+	}
+
+	self.getItemsByRestaurant = function(id)
+	{ 
+		client.getEntries({
+			'content_type':'plato',
+			'fields.restaurante.sys.id': id
+		})
+		.then(function(entries){
+			self.searchDishes = [];
+			var items = entries.items;
+			for(var i = 0, l = items.length; i < l; i++)
+			{
+				var item = self.getDishJson(i, items[i]);
+				self.searchDishes.push(item);
+			}
+			var photoCount = items[0].fields.restaurante.fields.fotos.length;
+			var restaurantPhoto = '';
+			if(photoCount > 1)
+			{
+				var index = Math.floor((Math.random() * photoCount) + 1);
+				restaurantPhoto = $sce.getTrustedResourceUrl('http:' +items[0].fields.restaurante.fields.fotos[index-1].fields.file.url);
+			}
+			else
+			{
+				restaurantPhoto = $sce.getTrustedResourceUrl('http:' +items[0].fields.restaurante.fields.fotos[0].fields.file.url);
+			}
+			// var restaurantPhoto = $sce.getTrustedResourceUrl(items[0].fields.restaurante.fields.fotos.fields.file.url);
+			$rootScope.$broadcast('getItemsByRestaurantReady', self.searchDishes, restaurantPhoto, items[0].fields.restaurante);
+		});
+	};
+
+	function shuffleArray(array)
+	{
+		var arrayResult = [];
+		for(var i = 0, l = array.length; i < l; i++)
+		{
+			if(i === l-1)
+			{
+				arrayResult.push(array[0]);
+			}
+			else
+			{
+				var random = Math.floor((Math.random() * (array.length-1)));
+				arrayResult.push(array[random]);
+				array.splice(random, 1);
+			}
+		}
+		return arrayResult;
+	}
+
+	self.getNextPage = function(type)
+	{
+		if(type === 0 && self.currentViewedPageIndex === lastLoadedPageIndex)
+		{
+			getPageItems(true, false);
+		}
+		else if(self.currentViewedPageIndex === 1)
+		{
+			var first2 = (self.currentViewedPageIndex + 1) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			var last2 = first2 + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			for(var j = first2; j < last2; j++)
+			{
+				if(type === 0)
 				{
-					self.mainDishes.push(self.getDishJson(i)); 
-					images.push(imgLink);
-				}
-				else if(count < 4 && i !== l-1)
-				{
-					waitingDishesGroup.push(self.getDishJson(i));
-					waitingImagesGroup.push(imgLink);
-					count++;
+					if(last >= self.mainDishes.length)
+						break;
+
+					self.mainDishes[j].show = true;
 				}
 				else
 				{
-					waitingDishesGroup.push(self.getDishJson(i));
-					waitingImagesGroup.push(imgLink);
-					waitingLoadImages.push(waitingImagesGroup);
-					waitingLoadDishes.push(waitingDishesGroup);
-					waitingDishesGroup = [];
-					waitingImagesGroup = [];
-					count = 0;
+					if(last >= self.searchDishes.length)
+						break;
+
+					self.searchDishes[j].show = true;
+				}
+				
+			}
+		}
+		else if(self.currentViewedPageIndex < (type === 0 ? lastLoadedPageIndex : self.searchDishes.length-1))
+		{
+			var first = (self.currentViewedPageIndex + 1) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			var last = first + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			for(var i = first; i < last; i++)
+			{
+				if(type === 0)
+				{
+					if(last >= self.mainDishes.length)
+						break;
+
+					self.mainDishes[i].show = true;
+				}
+				else
+				{
+					if(last >= self.searchDishes.length)
+						break;
+
+					self.searchDishes[i].show = true;
 				}
 			}
+		}
+	};
 
-					self.dishes = entries;
-					self.total = entries.total;
-				
+	self.getPreviousPage = function(type)
+	{
+		if(self.currentViewedPageIndex > 0)
+		{
+			var first = (self.currentViewedPageIndex - 1) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			var last = first + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			for(var i = first; i < last; i++)
+			{
+				if(type === 0)
+				{
+					if(last >= self.mainDishes.length)
+						break;
 
-			// $ImageCacheFactory.Cache(images);
-			preloaderService.preloadImages(images).then(firstLoadResolve,
-                    function handleReject( imageLocation ) {
-                        // Loading failed on at least one image.
-                        // console.error( "Image Failed", imageLocation );
-                        // console.info( "Preload Failure" );
-                        $rootScope.$broadcast('error');
-                    },
-                    function handleNotify( event ) {
-                        // $scope.percentLoaded = event.percent;
-                        // console.info( "Percent loaded:", event.percent );
-                        }
-                    
-                );
-		});
-	};	
+					self.mainDishes[i].show = true;
+				}
+				else
+				{
+					if(last >= self.searchDishes.length)
+						break;
 
-	self.getDishJson = function(index){
-		var dish = self.dishes.items[index];
+					self.searchDishes[i].show = true;
+				}
+			}
+		}
+	};
+
+	function hideItems(isNext, type)
+	{
+		archivePageArray = [];
+		if(isNext)
+		{
+			if(self.currentViewedPageIndex < pagesArray.length-2)
+			{
+				var first = (self.currentViewedPageIndex + 2) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+				var last = first + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+				for(var i = first; i < last; i++)
+				{
+					if(type === 0)
+					{
+						if(last >= self.mainDishes.length)
+							break;
+
+						self.mainDishes[i].show = false;
+					}
+					else
+					{
+						if(last >= self.searchDishes.length)
+							break;
+
+						self.searchDishes[i].show = false;
+					}
+				}
+			}
+		}
+		else
+		{
+			var first2 = (self.currentViewedPageIndex - 2) * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			var last2 = first2 + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			for(var j = first2; j < last2; j++)
+			{
+				if(type === 0)
+				{
+					if(last >= self.mainDishes.length)
+						break;
+
+					self.mainDishes[j].show = false;
+				}
+				else
+				{
+					if(last >= self.searchDishes.length)
+						break;
+
+					self.searchDishes[j].show = false;
+				}
+			}
+		}
+	}
+
+	self.hideNextPage = function(type)
+	{
+		hideItems(true, type);
+	};
+
+	self.hidePreviousPage = function(type)
+	{
+		hideItems(false, type);
+	};
+
+	self.getDishJson = function(index, dish){
+		var id = dish.sys.id;
 		var imgLink= 'http:' +dish.fields.foto.fields.file.url;
 		var ratingValue = 0;
 		var cantReviews = 0;
-
-		if(ratingList[dish.sys.id] != undefined){
-			ratingValue = ratingList[dish.sys.id].promedio;
-			cantReviews = ratingList[dish.sys.id].cantReviews;
+		if(ratingList[id] !== undefined){
+			ratingValue = ratingList[id];
+			cantReviews = ratingList[id].cantReviews;
+		}
+		if(userlocation !== null)
+		{
+			var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,
+				dish.fields.restaurante.fields.ubicacion.lat,
+				dish.fields.restaurante.fields.ubicacion.lon));
+			distanceList[id] = distance;
 		}
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
-			restaurant:dish.fields.restaurante.fields.nombre, price:dish.fields.precio, 
-			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[index] + ' kms', 
+			restaurant:dish.fields.restaurante.fields.nombre,
+			restaurantId: dish.fields.restaurante.sys.id, price:dish.fields.precio, 
+			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[id] + ' kms', 
 			status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
 			lon: dish.fields.restaurante.fields.ubicacion.lon,
-			idContentful:dish.sys.id,
-			cantReviews : cantReviews
-		};
+			idContentful:id, show: true, cantReviews : cantReviews};
+	};
+
+	self.hideSearchItems = function(index)
+	{
+		var length = self.searchDishes.length;
+		var page = Math.floor(index / DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT);
+		searchPagesCount = Math.ceil(length / DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT);
+		var first = page * DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+		var last = page === (searchPagesCount-1) ? length : first + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+		var lastPageCount = length % DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+		if(page > 0)
+		{
+			first = first - DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+		}
+		if(page < searchPagesCount-1)
+		{
+			if(page < (searchPagesCount - 1) || lastPageCount === 0)
+			{
+				last = last + DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
+			}
+			else
+			{
+				last = last + lastPageCount;
+			}
+		}
+		for(var i = 0; i < length; i++)
+		{
+			if(i < first || i > last)
+			{
+				self.searchDishes[i].show = false;
+			}
+		}
+		self.currentViewedPageIndex = page;
 	};
 
 	function getState(item){
@@ -195,11 +449,15 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		
 	}
 
-	function firstLoadResolve(imageLocations)
+	function finishFirstLoadCallback()
 	{
-        console.info( "Preload Successful" );
-        $rootScope.$broadcast('ready',self.mainDishes);
-        loadMoreImages();
+		$rootScope.$broadcast('ready',self.mainDishes);
+		getPageItems(true, false);
+	}
+
+	function finishLoadCallback()
+	{
+
 	}
 
 	function loadMoreImages()
@@ -216,17 +474,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		}
 	}
 
-	function loadResolve(imageLocations)
-	{
-		var dishes = waitingLoadDishes[0];
-		for(var i = 0, l = dishes.length; i < l; i++)
-		{
-			self.mainDishes.push(dishes[i]);
-		}
-		waitingLoadDishes.splice(0, 1);
-		waitingLoadImages.splice(0, 1);
-		loadMoreImages();
-	}
 
 	self.updateRating = function(id, rating,cantReviews){
 		if(self.mainDishes !== null){
@@ -239,7 +486,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			}
 		}
 
-	}
+	};
 
 	self.loadList = function(){
 		RequestService.getAverageRatings().then(function (response){  
@@ -284,10 +531,12 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		    .then(function (position) {
 		      	userlocation.lat = position.coords.latitude;
 		      	userlocation.long = position.coords.longitude;
-		      	getEntry();
+		      	randomizePages();
+		      	// getEntry();
 			}, function(err) {
 				userlocation = null;
-		      	getEntry();
+				randomizePages();
+		      	// getEntry();
 		    });
 	}
 
