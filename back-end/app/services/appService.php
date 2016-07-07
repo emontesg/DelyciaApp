@@ -205,13 +205,25 @@ class AppService {
                     ];
 
         if(count($validation['data']) > 0){
+            echo('shit');
             //si ya existe el review del usuario
             $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible, fecha =:fechaHora
             WHERE idUsuario = :idUsuario and idPlato = :idPlato";
             $result = $this->storage->query($update_review, $review_params);
+
         }else{
             $add_review_query = "INSERT INTO TRating (idPlato, rating, comentario, idUsuario, visible, fecha) VALUES (:idPlato, :rating, :comentario, :idUsuario, :visible, :fechaHora)";
             $result = $this->storage->query($add_review_query, $review_params);
+
+        $get_query = "SELECT cantReviews FROM tpromedio WHERE idPlato = :idPlato";
+        $reviews =  $this->storage->query($get_query, $review_params);
+        echo('dip sip');
+            // $update_query ="UPDATE tpromedio SET cantReviews= :cant WHERE idPlato = :idPlatillo";
+            // $update_params = [
+            //                 ":idPlatillo" =>$idPlatillo,
+            //                 ":cant" =>$resultado
+            //                 ];
+            // $this->storage->query($update_query, $update_params);
         }
         return $result;
     }
@@ -294,7 +306,7 @@ class AppService {
                         ":cantReviews" =>$cantReviews
                     ];
         if (count($validation_result['data']) > 0) {
-            $update_query = "UPDATE tpromedio SET promedio = :promedio, cantReviews = :cantReviews WHERE idPlato = :idPlatillo";
+            $update_query = "UPDATE tpromedio SET promedio = :promedio WHERE idPlato = :idPlatillo";
             $result = $this->storage->query($update_query, $add_params);
             return $result;
         } else {
