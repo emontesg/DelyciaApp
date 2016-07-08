@@ -1,5 +1,6 @@
 function MasinfoController($scope, $stateParams, contentfulService,RequestService, $cordovaToast, $location) {
 	$scope.platilloId = $stateParams.platilloId;
+	$scope.type = $stateParams.type;
 
 	$scope.islogged = window.localStorage.getItem("idUser") !== null;
 
@@ -10,7 +11,14 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 	}
 	else
 	{
-		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		if($scope.type === '0')
+		{
+			$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		}
+		else
+		{
+			$scope.currentPlatillo = contentfulService.searchDishes[$scope.platilloId];
+		}
 
 		if(ionic.Platform.isIOS())
 		{
@@ -24,7 +32,14 @@ function MasinfoController($scope, $stateParams, contentfulService,RequestServic
 
 
 	$scope.$on('ready',function(data,items){
-		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		if($scope.type === '0')
+		{
+			$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		}
+		else
+		{
+			$scope.currentPlatillo = contentfulService.searchDishes[$scope.platilloId];
+		}
 
 		if(ionic.Platform.isIOS())
 		{

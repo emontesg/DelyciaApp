@@ -15,7 +15,7 @@
   	<img ng-src="{{currentPlatillo.src}}" />
   	<div class="semitransparent-violet-background"></div>
   	<div class="masinfo-menu">
-  		<div class="line two" ui-sref="app.restaurant({platilloId: {{platilloId}}})">
+  		<div class="line two" ui-sref="app.restaurant({platilloId: {{platilloId}}})" ng-show="type == 0">
         <div class="ion-ios-information-outline icon"></div>
   			<div class="masinfo-menu-item">Ver m&aacute;s sobre {{currentPlatillo.restaurant}}</div>
   		</div>

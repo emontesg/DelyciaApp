@@ -132,7 +132,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.masinfo', {
-      url: '/masinfo/:platilloId',
+      url: '/masinfo/:platilloId/:type',
       views: {
         'menuContent': {
           templateUrl: 'templates/masinfo.html',

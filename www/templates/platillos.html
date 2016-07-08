@@ -42,7 +42,7 @@
 					<div class="menu-image-status">{{platillo.status}}</div>
 					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
-				<div  native-transitions ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
+				<div  native-transitions ui-sref="app.masinfo({platilloId: {{platillo.id}}, type: {{type}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
 				<div ui-sref="app.search({platilloId: {{platillo.id}}})" ng-class="showSearchButton ? infoEnable ? 'search-button active' : 'search-button' : 'search-button hide'"></div>
 			</div>
 		</ion-slide-page>

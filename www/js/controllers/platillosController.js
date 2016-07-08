@@ -2,12 +2,12 @@ var DelyciaConstants = require('../delyciaConstants');
 
 function PlatillosController($scope, $stateParams, contentfulService) {
 
-	var type = parseInt($stateParams.type);
+	$scope.type = parseInt($stateParams.type);
 
 	var block2 = DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT;
 	var block3 = DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT * 2;
 
-	$scope.showSearchButton = type === 0 ? true : false;
+	$scope.showSearchButton = $scope.type === 0 ? true : false;
 	$scope.hasReview = true;
 	$scope.hearts = [0,1,2,3,4];
 
@@ -15,14 +15,14 @@ function PlatillosController($scope, $stateParams, contentfulService) {
 	{
 		$scope.platillos = [{id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''}];
 	}
-	else if(type === 0)
+	else if($scope.type === 0)
 	{
 		$scope.platillos = contentfulService.mainDishes;
 	}
 	else
 	{
 		$scope.platillos = contentfulService.searchDishes;
-		contentfulService.hideSearchItems(type-2);
+		contentfulService.hideSearchItems($scope.type == 1 ? 0 : $scope.type-2);
 	}
 
 	if(ionic.Platform.isIOS())
@@ -36,7 +36,7 @@ function PlatillosController($scope, $stateParams, contentfulService) {
 
 	$scope.dishes = [];
 
-	var initialSlide = type >= 2 ? type-2 : 0;
+	var initialSlide = $scope.type >= 2 ? $scope.type-2 : 0;
 
     $scope.options = {
 	  loop: false,
@@ -82,7 +82,7 @@ function PlatillosController($scope, $stateParams, contentfulService) {
 	  	if(activeIndex === block2)
 	  	{
 	  		contentfulService.currentViewedPageIndex = 1; 
-	  		contentfulService.getNextPage(type);
+	  		contentfulService.getNextPage($scope.type);
 	  	}
 	  	else
 	  	{
@@ -90,10 +90,10 @@ function PlatillosController($scope, $stateParams, contentfulService) {
 	  		if(Number.isInteger(multiplo))
 	  		{
 	  			contentfulService.currentViewedPageIndex = multiplo;
-	  			contentfulService.getNextPage(type);
-	  			contentfulService.hidePreviousPage(type);
+	  			contentfulService.getNextPage($scope.type);
+	  			contentfulService.hidePreviousPage($scope.type);
 	  			$scope.$apply(function() {
-	  				if(type === 0)
+	  				if($scope.type === 0)
 					{
 		  				$scope.platillos = contentfulService.mainDishes;
 		  			}
@@ -111,10 +111,10 @@ function PlatillosController($scope, $stateParams, contentfulService) {
 	  	if(Number.isInteger(multiplo2))
 	  	{
 	  		contentfulService.currentViewedPageIndex = multiplo2-1;
-	  		contentfulService.getPreviousPage(type);
-	  		contentfulService.hideNextPage(type);
+	  		contentfulService.getPreviousPage($scope.type);
+	  		contentfulService.hideNextPage($scope.type);
 	  		$scope.$apply(function() {
-	  			if(type === 0)
+	  			if($scope.type === 0)
 				{
 	  				$scope.platillos = contentfulService.mainDishes;
 	  			}
