@@ -1,7 +1,7 @@
 var DelyciaConstants = require('./../delyciaConstants');
 
 function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope, NotificationService) {
-
+	$scope.type = $stateParams.type;
 	$scope.platilloId = $stateParams.platilloId;
 	$scope.realId = 0;
 	$scope.myFavoritesList = [];
@@ -13,7 +13,14 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
   	var bdList = {};
 
 	$scope.addToFavorites = function(){
-			$scope.realId = ContentfulService.mainDishes[$scope.platilloId].idContentful;
+			if($scope.type === '0' || $scope.type === 0)
+			{
+				$scope.realId = ContentfulService.mainDishes[$scope.platilloId].idContentful;
+			}
+			else
+			{
+				$scope.realId = ContentfulService.searchDishes[$scope.platilloId].idContentful;
+			}
 			var isEmpty = false;
 			var obj = {
 					idUsuario : $scope.user,

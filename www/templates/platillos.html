@@ -20,7 +20,7 @@
 				</div>
 				<img class="img-responsive" ng-src="{{platillo.src}}" ng-click="onImageClick()"/>
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
-					<div ng-class="platillo.rating > 0 ? 'menu-image-rating' : 'menu-image-rating no-review'" ui-sref="app.reviews({platilloId: {{platillo.id}}})">
+					<div ng-class="platillo.rating > 0 ? 'menu-image-rating' : 'menu-image-rating no-review'" ui-sref="app.reviews({platilloId: {{platillo.id}}, type: {{type}}})">
 						<div class="rating-hearts" ng-show="platillo.rating > 0">
 							<div ng-class="getHeartClass(0, platillo.rating)"></div>
 							<div ng-class="getHeartClass(1, platillo.rating)"></div>

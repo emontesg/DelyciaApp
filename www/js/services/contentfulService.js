@@ -322,16 +322,16 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		if(userlocation !== null)
 		{
 			var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,
-				dish.fields.restaurante.fields.ubicacion.lat,
-				dish.fields.restaurante.fields.ubicacion.lon));
+				dish.fields.restaurante.fields.center.lat,
+				dish.fields.restaurante.fields.center.lon));
 			distanceList[id] = distance;
 		}
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre,
 			restaurantId: dish.fields.restaurante.sys.id, price:dish.fields.precio, 
 			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[id] + ' kms', 
-			status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
-			lon: dish.fields.restaurante.fields.ubicacion.lon,
+			status: 'ABIERTO', lat: dish.fields.restaurante.fields.center.lat,
+			lon: dish.fields.restaurante.fields.center.lon,
 			idContentful:id, show: true, cantReviews : cantReviews};
 	};
 
