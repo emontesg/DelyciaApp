@@ -903,6 +903,7 @@ box-shadow: inset 10px 0px 5px 0px rgba(0,0,0,0.2);
 {
     font-weight: 300;
     max-width: 80vw;
+    min-width: 80vw;
 }
 
 /*.restaurant-time-info

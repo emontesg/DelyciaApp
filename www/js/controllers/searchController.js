@@ -13,7 +13,6 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 	if(contentfulService.mainDishes.length === 0)
 	{
 		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
-
 	}
 	else
 	{
