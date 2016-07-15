@@ -190,7 +190,11 @@ function RestaurantController($scope, $stateParams, contentfulService, $sce, $co
 		}
 
 		for (var i = 0; i < from.length; i++) {
-			$scope.schedule.push(days[from[i]] + ' - ' + days[to[i]]+' '+schedule[from[i]]);
+			if(days[from[i]] == days[to[i]]){
+				$scope.schedule.push(days[from[i]] +' '+schedule[from[i]]);
+			}else{
+				$scope.schedule.push(days[from[i]] + ' - ' + days[to[i]]+' '+schedule[from[i]]);
+			}
 		}
 
 		console.log(from);
