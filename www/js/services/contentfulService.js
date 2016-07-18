@@ -21,9 +21,11 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	self.searchDishes = [];
 	var searchPagesCount = 0;
 
+	var self.favoritesList = [];
+
 	moment().format();
 
-	var client = contentful.createClient({
+	self.client = contentful.createClient({
 		// This is the space ID. A space is like a project folder in Contentful terms
 		space: 'jeecg2rod0h5',
 		// This is the access token for this space. Normally you get both ID and the token in the Contentful web app
@@ -32,7 +34,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 
 	function randomizePages()
 	{
-		client.getEntries({
+		self.client.getEntries({
 			'content_type':'plato',
 			'limit': 1
 		})
@@ -71,7 +73,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			else
 				return;
 		}
-		client.getEntries({
+		self.client.getEntries({
 			'content_type':'plato',
 			'limit': DelyciaConstants.DISHES_PAGE_ITEMS_LIMIT,
 			'skip': skip
@@ -104,7 +106,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	self.getContentfulItemById = function(id)
 	{
 		var entryId = self.mainDishes[id].idContentful;
-		client.getEntries({
+		self.client.getEntries({
 			'content_type':'plato',
 			'sys.id': entryId
 		})
@@ -121,16 +123,18 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 
 	self.getItemsByRestaurant = function(id)
 	{ 
-		client.getEntries({
+		self.client.getEntries({
 			'content_type':'plato',
 			'fields.restaurante.sys.id': id
 		})
 		.then(function(entries){
 			self.searchDishes = [];
 			var items = entries.items;
+			console.log(entries.total);
 			for(var i = 0, l = items.length; i < l; i++)
 			{
 				var item = self.getDishJson(i, items[i]);
+				console.log(item);
 				self.searchDishes.push(item);
 			}
 			var photoCount = items[0].fields.restaurante.fields.fotos.length;
@@ -539,6 +543,23 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		      	// getEntry();
 		    });
 	}
+
+	function testingContent(){
+		client.getEntries({
+				'content_type':'plato'
+			})
+			.then(function(entries){
+				var totalList = entries.items;
+				if(totalList != undefined){
+					for(var i = 0; i < totalList.length; i++){
+					var obj = ContentfulService.getDishJson(i, entries.items[i]);
+					self.favoritesList.push(obj);
+
+					}
+				}
+			});
+	};
+	testingContent();
 
 
 	return self;

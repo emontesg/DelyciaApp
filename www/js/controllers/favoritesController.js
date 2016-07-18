@@ -1,5 +1,5 @@
 var DelyciaConstants = require('./../delyciaConstants');
-
+var contentful = require('contentful'); 
 function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope, NotificationService) {
 
 	$scope.platilloId = $stateParams.platilloId;
@@ -9,11 +9,12 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	//ContentfulService.getAllFavorites();
 	var notficationId = 0;
 
-  	var contentfulList = ContentfulService.mainDishes;
+  	var contentfulList = ContentfulService.favoritesList;
   	var bdList = {};
 
 	$scope.addToFavorites = function(){
 			$scope.realId = ContentfulService.mainDishes[$scope.platilloId].idContentful;
+			console.log($scope.realId);
 			var isEmpty = false;
 			var obj = {
 					idUsuario : $scope.user,
@@ -155,11 +156,12 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 			}
 		}
 	};
-
+	var client = ContentfulService.client;
 	$scope.execute = function(){
 	  	if($scope.platilloId == -1){
 	  		$scope.getAllFavorites();
 	  	}else{
+	  		testingContent();
 	  		$scope.addToFavorites();
 	  	}
   	};
@@ -170,7 +172,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		if($scope.myFavoritesList != undefined){
 			for(var i = 0; i < $scope.myFavoritesList.length; i ++){
 				if(bdList[$scope.myFavoritesList[i].idContentful].idFavorito == id){
-					console.log();
 					bdList[$scope.myFavoritesList[i].idContentful].reminder = 0;
 					var obj = {
 						idPlatillo : $scope.myFavoritesList[i].idContentful,
@@ -186,6 +187,7 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.$on('updateState', function(event, args){
 		$scope.updateNotification(args.id);
 	});
+	
 
 }
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', 'NotificationService', FavoritesController];

@@ -1,4 +1,4 @@
-function NotificationService($rootScope){
+function NotificationService($rootScope, RequestService){
 
 	var self = this;
 
@@ -30,12 +30,16 @@ function NotificationService($rootScope){
 
 	self.knowIsNotified = function(){
 		cordova.plugins.notification.local.on("trigger", function(notification) {
-	    	alert("triggered: " + notification.id);
 	    	$rootScope.$broadcast('updateState',{ id: notification.id});
+	    	var obj = {
+						idPlatillo : notification.id,
+						reminder : 0
+					};
+					RequestService.setReminder(obj);
 		});
 	};
 
 	return self;
 }
 
-module.exports = ['$rootScope', NotificationService];
+module.exports = ['$rootScope','RequestService', NotificationService];
