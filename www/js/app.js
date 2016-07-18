@@ -132,7 +132,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.masinfo', {
-      url: '/masinfo/:platilloId',
+      url: '/masinfo/:platilloId/:type',
       views: {
         'menuContent': {
           templateUrl: 'templates/masinfo.html',
@@ -152,7 +152,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.favorites', {
-      url: '/favorites/:platilloId',
+      url: '/favorites/:platilloId/:type',
       views: {
         'menuContent': {
           templateUrl: 'templates/favorites.html',
@@ -162,7 +162,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.share', {
-      url: '/share/:platilloId',
+      url: '/share/:platilloId/:type',
       views: {
         'menuContent': {
           templateUrl: 'templates/share.html',
@@ -172,7 +172,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionic
     })
 
     .state('app.reviews', {
-      url: '/reviews/:platilloId',
+      url: '/reviews/:platilloId/:type',
       views: {
         'menuContent': {
           templateUrl: 'templates/reviews.html',

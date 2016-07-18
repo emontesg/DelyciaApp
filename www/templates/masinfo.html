@@ -15,20 +15,20 @@
   	<img ng-src="{{currentPlatillo.src}}" />
   	<div class="semitransparent-violet-background"></div>
   	<div class="masinfo-menu">
-  		<div class="line two" ui-sref="app.restaurant({platilloId: {{platilloId}}})">
+  		<div class="line two" ui-sref="app.restaurant({platilloId: {{platilloId}}})" ng-show="type == 0">
         <div class="ion-ios-information-outline icon"></div>
   			<div class="masinfo-menu-item">Ver m&aacute;s sobre {{currentPlatillo.restaurant}}</div>
   		</div>
-  		<div ng-click="goToLocation('/app/favorites/{{currentPlatillo.id}}')" ng-class="islogged ? 'line' : 'line deactivated'">
+  		<div ng-click="goToLocation('/app/favorites/{{currentPlatillo.id}}/{{type}}')" ng-class="islogged ? 'line' : 'line deactivated'">
         <div class="ion-android-star icon"></div>
   			<div class="masinfo-menu-item">Agregar favorito</div>
   		</div>
-  		<div ng-click="share('/app/share/{{currentPlatillo.id}}')" ng-class="islogged ? 'line' : 'line deactivated'">
+  		<div ng-click="share('/app/share/{{currentPlatillo.id}}/{{type}}')" ng-class="islogged ? 'line' : 'line deactivated'">
         <div class="ion-share icon"></div>
   			<div class="masinfo-menu-item">Compartir</div>
   		</div>
   		<div class="line"><div class="ion-map icon"></div><a class="masinfo-menu-item" href="{{mapUrl}}" data-rel="external" data-rel="external">C&oacute;mo llegar</a></div>
-  		<div><div class="ion-heart icon"></div><div class="masinfo-menu-item" ui-sref="app.reviews({platilloId: {{currentPlatillo.id}}})">Reviews</div></div>
+  		<div><div class="ion-heart icon"></div><div class="masinfo-menu-item" ui-sref="app.reviews({platilloId: {{currentPlatillo.id}}, type: {{type}}})">Reviews</div></div>
   	</div>
   </ion-content>
 </ion-view>

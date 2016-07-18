@@ -20,7 +20,7 @@
 				</div>
 				<img class="img-responsive" ng-src="{{platillo.src}}" ng-click="onImageClick()"/>
 				<div class="menu-image-info2 fade" ng-show="infoEnable">
-					<div ng-class="platillo.rating > 0 ? 'menu-image-rating' : 'menu-image-rating no-review'" ui-sref="app.reviews({platilloId: {{platillo.id}}})">
+					<div ng-class="platillo.rating > 0 ? 'menu-image-rating' : 'menu-image-rating no-review'" ui-sref="app.reviews({platilloId: {{platillo.id}}, type: {{type}}})">
 						<div class="rating-hearts" ng-show="platillo.rating > 0">
 							<div ng-class="getHeartClass(0, platillo.rating)"></div>
 							<div ng-class="getHeartClass(1, platillo.rating)"></div>
@@ -42,7 +42,7 @@
 					<div class="menu-image-status">{{platillo.status}}</div>
 					<div class="menu-image-price">&#162;{{platillo.price}}</div>
 				</div>
-				<div  native-transitions ui-sref="app.masinfo({platilloId: {{platillo.id}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
+				<div  native-transitions ui-sref="app.masinfo({platilloId: {{platillo.id}}, type: {{type}}})" ng-class="infoEnable ? 'masinfo-button active' : 'masinfo-button'"></div>
 				<div ui-sref="app.search({platilloId: {{platillo.id}}})" ng-class="showSearchButton ? infoEnable ? 'search-button active' : 'search-button' : 'search-button hide'"></div>
 			</div>
 		</ion-slide-page>

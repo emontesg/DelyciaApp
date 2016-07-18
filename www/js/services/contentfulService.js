@@ -79,6 +79,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			'skip': skip
 		})
 		.then(function(entries){
+			console.log(entries.items);
 			var items = entries.items;
 			var images = [];
 			self.dishes = entries;
@@ -186,14 +187,14 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			{
 				if(type === 0)
 				{
-					if(last >= self.mainDishes.length)
+					if(j >= self.mainDishes.length)
 						break;
 
 					self.mainDishes[j].show = true;
 				}
 				else
 				{
-					if(last >= self.searchDishes.length)
+					if(j >= self.searchDishes.length)
 						break;
 
 					self.searchDishes[j].show = true;
@@ -209,14 +210,14 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			{
 				if(type === 0)
 				{
-					if(last >= self.mainDishes.length)
+					if(i >= self.mainDishes.length)
 						break;
 
 					self.mainDishes[i].show = true;
 				}
 				else
 				{
-					if(last >= self.searchDishes.length)
+					if(i >= self.searchDishes.length)
 						break;
 
 					self.searchDishes[i].show = true;
@@ -235,14 +236,14 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			{
 				if(type === 0)
 				{
-					if(last >= self.mainDishes.length)
+					if(i >= self.mainDishes.length)
 						break;
 
 					self.mainDishes[i].show = true;
 				}
 				else
 				{
-					if(last >= self.searchDishes.length)
+					if(i >= self.searchDishes.length)
 						break;
 
 					self.searchDishes[i].show = true;
@@ -264,14 +265,14 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				{
 					if(type === 0)
 					{
-						if(last >= self.mainDishes.length)
+						if(i >= self.mainDishes.length)
 							break;
 
 						self.mainDishes[i].show = false;
 					}
 					else
 					{
-						if(last >= self.searchDishes.length)
+						if(i >= self.searchDishes.length)
 							break;
 
 						self.searchDishes[i].show = false;
@@ -287,14 +288,14 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			{
 				if(type === 0)
 				{
-					if(last >= self.mainDishes.length)
+					if(j >= self.mainDishes.length)
 						break;
 
 					self.mainDishes[j].show = false;
 				}
 				else
 				{
-					if(last >= self.searchDishes.length)
+					if(j >= self.searchDishes.length)
 						break;
 
 					self.searchDishes[j].show = false;
@@ -325,16 +326,16 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		if(userlocation !== null)
 		{
 			var distance = Math.round(calculateDistance(userlocation.lat,userlocation.long,
-				dish.fields.restaurante.fields.ubicacion.lat,
-				dish.fields.restaurante.fields.ubicacion.lon));
+				dish.fields.restaurante.fields.center.lat,
+				dish.fields.restaurante.fields.center.lon));
 			distanceList[id] = distance;
 		}
 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre,
 			restaurantId: dish.fields.restaurante.sys.id, price:dish.fields.precio, 
 			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[id] + ' kms', 
-			status: 'ABIERTO', lat: dish.fields.restaurante.fields.ubicacion.lat,
-			lon: dish.fields.restaurante.fields.ubicacion.lon,
+			status: 'ABIERTO', lat: dish.fields.restaurante.fields.center.lat,
+			lon: dish.fields.restaurante.fields.center.lon,
 			idContentful:id, show: true, cantReviews : cantReviews};
 	};
 
@@ -370,6 +371,134 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		}
 		self.currentViewedPageIndex = page;
 	};
+
+	self.searchItems = function(foodType, ocassion, maxDistance, minPrice, maxPrice)
+	{
+		if(maxDistance > -1 && userlocation !== null)
+		{
+			var distanceOptions = {'content_type':'restaurante'};
+			var center = userlocation.lat + ',' + userlocation.long + ',' + maxDistance;
+			distanceOptions["fields.center[within]"] = center;
+			client.getEntries(distanceOptions)
+			.then(function(entries){
+				var options = getOptions(foodType, ocassion, minPrice, maxPrice);
+				if(entries.items.length > 0)
+				{
+					var restaurants = '';
+					for(var i = 0, l = entries.items.length; i < l; i++)
+					{
+						if(i === 0)
+						{
+							restaurants = entries.items[i].sys.id;
+						}
+						else
+						{
+							restaurants = restaurants + ',' + entries.items[i].sys.id;
+						}
+					}
+					options['fields.restaurante.sys.id[in]'] = restaurants;
+				}
+				else
+				{
+					$rootScope.$broadcast('searchItemsError', DelyciaConstants.NOT_FOUND_MESSAGE);
+					return;
+				}
+				
+				client.getEntries(options)
+				.then(function(entries){
+					if(entries.items.length === 0)
+					{
+						$rootScope.$broadcast('searchItemsError', DelyciaConstants.NOT_FOUND_MESSAGE);
+						return;
+					}
+
+					self.searchDishes = [];
+					for(var j = 0, lj = entries.items.length; j < lj; j++)
+					{
+						self.searchDishes.push(self.getDishJson(j, entries.items[j]));
+					}
+					$rootScope.$broadcast('searchItemsFinish', self.searchDishes);
+					return;
+				});
+			});
+		}
+		else
+		{
+			var options = getOptions(foodType, ocassion, minPrice, maxPrice);
+			client.getEntries(options)
+			.then(function(entries){
+				if(entries.items.length === 0)
+				{
+					$rootScope.$broadcast('searchItemsError', DelyciaConstants.NOT_FOUND_MESSAGE);
+					return;
+				}
+
+				self.searchDishes = [];
+				for(var j = 0, lj = entries.items.length; j < lj; j++)
+				{
+					self.searchDishes.push(self.getDishJson(j, entries.items[j]));
+				}
+				$rootScope.$broadcast('searchItemsFinish', self.searchDishes);
+				return;
+			}, function(err) {
+				$rootScope.$broadcast('searchItemsError', err.message);
+				return;
+		      	// getEntry();
+		    });
+		}
+	};
+
+	function getOptions(foodType, ocassion, minPrice, maxPrice)
+	{
+		var options = '{"content_type":"plato", "fields.precio[gte]": ' + minPrice;
+
+		if(foodType.length > 0) 
+		{
+			var comidaTags = '';
+			for(var fi = 0, fl = foodType.length; fi < fl; fi++)
+			{
+				if(fi === 0)
+				{
+					comidaTags = comidaTags + foodType[fi];
+				}
+				else
+				{
+					comidaTags = comidaTags + ',' + foodType[fi];
+				}
+				
+			}
+			options = options + ', "fields.ComidaTags[all]": "' + comidaTags + '"';
+			// options.ComidaTags[all] = comidaTags;
+		}
+
+		if(ocassion.length > 0)
+		{
+			var ocasionTags = '';
+			for(var oi = 0, ol = foodType.length; oi < ol; oi++)
+			{
+				if(oi === 0)
+				{
+					ocasionTags = ocasionTags + ocassion[oi];
+				}
+				else
+				{
+					ocasionTags = ocasionTags + ',' + ocassion[oi];
+				}
+				
+			}
+			// options.ocasionTags = ocasionTags;
+			options = options + ', "fields.ocasionTags[all]": "' + ocasionTags + '"';
+		}
+
+		if(maxPrice > -1)
+		{
+			// options.precio[lte] = maxPrice;
+			options = options + ', "fields.precio[lte]": ' + maxPrice;
+		}
+
+		options = options + "}";
+		return JSON.parse(options);
+	}
 
 	function getState(item){
 		//var imgLink= 'http:' +plato.fields.foto.fields.file.url;

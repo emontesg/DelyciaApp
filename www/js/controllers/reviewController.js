@@ -4,6 +4,7 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	$scope.platilloId = $stateParams.platilloId;
     $scope.islogged = window.localStorage.getItem("idUser") !== null;
     $scope.isMac = window.localStorage.getItem("isMac");
+    $scope.type = $stateParams.type;
 	$scope.allReviews = [];
 	$rootScope.promedio = 0;
 	$scope.numPromedio = 0;
@@ -21,13 +22,27 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	}
 	else
 	{
-		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		if($scope.type === '0')
+		{
+			$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		}
+		else
+		{
+			$scope.currentPlatillo = contentfulService.searchDishes[$scope.platilloId];
+		}
 		$scope.realId = $scope.currentPlatillo.idContentful;
 	}
 	
 
 	$scope.$on('ready',function(data,items){
-		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		if($scope.type === '0')
+		{
+			$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
+		}
+		else
+		{
+			$scope.currentPlatillo = contentfulService.searchDishes[$scope.platilloId];
+		}
 		$scope.realId = $scope.currentPlatillo.idContentful;
 	});
 

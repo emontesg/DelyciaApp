@@ -1,4 +1,6 @@
-function SearchController($scope, $stateParams, contentfulService, $sce, $location, $ionicLoading) {
+var DelyciaConstants = require('../delyciaConstants');
+
+function SearchController($scope, $stateParams, contentfulService, $sce, $location, $ionicLoading, $cordovaToast) {
 	$scope.platilloId = $stateParams.platilloId;
 
 	var checkedDistance = -1;
@@ -11,15 +13,14 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 	if(contentfulService.mainDishes.length === 0)
 	{
 		$scope.currentPlatillo = {id:'0', src:'', title:'', restaurant:'', price:0, rating:0, distance: '', status: ''};
-
 	}
 	else
 	{
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
 	}
 	
 	$scope.$on('ready',function(data,items){
-		$scope.currentPlatillo = contentfulService.getDishJson($scope.platilloId);
+		$scope.currentPlatillo = contentfulService.mainDishes[$scope.platilloId];
 	});
 
 	$scope.searchType = [
@@ -236,69 +237,37 @@ function SearchController($scope, $stateParams, contentfulService, $sce, $locati
 	 */
 	function search(foodType, ocassion, maxDistance, minPrice, maxPrice)
 	{
-		var dishes = contentfulService.dishes.items;
-		var foodTypeLength = foodType.length;
-		var ocassionLength = ocassion.length;
-		var length = foodTypeLength > ocassionLength ? foodTypeLength : ocassionLength;
-		var foundDishes = [];
+		contentfulService.searchItems(foodType, ocassion, maxDistance, minPrice, maxPrice);
+	}
 
-		if(length === 0 && maxDistance < 0 && maxPrice < 0)
+	$scope.$on('searchItemsFinish', function(event, items) {
+		$scope.$apply(function() {
+			$location.path('/app/platillos/1'); 
+		});
+	});
+
+	$scope.$on('searchItemsError', function(event, message) {
+		switch(message)
 		{
-			$scope.message = 'Por favor seleccionar criterios de búsqueda';
-			return;
+			case DelyciaConstants.NETWORK_ERROR_MESSAGE:
+				showToast('Problemas de conexión');
+				break;
+			case DelyciaConstants.NOT_FOUND_MESSAGE:
+				showToast('No hubo resultados en su búusqueda');
+				break;
 		}
+	}); 
 
-		for(var i = 0, l = dishes.length; i < l; i++)
-		{
-			if(dishes[i].fields.precio > maxPrice || dishes[i].fields.precio < minPrice)
-			{
-				if(maxPrice > 0)
-				{
-					continue;
-				}
-			}
-
-			//TODO: checked distance
-
-			var foodTypeAccepted = foodTypeLength > 0 ? false : true;
-			var ocassionAccepted = ocassionLength > 0 ? false : true;
-			for(var j = 0, lj = length; j < lj; j++)
-			{
-				if(j < foodTypeLength)
-				{
-					if(dishes[i].fields.ComidaTags.indexOf(foodType[j]) !== -1)
-					{
-						foodTypeAccepted = true;
-					}
-				}
-
-				if(j < ocassionLength)
-				{
-					if(dishes[i].fields.ocasionTags.indexOf(ocassion[j]) !== -1)
-					{
-						ocassionAccepted = true;
-					}
-				}
-			}
-
-			if(foodTypeAccepted && ocassionAccepted)
-			{
-				var imgLink= 'http:' +dishes[i].fields.foto.fields.file.url;
-				foundDishes.push(contentfulService.getDishJson(i));
-			}
-		}
-
-		if(foundDishes.length !== 0)
-		{
-			contentfulService.searchDishes = foundDishes;
-			$location.path('/app/platillos/1');
-			$scope.message = '';
-		}
-		else
-		{
-			$scope.message = 'No hubo resultados en su búsqueda';
-		}
+	function showToast(message)
+	{
+		$cordovaToast
+	      .show(message, 'long', 'bottom')
+	      .then(function(success) {
+	        // success
+	      }, function (error) {
+	        // error
+	      });
 	}
 }
 
-module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$location', '$ionicLoading', SearchController];
+module.exports = ['$scope', '$stateParams', 'ContentfulService', '$sce', '$location', '$ionicLoading', '$cordovaToast', SearchController];

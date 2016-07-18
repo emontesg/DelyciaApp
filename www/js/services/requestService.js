@@ -2,7 +2,7 @@ var RequestService = function($http, $location, $rootScope){
 
     var self = this;
     //var url = $location.absUrl(),
-    var url = 'http://localhost:8888/',
+    var url = 'http://localhost/',
     backEnd = 'delycia/back-end/app/';
 
     self.myPublicFunction = function()
