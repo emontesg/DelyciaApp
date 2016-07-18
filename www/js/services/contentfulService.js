@@ -21,7 +21,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 	self.searchDishes = [];
 	var searchPagesCount = 0;
 
-	var self.favoritesList = [];
+	self.favoritesList = [];
 
 	moment().format();
 
@@ -31,7 +31,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		// This is the access token for this space. Normally you get both ID and the token in the Contentful web app
 		accessToken: 'e1e84ff039e7a97a5dd97ba4104682f57f10ca912016f42d000bf22cd4f0ceee'
 	});
-
+//testingContent();
 	function randomizePages()
 	{
 		self.client.getEntries({
@@ -49,6 +49,21 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			getPageItems(true, true);
 		});
 	}
+
+	// 	function testingContent(){
+	// 	self.client.getEntries({
+	// 			'content_type':'plato'
+	// 		})
+	// 		.then(function(entries){
+	// 			var totalList = entries.items;
+	// 				for(var i = 0; i < totalList.length; i++){
+	// 					console.log(i);
+	// 					self.favoritesList.push(self.getDishJson(i, totalList[i]));
+	// 				}
+	// 				console.log(self.favoritesList);
+				
+	// 		});
+	// };
 
 	function getPageItems(isNext, isFirstLoad)
 	{
@@ -379,7 +394,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			var distanceOptions = {'content_type':'restaurante'};
 			var center = userlocation.lat + ',' + userlocation.long + ',' + maxDistance;
 			distanceOptions["fields.center[within]"] = center;
-			client.getEntries(distanceOptions)
+			self.client.getEntries(distanceOptions)
 			.then(function(entries){
 				var options = getOptions(foodType, ocassion, minPrice, maxPrice);
 				if(entries.items.length > 0)
@@ -404,7 +419,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 					return;
 				}
 				
-				client.getEntries(options)
+				self.client.getEntries(options)
 				.then(function(entries){
 					if(entries.items.length === 0)
 					{
@@ -425,7 +440,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		else
 		{
 			var options = getOptions(foodType, ocassion, minPrice, maxPrice);
-			client.getEntries(options)
+			self.client.getEntries(options)
 			.then(function(entries){
 				if(entries.items.length === 0)
 				{
@@ -672,23 +687,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		      	// getEntry();
 		    });
 	}
-
-	function testingContent(){
-		client.getEntries({
-				'content_type':'plato'
-			})
-			.then(function(entries){
-				var totalList = entries.items;
-				if(totalList != undefined){
-					for(var i = 0; i < totalList.length; i++){
-					var obj = ContentfulService.getDishJson(i, entries.items[i]);
-					self.favoritesList.push(obj);
-
-					}
-				}
-			});
-	};
-	testingContent();
 
 
 	return self;

@@ -9,9 +9,9 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	//ContentfulService.getAllFavorites();
 	var notficationId = 0;
 
-  	var contentfulList = ContentfulService.favoritesList;
+  	var contentfulList = [];
   	var bdList = {};
-
+console.log(contentfulList);
 	$scope.addToFavorites = function(){
 			if($scope.type === '0' || $scope.type === 0)
 			{
@@ -163,17 +163,35 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		}
 	};
 	var client = ContentfulService.client;
-	$scope.execute = function(){
-	  	if($scope.platilloId == -1){
-	  		$scope.getAllFavorites();
-	  	}else{
-	  		testingContent();
-	  		$scope.addToFavorites();
-	  	}
-  	};
-  	$scope.execute();
-	NotificationService.knowIsNotified();
+	// $scope.execute = function(){
+	//   	if(contentfulList == null){
+	//   		testingContent();
+	//   	}else if($scope.platilloId == -1){
+	// 		$scope.getAllFavorites();
+	// 	}else{
+	// 		scope.addToFavorites();
+	// 	}
+ //  	};
+ //  	$scope.execute();
 
+	function testingContent(){
+		client.getEntries({
+				'content_type':'plato'
+			})
+			.then(function(entries){
+				var totalList = entries.items;
+					for(var i = 0; i < totalList.length; i++){
+						contentfulList.push(ContentfulService.getDishJson(i, totalList[i]));
+					}
+				  	if($scope.platilloId == -1){
+				  		$scope.getAllFavorites();
+				  	}else{
+				  		$scope.addToFavorites();
+				  	}
+			});
+	};
+	testingContent();
+//NotificationService.knowIsNotified();
 	$scope.updateNotification = function(id){
 		if($scope.myFavoritesList != undefined){
 			for(var i = 0; i < $scope.myFavoritesList.length; i ++){
@@ -194,6 +212,5 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 		$scope.updateNotification(args.id);
 	});
 	
-
 }
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', 'NotificationService', FavoritesController];
