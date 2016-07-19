@@ -1,5 +1,5 @@
 var DelyciaConstants = require('./../delyciaConstants');
-var contentful = require('contentful'); 
+var contentful = require('contentful');
 function FavoritesController($scope, $stateParams, RequestService, ContentfulService, $rootScope, NotificationService) {
 	$scope.type = $stateParams.type;
 	$scope.platilloId = $stateParams.platilloId;
@@ -26,7 +26,7 @@ console.log(contentfulList);
 					idUsuario : $scope.user,
 					idPlatillo : $scope.realId
 			};
-			RequestService.addFavorite(obj).then(function (response){            
+			RequestService.addFavorite(obj).then(function (response){
 				var list = {};
 				var empty = false;
 				if(response.data != undefined){
@@ -46,7 +46,7 @@ console.log(contentfulList);
 				}
 			}, function (reject){ });
 	};
-	
+
 
 	$scope.removeFavorites = function(pidPlatillo){
 		if($scope.myFavoritesList.length > 0){
@@ -77,7 +77,7 @@ console.log(contentfulList);
           		var favoritesList = {};
             	if(response.data !== null){
             		for (var i = 0; i < response.data.length; i++){
-            			favoritesList[response.data[i].idPlato] = 
+            			favoritesList[response.data[i].idPlato] =
             			{
             				idFavorito : response.data[i].idFavorito,
             				idUsuario : response.data[i].idUsuario,
@@ -90,7 +90,7 @@ console.log(contentfulList);
             	if(favoritesList !== null){
             		$scope.existInContentful(favoritesList);
             	}
-            	
+
             }, function (reject){
         });
     };
@@ -150,7 +150,7 @@ console.log(contentfulList);
 						bdList[contentfulList[i].idContentful] =
 						{
 							idFavorito : list[contentfulList[i].idContentful].idFavorito,
-							title: contentfulList[i].title, 
+							title: contentfulList[i].title,
 							reminder: list[contentfulList[i].idContentful].recordatorio
 						};
 						exist = false;
@@ -207,10 +207,23 @@ console.log(contentfulList);
 			}
 		}
 	};
-
+	$scope.share = function(id, title, name, image){
+		var url = "http://koko-test.com/testing/doc.html";
+		facebookConnectPlugin.showDialog({
+					method: "share",
+					href: "http://koko-test.com/testing/doc.html",
+					caption: name,
+					description: title,
+					picture: image,
+			}, function (postId) {
+								console.log(postId);
+					}, function(error){
+							 console.log(error);
+					 });
+	}
 	$scope.$on('updateState', function(event, args){
 		$scope.updateNotification(args.id);
 	});
-	
+
 }
 module.exports = ['$scope', '$stateParams','RequestService', 'ContentfulService', '$rootScope', 'NotificationService', FavoritesController];
