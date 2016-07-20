@@ -37,6 +37,7 @@ function PlatillosController($scope, $stateParams, contentfulService) {
 	$scope.dishes = [];
 
 	var initialSlide = $scope.type >= 2 ? $scope.type-2 : 0;
+	console.log($scope.platillos);
 
     $scope.options = {
 	  loop: false,

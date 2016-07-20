@@ -94,7 +94,6 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 			'skip': skip
 		})
 		.then(function(entries){
-			console.log(entries.items);
 			var items = entries.items;
 			var images = [];
 			self.dishes = entries;
@@ -335,7 +334,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 		var ratingValue = 0;
 		var cantReviews = 0;
 		if(ratingList[id] !== undefined){
-			ratingValue = ratingList[id];
+			ratingValue = ratingList[id].promedio;
 			cantReviews = ratingList[id].cantReviews;
 		}
 		if(userlocation !== null)
@@ -345,7 +344,7 @@ function ContentfulService($rootScope, $sce, RequestService, preloaderService, $
 				dish.fields.restaurante.fields.center.lon));
 			distanceList[id] = distance;
 		}
-		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
+ 		return {id:index, src:$sce.getTrustedResourceUrl(imgLink), title:dish.fields.nombre, 
 			restaurant:dish.fields.restaurante.fields.nombre,
 			restaurantId: dish.fields.restaurante.sys.id, price:dish.fields.precio, 
 			rating: ratingValue, distance: userlocation == null ? 'N/A' : distanceList[id] + ' kms', 
