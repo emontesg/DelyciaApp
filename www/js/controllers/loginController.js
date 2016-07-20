@@ -58,7 +58,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
              $scope.nameUser = window.localStorage.getItem("nameUser");
              console.log(response);
              $scope.islogged = true;
-             var pic= "https://graph.facebook.com/"+response.id +"/picture?width=200&height=200";
+             var pic= "https://graph.facebook.com/"+response.id+"/picture?width=200&height=200";
              window.localStorage.setItem("userPhoto", pic);
              $scope.userPhoto = window.localStorage.getItem("userPhoto");
              var obj = {

@@ -208,12 +208,12 @@ console.log(contentfulList);
 		}
 	};
 	$scope.share = function(id, title, name, image){
-		var url = "http://koko-test.com/testing/doc.html";
+		var url = "http://delycia.com/";
 		facebookConnectPlugin.showDialog({
 					method: "share",
-					href: "http://koko-test.com/testing/doc.html",
+					href: "http://delycia.com/",
 					caption: name,
-					description: title,
+					description: "Disfruta de "+title+", junto con los mejores platos de Costa Rica gracias a Delycia, el app que te lleva a disfrutar de la gastronomía nacional. Descargala ya.",
 					picture: image,
 			}, function (postId) {
 								console.log(postId);

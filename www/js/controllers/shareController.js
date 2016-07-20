@@ -18,12 +18,11 @@ function ShareController($scope, $stateParams, contentfulService, $location, $io
 			rest = contentfulService.searchDishes[$scope.platilloId].restaurant;
 			image = contentfulService.searchDishes[$scope.platilloId].src;
 		}
-		var url = "http://koko-test.com/testing/doc.html";
 		facebookConnectPlugin.showDialog({
 					method: "share",
-					href: "http://koko-test.com/testing/doc.html",
-					caption: rest,
-					description: name,
+					href: "http://delycia.com/",
+					caption: name,
+					description: "Disfruta de "+rest+", junto con los mejores platos de Costa Rica gracias a Delycia, el app que te lleva a disfrutar de la gastronomía nacional. Descargala ya.",
 					picture: image,
 			}, function (postId) {
 								console.log(postId);
