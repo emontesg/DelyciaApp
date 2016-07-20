@@ -14,6 +14,8 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 	var moment = require('moment');
 	moment().format();
 	$scope.user = window.localStorage.getItem('idUser');
+	$scope.isHearted = true;
+
 
 	if(contentfulService.mainDishes.length === 0)
 	{
@@ -65,6 +67,9 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 
 	$scope.onHeartClick = function(id)
 	{
+	
+		$scope.isHearted = false;
+
 		$scope.heartCount = id + 1;
 		for(var i = 0, l = $scope.hearts.length; i < l; i++)
 		{

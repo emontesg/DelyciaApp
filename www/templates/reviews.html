@@ -34,7 +34,7 @@
   		<ion-scroll class="review-scroll" ng-show="!makeRating">
   		<div class="review-reviews">
   			<div class="review-review" ng-repeat="review in allReviews">
-  				<div ng-class="getReviewColor($index)"></div>
+  				<div ng-class="getReviewColor($index)"></div> 
   				<div class="container">
 	  				<div class="review-left-side">
 	  					<div class="review-photo-thumbnail"><img ng-src="{{review.picture}}"/></div>
@@ -64,7 +64,7 @@
 	        </label>
 	        <div class="review-form-footer">
 	        	<div class="return" ng-click="onReturnButtonClick()"><div class="ion-ios-close-outline"></div>Volver</div>
-	        	<div class="submit" ng-click="onSubmitButtonClick(comentario)"><div class="ion-ios-checkmark-outline"></div>Enviar</div>
+	        	<button class="submit" ng-click="onSubmitButtonClick(comentario)" ng-disabled="isHearted"><div class="ion-ios-checkmark-outline" ></div>Enviar</button>
 	        </div>
   		</div>
   	</div>

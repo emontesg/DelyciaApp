@@ -143,7 +143,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.existInContentful = function (list){
 		var exist = true;
 		if(contentfulList !== null){
-			console.log(contentfulList);
 			for(var i = 0; i < contentfulList.length; i++){
 				if(list[contentfulList[i].idContentful] != undefined){
 					if(bdList[contentfulList[i].idContentful] == undefined){
@@ -160,7 +159,6 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 					}
 				 }
 			}
-			console.log($scope.myFavoritesList);
 		}
 	};
 	var client = ContentfulService.client;
