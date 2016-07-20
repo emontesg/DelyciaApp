@@ -2,7 +2,7 @@ var RequestService = function($http, $location, $rootScope){
 
     var self = this;
     //var url = $location.absUrl(),
-    var url = 'http://localhost/',
+    var url = 'http://localhost:8888/',
     backEnd = 'delycia/back-end/app/';
 
     self.myPublicFunction = function()
@@ -89,7 +89,6 @@ var RequestService = function($http, $location, $rootScope){
                 idUsuario : obj.idUsuario,
                 visible : obj.visible
             };
-            console.log(data);
             if (data) {
                 return $http.post(route, data);
             }

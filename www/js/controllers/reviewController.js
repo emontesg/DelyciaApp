@@ -83,7 +83,6 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
 
 		$scope.allReviews = [];
 		RequestService.getAllReviews($scope.realId).then(function (response){
-			console.log(response.data);
 			if( response.data !== null){
             	for(var i = 0; i < response.data.length; i++){
             		var date = response.data[i].fecha;
@@ -123,16 +122,13 @@ function ReviewController($scope, $stateParams, contentfulService, RequestServic
     		idUsuario : $scope.user,
     		visible : 0
     	};
-     	console.log(obj);
          if(obj !== null){
            	RequestService.addReview(obj).then(function (response){
-           		console.log("hola");
-		// 		//$scope.getAllReviews();
-		// 		$scope.getCantReviews();
+				$scope.getAllReviews();
+				$scope.getCantReviews();
             }, function (reject){
-            	console.log("noo");
         });
-		// $scope.getCantReviews();
+		$scope.getCantReviews();
          }
     };
 
