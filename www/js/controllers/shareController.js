@@ -21,8 +21,8 @@ function ShareController($scope, $stateParams, contentfulService, $location, $io
 		facebookConnectPlugin.showDialog({
 					method: "share",
 					href: "http://delycia.com/",
-					caption: name,
-					description: "Disfruta de "+rest+", junto con los mejores platos de Costa Rica gracias a Delycia, el app que te lleva a disfrutar de la gastronomía nacional. Descargala ya.",
+					caption: rest,
+					description: "Disfruta de "+name+", junto con los mejores platos de Costa Rica gracias a Delycia, el app que te lleva a disfrutar de la gastronomía nacional. Descargala ya.",
 					picture: image,
 			}, function (postId) {
 								console.log(postId);

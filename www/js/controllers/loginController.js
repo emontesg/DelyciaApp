@@ -50,6 +50,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
   $scope.doLogin = function() {
     $cordovaFacebook.login(["public_profile", "email", "user_friends"])
    .then(function(success) {
+     $scope.islogged = true;
      if (success.authResponse) {
        facebookConnectPlugin.api('/me?fields=id,email,name,last_name,picture', null,
            function(response) {
@@ -75,6 +76,7 @@ function LoginController($scope, $ionicModal, $timeout, $cordovaFacebook, Reques
 
           }
    }, function (error) {
+     alert(error)
 
    });
   };
