@@ -205,7 +205,6 @@ class AppService {
                     ];
 
         if(count($validation['data']) > 0){
-            echo('shit');
             //si ya existe el review del usuario
             $update_review = "UPDATE trating SET rating = :rating, comentario = :comentario, visible = :visible, fecha =:fechaHora
             WHERE idUsuario = :idUsuario and idPlato = :idPlato";
@@ -217,7 +216,6 @@ class AppService {
 
         $get_query = "SELECT cantReviews FROM tpromedio WHERE idPlato = :idPlato";
         $reviews =  $this->storage->query($get_query, $review_params);
-        echo('dip sip');
             // $update_query ="UPDATE tpromedio SET cantReviews= :cant WHERE idPlato = :idPlatillo";
             // $update_params = [
             //                 ":idPlatillo" =>$idPlatillo,
@@ -244,7 +242,7 @@ class AppService {
         if (count($result['data'])> 0) {
             return $result['data'];
         } else {
-            $result= null;
+            $result = null;
             //$result['error'] = true;
         }
         return $result;

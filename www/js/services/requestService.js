@@ -89,6 +89,7 @@ var RequestService = function($http, $location, $rootScope){
                 idUsuario : obj.idUsuario,
                 visible : obj.visible
             };
+            console.log(data);
             if (data) {
                 return $http.post(route, data);
             }
