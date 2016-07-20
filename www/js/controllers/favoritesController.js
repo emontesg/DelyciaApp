@@ -8,10 +8,9 @@ function FavoritesController($scope, $stateParams, RequestService, ContentfulSer
 	$scope.user = window.localStorage.getItem('idUser');
 	//ContentfulService.getAllFavorites();
 	var notficationId = 0;
-
   	var contentfulList = [];
   	var bdList = {};
-console.log(contentfulList);
+  	//console.log($scope.platilloId);
 	$scope.addToFavorites = function(){
 			if($scope.type === '0' || $scope.type === 0)
 			{
@@ -144,6 +143,7 @@ console.log(contentfulList);
 	$scope.existInContentful = function (list){
 		var exist = true;
 		if(contentfulList !== null){
+			console.log(contentfulList);
 			for(var i = 0; i < contentfulList.length; i++){
 				if(list[contentfulList[i].idContentful] != undefined){
 					if(bdList[contentfulList[i].idContentful] == undefined){
@@ -160,6 +160,7 @@ console.log(contentfulList);
 					}
 				 }
 			}
+			console.log($scope.myFavoritesList);
 		}
 	};
 	var client = ContentfulService.client;
@@ -180,9 +181,11 @@ console.log(contentfulList);
 			})
 			.then(function(entries){
 				var totalList = entries.items;
+				//console.log(totalList);
 					for(var i = 0; i < totalList.length; i++){
 						contentfulList.push(ContentfulService.getDishJson(i, totalList[i]));
 					}
+					//console.log(contentfulList);
 				  	if($scope.platilloId == -1){
 				  		$scope.getAllFavorites();
 				  	}else{
